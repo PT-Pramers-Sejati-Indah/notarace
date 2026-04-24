@@ -17,11 +17,17 @@ export const AuthPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isLogin && formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
-      return;
+    if (!isLogin) {
+      if (formData.password !== formData.confirmPassword) {
+        alert("Passwords do not match");
+        return;
+      }
+      const phoneRegex = /^(?:\+62|08)[0-9]{7,13}$/;
+      if (!phoneRegex.test(formData.phone.replace(/[\s-]/g, ''))) {
+        alert("Format nomor telepon tidak valid. Harus diawali dengan 08 atau +62 (9-15 digit).");
+        return;
+      }
     }
-    
     setLoading(true);
     try {
       let user;

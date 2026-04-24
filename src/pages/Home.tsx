@@ -69,11 +69,11 @@ export const Home: React.FC = () => {
             Official Running Event
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-8" style={{ fontSize: '4rem', textShadow: '0 4px 12px rgba(0,0,0,0.5)' }}>
+          <h1 className="hero-title text-5xl font-extrabold mb-8" style={{ textShadow: '0 4px 12px rgba(0,0,0,0.5)' }}>
             Notarace 2026
           </h1>
           
-          <p className="text-2xl text-muted mb-12" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)', color: '#e2e8f0' }}>
+          <p className="hero-subtitle text-2xl text-muted mb-12" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)', color: '#e2e8f0' }}>
             The premium race experience. Trust the process, run the distance.
           </p>
 
@@ -104,12 +104,12 @@ export const Home: React.FC = () => {
         </div>
       </div>
 
-      <div className="container" style={{ padding: '6rem 1.5rem', flex: 1 }}>
-        <h2 className="text-5xl font-bold text-center mb-24 text-accent">Race Categories</h2>
+      <div className="container" style={{ padding: '4rem 1.5rem', flex: 1 }}>
+        <h2 className="text-5xl font-bold text-center mb-16 text-accent">Race Categories</h2>
         
-        <div className="flex gap-8 justify-center animate-fade-in" style={{ flexWrap: 'wrap' }}>
+        <div className="flex gap-8 justify-center animate-fade-in flex-wrap">
           {/* 2.5K */}
-          <div className="card flex-col justify-between" style={{ flex: '1 1 320px', maxWidth: '380px', padding: '3rem 2rem' }}>
+          <div className="card flex-col justify-between" style={{ flex: '1 1 320px', maxWidth: '380px' }}>
             <div>
               <h3 className="text-3xl font-bold mb-3">2.5K Fun Walk</h3>
               <p className="text-muted mb-6 text-lg">Start: 06:30 WIB <br/> Kuota: 1000</p>
@@ -128,7 +128,7 @@ export const Home: React.FC = () => {
           </div>
 
           {/* 5K */}
-          <div className="card flex-col justify-between" style={{ flex: '1 1 320px', maxWidth: '380px', padding: '3rem 2rem', transform: 'scale(1.05)', borderColor: 'var(--color-accent)', boxShadow: '0 0 30px rgba(212, 175, 55, 0.15)', zIndex: 10 }}>
+          <div className="card card-featured flex-col justify-between" style={{ flex: '1 1 320px', maxWidth: '380px', transform: 'scale(1.05)', borderColor: 'var(--color-accent)', boxShadow: '0 0 30px rgba(212, 175, 55, 0.15)', zIndex: 10 }}>
             <div>
               <div className="badge badge-warning mb-4 px-3 py-1 text-sm">Most Popular</div>
               <h3 className="text-3xl font-bold mb-3">5K Road Run</h3>

@@ -108,3 +108,32 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.05em; color: var(--color-text); display: flex; align-items: center; gap: 0.5rem; }
 .logo span { color: var(--color-accent); }
 .page-wrapper { min-height: calc(100vh - 80px); display: flex; flex-direction: column; }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .navbar { flex-direction: column; align-items: flex-start; padding: 1rem; }
+  .navbar-links { display: none; flex-direction: column; width: 100%; gap: 1rem; margin-top: 1.5rem; }
+  .navbar-links.open { display: flex; }
+  .navbar-links .user-actions { flex-direction: column; align-items: flex-start; margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; width: 100%; }
+  .mobile-menu-btn { display: block; position: absolute; right: 1rem; top: 1rem; background: none; border: none; color: var(--color-text); cursor: pointer; }
+  
+  .text-5xl { font-size: 2.25rem !important; }
+  .text-4xl { font-size: 1.875rem !important; }
+  .text-3xl { font-size: 1.5rem !important; }
+  .text-7xl { font-size: 3rem !important; }
+  
+  .card { padding: 1.5rem !important; }
+  .flex-wrap { flex-direction: column; align-items: center; }
+  
+  /* Reset scaled card on mobile */
+  .card-featured { transform: none !important; margin: 0 !important; width: 100%; }
+  
+  .hero-title { font-size: 2.5rem !important; }
+  .hero-subtitle { font-size: 1.25rem !important; }
+}
+
+@media (min-width: 769px) {
+  .mobile-menu-btn { display: none; }
+  .navbar-links { display: flex; gap: 1.5rem; align-items: center; margin-left: auto; }
+  .navbar-links .user-actions { margin-left: 1rem; }
+}

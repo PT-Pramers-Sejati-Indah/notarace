@@ -76,35 +76,35 @@ export const Home: React.FC = () => {
           zIndex: 0
         }}></div>
         
-        {/* Light Fade Overlay */}
+        {/* Dark Fade Overlay for High Contrast */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(255,255,255,1) 100%)',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(255,255,255,0.9) 100%)',
           zIndex: 1
         }}></div>
 
         <div className="text-center animate-fade-in" style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', position: 'relative', zIndex: 2, marginTop: 'auto' }}>
-          <h1 className="hero-title text-5xl md:text-7xl font-extrabold mb-12" style={{ color: '#E8492B', textShadow: '2px 2px 4px rgba(255,255,255,0.8)', lineHeight: 1.2 }}>
+          <h1 className="hero-title text-5xl md:text-7xl font-extrabold mb-12" style={{ color: '#E8492B', textShadow: '0 2px 10px rgba(0,0,0,0.5), 0 0 20px rgba(232, 73, 43, 0.3)', lineHeight: 1.2 }}>
             13 JULI 2025 <br />
             KOTA SUMMARECON BEKASI
           </h1>
 
           <div className="flex justify-center gap-4 md:gap-12 mb-16 flex-wrap">
             <div className="text-center" style={{ flex: '1 1 80px' }}>
-              <div className="text-6xl md:text-8xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.4)' }}>{String(timeLeft.d).padStart(3, '0')}</div>
-              <div className="text-lg font-light tracking-widest uppercase" style={{ color: '#E8492B' }}>Days</div>
+              <div className="text-7xl md:text-9xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.85)', textShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>{String(timeLeft.d).padStart(3, '0')}</div>
+              <div className="text-xl font-bold tracking-widest uppercase" style={{ color: '#E8492B', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>Days</div>
             </div>
             <div className="text-center" style={{ flex: '1 1 80px' }}>
-              <div className="text-6xl md:text-8xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.4)' }}>{String(timeLeft.h).padStart(2, '0')}</div>
-              <div className="text-lg font-light tracking-widest uppercase" style={{ color: '#E8492B' }}>Hours</div>
+              <div className="text-7xl md:text-9xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.85)', textShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>{String(timeLeft.h).padStart(2, '0')}</div>
+              <div className="text-xl font-bold tracking-widest uppercase" style={{ color: '#E8492B', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>Hours</div>
             </div>
             <div className="text-center" style={{ flex: '1 1 80px' }}>
-              <div className="text-6xl md:text-8xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.4)' }}>{String(timeLeft.m).padStart(2, '0')}</div>
-              <div className="text-lg font-light tracking-widest uppercase" style={{ color: '#E8492B' }}>Minutes</div>
+              <div className="text-7xl md:text-9xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.85)', textShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>{String(timeLeft.m).padStart(2, '0')}</div>
+              <div className="text-xl font-bold tracking-widest uppercase" style={{ color: '#E8492B', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>Minutes</div>
             </div>
             <div className="text-center" style={{ flex: '1 1 80px' }}>
-              <div className="text-6xl md:text-8xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.4)' }}>{String(timeLeft.s).padStart(2, '0')}</div>
-              <div className="text-lg font-light tracking-widest uppercase" style={{ color: '#E8492B' }}>Seconds</div>
+              <div className="text-7xl md:text-9xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.85)', textShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>{String(timeLeft.s).padStart(2, '0')}</div>
+              <div className="text-xl font-bold tracking-widest uppercase" style={{ color: '#E8492B', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>Seconds</div>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Camera } from 'lucide-react';
 import { featureFlags } from '../utils/featureFlags';
 import heroRunnersImg from '../assets/hero-runners.png';
 
@@ -57,7 +58,7 @@ export const Home: React.FC = () => {
       <div 
         style={{
           position: 'relative',
-          padding: '8rem 1.5rem',
+          padding: '6rem 1.5rem',
           minHeight: '85vh',
           display: 'flex',
           flexDirection: 'column',
@@ -66,47 +67,58 @@ export const Home: React.FC = () => {
           overflow: 'hidden'
         }}
       >
-        {/* Grayscale Background Image */}
+        {/* Full Color Background Image */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
           backgroundImage: `url(${heroRunnersImg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          filter: 'grayscale(100%)',
           zIndex: 0
         }}></div>
         
-        {/* Dark Fade Overlay for High Contrast */}
+        {/* Vibrant Red to Orange Gradient Overlay */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(255,255,255,0.9) 100%)',
+          background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.85) 0%, rgba(245, 158, 11, 0.85) 100%)',
           zIndex: 1
         }}></div>
 
-        <div className="text-center animate-fade-in" style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', position: 'relative', zIndex: 2, marginTop: 'auto' }}>
-          <h1 className="hero-title text-5xl md:text-7xl font-extrabold mb-12" style={{ color: '#E8492B', textShadow: '0 2px 10px rgba(0,0,0,0.5), 0 0 20px rgba(232, 73, 43, 0.3)', lineHeight: 1.2 }}>
-            13 JULI 2025 <br />
-            KOTA SUMMARECON BEKASI
+        <div className="text-center animate-fade-in flex flex-col items-center" style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
+          
+          <div style={{ display: 'inline-block', padding: '0.5rem 1.5rem', border: '2px solid white', color: 'white', borderRadius: 'var(--radius-full)', fontWeight: 700, marginBottom: '2rem', backdropFilter: 'blur(5px)', letterSpacing: '1px' }}>
+            OFFICIAL RUNNING EVENT 2026
+          </div>
+
+          <h1 className="hero-title text-5xl md:text-8xl font-extrabold mb-4 text-white" style={{ textShadow: '0 4px 15px rgba(0,0,0,0.3)', letterSpacing: '2px' }}>
+            NOTARACE
           </h1>
 
-          <div className="flex justify-center gap-4 md:gap-12 mb-16 flex-wrap">
-            <div className="text-center" style={{ flex: '1 1 80px' }}>
-              <div className="text-7xl md:text-9xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.85)', textShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>{String(timeLeft.d).padStart(3, '0')}</div>
-              <div className="text-xl font-bold tracking-widest uppercase" style={{ color: '#E8492B', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>Days</div>
+          <p className="hero-subtitle text-xl md:text-2xl mb-12 text-white font-medium" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+            The premium race experience. Trust the process, run the distance.
+          </p>
+
+          <div className="flex justify-center gap-4 md:gap-6 mb-12 flex-wrap">
+            <div className="text-center" style={{ background: 'white', borderRadius: '16px', padding: '1.5rem 1rem', width: '120px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+              <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{String(timeLeft.d).padStart(3, '0')}</div>
+              <div className="text-sm font-bold capitalize" style={{ color: '#374151' }}>Days</div>
             </div>
-            <div className="text-center" style={{ flex: '1 1 80px' }}>
-              <div className="text-7xl md:text-9xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.85)', textShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>{String(timeLeft.h).padStart(2, '0')}</div>
-              <div className="text-xl font-bold tracking-widest uppercase" style={{ color: '#E8492B', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>Hours</div>
+            <div className="text-center" style={{ background: 'white', borderRadius: '16px', padding: '1.5rem 1rem', width: '120px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+              <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{timeLeft.h}</div>
+              <div className="text-sm font-bold capitalize" style={{ color: '#374151' }}>Hours</div>
             </div>
-            <div className="text-center" style={{ flex: '1 1 80px' }}>
-              <div className="text-7xl md:text-9xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.85)', textShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>{String(timeLeft.m).padStart(2, '0')}</div>
-              <div className="text-xl font-bold tracking-widest uppercase" style={{ color: '#E8492B', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>Minutes</div>
+            <div className="text-center" style={{ background: 'white', borderRadius: '16px', padding: '1.5rem 1rem', width: '120px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+              <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{timeLeft.m}</div>
+              <div className="text-sm font-bold capitalize" style={{ color: '#374151' }}>Mins</div>
             </div>
-            <div className="text-center" style={{ flex: '1 1 80px' }}>
-              <div className="text-7xl md:text-9xl font-extrabold mb-2" style={{ color: 'rgba(232, 73, 43, 0.85)', textShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>{String(timeLeft.s).padStart(2, '0')}</div>
-              <div className="text-xl font-bold tracking-widest uppercase" style={{ color: '#E8492B', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>Seconds</div>
+            <div className="text-center" style={{ background: 'white', borderRadius: '16px', padding: '1.5rem 1rem', width: '120px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+              <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{timeLeft.s}</div>
+              <div className="text-sm font-bold capitalize" style={{ color: '#374151' }}>Secs</div>
             </div>
           </div>
+
+          <a href="https://gotag.me" target="_blank" rel="noreferrer" className="btn flex items-center justify-center gap-2" style={{ background: 'white', color: '#991B1B', padding: '1rem 3rem', fontSize: '1.25rem', borderRadius: '9999px', fontWeight: 700, textDecoration: 'none', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+            <Camera size={24} /> Cari Foto
+          </a>
         </div>
       </div>
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera } from 'lucide-react';
 import { featureFlags } from '../utils/featureFlags';
 import heroRunnersImg from '../assets/hero-runners.png';
 

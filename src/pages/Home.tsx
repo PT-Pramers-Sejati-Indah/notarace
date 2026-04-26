@@ -27,6 +27,20 @@ export const Home: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const [randomImages, setRandomImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch('/data.json')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const shuffled = [...data].sort(() => 0.5 - Math.random());
+          setRandomImages(shuffled.slice(0, 4).map(item => item.high_image_url));
+        }
+      })
+      .catch(err => console.error('Error loading data.json:', err));
+  }, []);
+
   const handleBuyTicket = (category: string) => {
     if (!featureFlags.purchase) return;
     const user = localStorage.getItem('user');
@@ -234,11 +248,256 @@ export const Home: React.FC = () => {
 
         </div>
       </div>
+
+      {/* Info Sections */}
+      <div style={{ backgroundColor: 'white', padding: '4rem 0' }}>
+        <div className="container" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 1.5rem' }}>
+          
+          {/* Section 1: Semuanya Bisa Ikut */}
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'row', 
+            flexWrap: 'wrap', 
+            alignItems: 'center', 
+            gap: '4rem', 
+            marginBottom: '8rem'
+          }}>
+            <div style={{ flex: '1 1 400px' }}>
+              <div style={{ 
+                width: '100%', 
+                height: '400px', 
+                borderRadius: '24px', 
+                overflow: 'hidden',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+                position: 'relative',
+                backgroundColor: '#f3f4f6'
+              }}>
+                {randomImages[0] && (
+                  <img 
+                    src={randomImages[0]} 
+                    alt="Semuanya Bisa Ikut" 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                )}
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.3))' }}></div>
+              </div>
+            </div>
+            <div style={{ flex: '1 1 400px' }}>
+              <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>FOR EVERYONE</span>
+              <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 1.1, marginBottom: '2rem', color: '#111827' }}>
+                SEMUANYA BISA<br/><span style={{ color: '#E8492B' }}>IKUT!</span>
+              </h2>
+              <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
+                Dari notaris hingga masyarakat umum, dari pejalan santai hingga pelari kompetitif—acara ini terbuka untuk semua orang yang ingin bergerak lebih sehat dan lebih seru!
+              </p>
+            </div>
+          </div>
+
+          {/* Section 2: Mengenal Profesi Notaris */}
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'row-reverse', 
+            flexWrap: 'wrap', 
+            alignItems: 'center', 
+            gap: '4rem', 
+            marginBottom: '8rem'
+          }}>
+            <div style={{ flex: '1 1 400px' }}>
+              <div style={{ 
+                width: '100%', 
+                height: '400px', 
+                borderRadius: '24px', 
+                overflow: 'hidden',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+                position: 'relative',
+                backgroundColor: '#f3f4f6'
+              }}>
+                {randomImages[1] && (
+                  <img 
+                    src={randomImages[1]} 
+                    alt="Mengenal Profesi Notaris" 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                )}
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.3))' }}></div>
+              </div>
+            </div>
+            <div style={{ flex: '1 1 400px' }}>
+              <span style={{ color: '#8B5CF6', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>INSIGHTFUL</span>
+              <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 1.1, marginBottom: '2rem', color: '#111827' }}>
+                MENGENAL PROFESI<br/><span style={{ color: '#8B5CF6' }}>NOTARIS</span>
+              </h2>
+              <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
+                Bukan sekedar lari, lewat acara ini kami mengajak masyarakat mengenal peran penting notaris dalam ragam aspek hukum lintas generasi.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 3: Sport City & Good Vibes */}
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'row', 
+            flexWrap: 'wrap', 
+            alignItems: 'center', 
+            gap: '4rem', 
+            marginBottom: '4rem'
+          }}>
+            <div style={{ flex: '1 1 400px' }}>
+              <div style={{ 
+                width: '100%', 
+                height: '400px', 
+                borderRadius: '24px', 
+                overflow: 'hidden',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+                position: 'relative',
+                backgroundColor: '#f3f4f6'
+              }}>
+                {randomImages[2] && (
+                  <img 
+                    src={randomImages[2]} 
+                    alt="Sport City & Good Vibes" 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                )}
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.3))' }}></div>
+              </div>
+            </div>
+            <div style={{ flex: '1 1 400px' }}>
+              <span style={{ color: '#10B981', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>BEKASI FUTURE</span>
+              <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 1.1, marginBottom: '2rem', color: '#111827' }}>
+                SPORT CITY<br/><span style={{ color: '#10B981' }}>& GOOD VIBES!</span>
+              </h2>
+              <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
+                Dengan semangat menjadikan Kota Bekasi sebagai The Future of Sports City, kami menghadirkan event olahraga yang dikemas dengan hiburan seru, termasuk live music di Race Village setelah lari!
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      {/* Location Section */}
+      <div style={{ backgroundColor: '#F9FAFB', padding: '6rem 1.5rem' }}>
+        <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div className="text-center mb-12">
+            <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>VENUE</span>
+            <h2 style={{ fontSize: '3rem', fontWeight: 900, color: '#111827', marginBottom: '1.5rem' }}>LOKASI ACARA</h2>
+            <p style={{ fontSize: '1.25rem', color: '#4B5563', maxWidth: '700px', margin: '0 auto' }}>
+              Summarecon Mall Bekasi — Titik kumpul energi dan semangat Notarace 2026.
+            </p>
+          </div>
+          
+          <div style={{ 
+            width: '100%', 
+            height: '500px', 
+            borderRadius: '32px', 
+            overflow: 'hidden', 
+            boxShadow: '0 20px 50px rgba(0,0,0,0.1)',
+            backgroundColor: '#e5e7eb',
+            position: 'relative'
+          }}>
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.2860575070627!2d107.00070489999999!3d-6.225963999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698c71cf814d97%3A0xd22a5d56809f070a!2sSummarecon%20Mall%20Bekasi!5e0!3m2!1sen!2sid!4v1777219738149!5m2!1sen!2sid" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen={true} 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Gmap Notarace Location"
+            ></iframe>
+          </div>
+          
+          <div style={{ marginTop: '3rem', textAlign: 'center' }}>
+            <a 
+              href="https://maps.app.goo.gl/zvWDm4oMiugKg3rb6" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="btn" 
+              style={{ 
+                display: 'inline-block',
+                background: 'white', 
+                color: '#E8492B', 
+                border: '2px solid #E8492B', 
+                padding: '1rem 2.5rem',
+                borderRadius: '9999px',
+                fontWeight: 700,
+                textDecoration: 'none',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              BUKA DI GOOGLE MAPS
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Contact Section */}
+      <div style={{ padding: '2rem 1.5rem 6rem' }}>
+        <div className="container" style={{ 
+          maxWidth: '1100px', 
+          margin: '0 auto', 
+          height: '600px', 
+          borderRadius: '48px', 
+          overflow: 'hidden', 
+          position: 'relative',
+          boxShadow: '0 30px 60px rgba(0,0,0,0.2)'
+        }}>
+          {/* Background Image */}
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundImage: `url(${randomImages[3] || 'https://photos.gotag.me/uploads/medium_SH_5_3604_2ff9d979da.jpg'})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            zIndex: 0
+          }}></div>
+          
+          {/* Dark Gradient Overlay */}
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+            background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
+            zIndex: 1
+          }}></div>
+
+          <div style={{ 
+            position: 'relative', 
+            zIndex: 2, 
+            height: '100%', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            justifyContent: 'flex-end', 
+            padding: '4rem',
+            textAlign: 'center',
+            color: 'white'
+          }}>
+            <p style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '3rem', maxWidth: '800px', margin: '0 auto 4rem', lineHeight: 1.4 }}>
+              Mau tanya soal race kit, rute lari, atau hal-hal seru lainnya? Tim kami siap bantu!
+            </p>
+
+            <div style={{ marginBottom: '3rem' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>EMAIL</h3>
+              <a href="mailto:info@notarace.id" style={{ fontSize: '2.5rem', fontWeight: 900, color: 'white', textDecoration: 'none' }}>info@notarace.id</a>
+            </div>
+
+            <div>
+              <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>INSTAGRAM</h3>
+              <a href="https://instagram.com/notarace.id" target="_blank" rel="noreferrer" style={{ fontSize: '2.5rem', fontWeight: 900, color: 'white', textDecoration: 'none' }}>@notarace.id</a>
+            </div>
+          </div>
+        </div>
+      </div>
       
-      <footer style={{ background: '#F9FAFB', padding: '4rem 2rem', textAlign: 'center', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-        <h3 className="text-2xl font-bold text-accent mb-4">Notarace 2026</h3>
-        <p className="text-muted mb-8">The premium race experience.</p>
-        <div style={{ height: '1px', background: 'rgba(0,0,0,0.1)', maxWidth: '400px', margin: '0 auto 2rem' }}></div>
+      <footer style={{ background: '#F9FAFB', padding: '6rem 2rem', textAlign: 'center', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+        <h3 className="text-3xl font-black text-accent mb-4" style={{ letterSpacing: '2px' }}>NOTARACE 2026</h3>
+        <p className="text-lg text-muted mb-8 font-medium">The premium race experience.</p>
+        <div style={{ height: '2px', background: 'linear-gradient(90deg, transparent, #E8492B, transparent)', maxWidth: '600px', margin: '0 auto 3rem' }}></div>
+        <div className="flex justify-center gap-8 mb-8 flex-wrap">
+          <a href="#" style={{ color: '#4B5563', textDecoration: 'none', fontWeight: 600 }}>Home</a>
+          <a href="#" style={{ color: '#4B5563', textDecoration: 'none', fontWeight: 600 }}>Registration</a>
+          <a href="#" style={{ color: '#4B5563', textDecoration: 'none', fontWeight: 600 }}>Race Info</a>
+          <a href="#" style={{ color: '#4B5563', textDecoration: 'none', fontWeight: 600 }}>Contact</a>
+        </div>
         <p className="text-muted">© 2026 Notarace. All rights reserved.</p>
         <p className="text-sm text-muted mt-2">Contact: support@notarace.com | Instagram: @notarace</p>
       </footer>

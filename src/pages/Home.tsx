@@ -30,7 +30,7 @@ export const Home: React.FC = () => {
   const [randomImages, setRandomImages] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch('/data.json')
+    fetch('https://raw.githubusercontent.com/PT-Pramers-Sejati-Indah/notarace/refs/heads/main/public/data.json')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {

@@ -18,7 +18,7 @@ export const ImageViewerPage = () => {
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const response = await fetch('/data.json');
+        const response = await fetch('https://raw.githubusercontent.com/PT-Pramers-Sejati-Indah/notarace/refs/heads/main/public/data.json');
         const data = await response.json();
         setAllPhotos(data);
       } catch (error) {

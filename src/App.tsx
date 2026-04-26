@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { AuthPage } from './pages/AuthPage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -7,6 +7,7 @@ import { OrderSummaryPage } from './pages/OrderSummaryPage';
 import { PaymentPage } from './pages/PaymentPage';
 import { ResultsPage } from './pages/ResultsPage';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { ImageViewerPage } from './pages/ImageViewerPage';
 import { FileSignature, User } from 'lucide-react';
 import { featureFlags } from './utils/featureFlags';
 
@@ -40,15 +41,16 @@ const Navbar = () => {
         <FileSignature className="text-accent" size={28} />
         Notarace<span className="text-accent">2026</span>
       </Link>
-      
+
       <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        {isMenuOpen ? <span style={{fontSize: '24px'}}>✕</span> : <span style={{fontSize: '24px'}}>☰</span>}
+        {isMenuOpen ? <span style={{ fontSize: '24px' }}>✕</span> : <span style={{ fontSize: '24px' }}>☰</span>}
       </button>
 
       <div className={`navbar-links ${isMenuOpen ? 'open' : ''}`}>
         <Link to="/" className="font-medium hover:text-accent" onClick={closeMenu}>Home</Link>
         {featureFlags.results && <Link to="/results" className="font-medium hover:text-accent" onClick={closeMenu}>Hasil Lomba</Link>}
-        
+        {user && featureFlags.photos && <Link to="/photos" className="font-medium hover:text-accent" onClick={closeMenu}>Lihat Foto</Link>}
+
         {featureFlags.auth && (
           user ? (
             <div className="flex items-center gap-4 user-actions">
@@ -70,6 +72,9 @@ const Navbar = () => {
 };
 
 function App() {
+  const userStr = localStorage.getItem('user');
+  const user = userStr ? JSON.parse(userStr) : null;
+
   return (
     <Router>
       <ScrollToTop />
@@ -81,6 +86,7 @@ function App() {
         {featureFlags.purchase && <Route path="/buy/:category" element={<OrderSummaryPage />} />}
         {featureFlags.purchase && <Route path="/payment" element={<PaymentPage />} />}
         {featureFlags.results && <Route path="/results" element={<ResultsPage />} />}
+        {featureFlags.photos && <Route path="/photos" element={<ImageViewerPage />} />}
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </Router>

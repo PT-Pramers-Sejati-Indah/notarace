@@ -89,30 +89,30 @@ export const Home: React.FC = () => {
             OFFICIAL RUNNING EVENT 2026
           </div>
 
-          <h1 className="hero-title text-5xl md:text-8xl font-extrabold mb-4 text-white" style={{ textShadow: '0 4px 15px rgba(0,0,0,0.3)', letterSpacing: '2px' }}>
+          <h1 className="hero-title text-5xl md:text-8xl font-extrabold mb-8 text-white" style={{ color: 'white', textShadow: '0 4px 15px rgba(0,0,0,0.3)', letterSpacing: '4px' }}>
             NOTARACE
           </h1>
 
-          <p className="hero-subtitle text-xl md:text-2xl mb-12 text-white font-medium" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+          <p className="hero-subtitle text-xl md:text-2xl mb-16 text-white font-medium" style={{ color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
             The premium race experience. Trust the process, run the distance.
           </p>
 
-          <div className="flex justify-center gap-4 md:gap-6 mb-12 flex-wrap">
-            <div className="text-center" style={{ background: 'white', borderRadius: '16px', padding: '1.5rem 1rem', width: '120px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+          <div className="flex justify-center gap-6 md:gap-10 mb-16 flex-wrap">
+            <div className="text-center" style={{ background: 'white', borderRadius: '24px', padding: '2rem 1.5rem', width: '140px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
               <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{String(timeLeft.d).padStart(3, '0')}</div>
-              <div className="text-sm font-bold capitalize" style={{ color: '#374151' }}>Days</div>
+              <div className="text-sm font-bold capitalize" style={{ color: '#374151', letterSpacing: '1px' }}>Days</div>
             </div>
-            <div className="text-center" style={{ background: 'white', borderRadius: '16px', padding: '1.5rem 1rem', width: '120px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+            <div className="text-center" style={{ background: 'white', borderRadius: '24px', padding: '2rem 1.5rem', width: '140px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
               <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{timeLeft.h}</div>
-              <div className="text-sm font-bold capitalize" style={{ color: '#374151' }}>Hours</div>
+              <div className="text-sm font-bold capitalize" style={{ color: '#374151', letterSpacing: '1px' }}>Hours</div>
             </div>
-            <div className="text-center" style={{ background: 'white', borderRadius: '16px', padding: '1.5rem 1rem', width: '120px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+            <div className="text-center" style={{ background: 'white', borderRadius: '24px', padding: '2rem 1.5rem', width: '140px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
               <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{timeLeft.m}</div>
-              <div className="text-sm font-bold capitalize" style={{ color: '#374151' }}>Mins</div>
+              <div className="text-sm font-bold capitalize" style={{ color: '#374151', letterSpacing: '1px' }}>Mins</div>
             </div>
-            <div className="text-center" style={{ background: 'white', borderRadius: '16px', padding: '1.5rem 1rem', width: '120px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+            <div className="text-center" style={{ background: 'white', borderRadius: '24px', padding: '2rem 1.5rem', width: '140px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
               <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{timeLeft.s}</div>
-              <div className="text-sm font-bold capitalize" style={{ color: '#374151' }}>Secs</div>
+              <div className="text-sm font-bold capitalize" style={{ color: '#374151', letterSpacing: '1px' }}>Secs</div>
             </div>
           </div>
 
@@ -123,9 +123,9 @@ export const Home: React.FC = () => {
       </div>
 
       {/* Tickets Section */}
-      <div className="container" style={{ padding: '2rem 1.5rem 6rem', flex: 1, maxWidth: '1000px' }}>
+      <div className="container" style={{ padding: '4rem 1.5rem 8rem', flex: 1, maxWidth: '1100px' }}>
         
-        <div className="flex flex-col gap-8 justify-center animate-fade-in mt-8">
+        <div className="flex flex-col gap-12 justify-center animate-fade-in mt-12">
           
           {/* 2.5K Ticket */}
           <div style={{ display: 'flex', width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', flexWrap: 'wrap', backgroundColor: 'white' }}>

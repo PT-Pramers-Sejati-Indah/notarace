@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Camera } from 'lucide-react';
 import { featureFlags } from '../utils/featureFlags';
 import heroRunnersImg from '../assets/hero-runners.png';
@@ -44,7 +44,7 @@ export const Home: React.FC = () => {
   const handleBuyTicket = (category: string) => {
     if (!featureFlags.purchase) return;
     const user = localStorage.getItem('user');
-    if (!user) {
+    if (featureFlags.auth && !user) {
       localStorage.setItem('redirectAfterLogin', `/buy/${category}`);
       navigate('/auth');
     } else {
@@ -130,9 +130,9 @@ export const Home: React.FC = () => {
             </div>
           </div>
 
-          <a href="https://gotag.me" target="_blank" rel="noreferrer" className="btn flex items-center justify-center gap-2" style={{ background: 'white', color: '#991B1B', padding: '1rem 3rem', fontSize: '1.25rem', borderRadius: '9999px', fontWeight: 700, textDecoration: 'none', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+          <Link to="/photos" className="btn flex items-center justify-center gap-2" style={{ background: 'white', color: '#991B1B', padding: '1rem 3rem', fontSize: '1.25rem', borderRadius: '9999px', fontWeight: 700, textDecoration: 'none', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
             <Camera size={24} /> Cari Foto
-          </a>
+          </Link>
         </div>
       </div>
 

@@ -6,7 +6,6 @@ import { ProfilePage } from './pages/ProfilePage';
 import { OrderSummaryPage } from './pages/OrderSummaryPage';
 import { PaymentPage } from './pages/PaymentPage';
 import { ResultsPage } from './pages/ResultsPage';
-import { AdminDashboard } from './pages/AdminDashboard';
 import { ImageViewerPage } from './pages/ImageViewerPage';
 import { FileSignature, User } from 'lucide-react';
 import { featureFlags } from './utils/featureFlags';
@@ -49,7 +48,7 @@ const Navbar = () => {
       <div className={`navbar-links ${isMenuOpen ? 'open' : ''}`}>
         <Link to="/" className="font-medium hover:text-accent" onClick={closeMenu}>Home</Link>
         {featureFlags.results && <Link to="/results" className="font-medium hover:text-accent" onClick={closeMenu}>Hasil Lomba</Link>}
-        {user && featureFlags.photos && <Link to="/photos" className="font-medium hover:text-accent" onClick={closeMenu}>Lihat Foto</Link>}
+        {featureFlags.photos && <Link to="/photos" className="font-medium hover:text-accent" onClick={closeMenu}>Lihat Foto</Link>}
 
         {featureFlags.auth && (
           user ? (
@@ -84,7 +83,6 @@ function App() {
         {featureFlags.purchase && <Route path="/payment" element={<PaymentPage />} />}
         {featureFlags.results && <Route path="/results" element={<ResultsPage />} />}
         {featureFlags.photos && <Route path="/photos" element={<ImageViewerPage />} />}
-        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );

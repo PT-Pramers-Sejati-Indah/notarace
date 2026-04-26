@@ -35,7 +35,7 @@ export const Home: React.FC = () => {
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
           const shuffled = [...data].sort(() => 0.5 - Math.random());
-          setRandomImages(shuffled.slice(0, 4).map(item => item.high_image_url));
+          setRandomImages(shuffled.slice(0, 10).map(item => item.high_image_url));
         }
       })
       .catch(err => console.error('Error loading data.json:', err));
@@ -373,6 +373,102 @@ export const Home: React.FC = () => {
             </div>
           </div>
 
+        </div>
+      </div>
+
+      {/* Sponsors Section */}
+      <div style={{ padding: '6rem 1.5rem', backgroundColor: 'white' }}>
+        <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div className="text-center mb-16">
+            <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>PARTNERSHIP</span>
+            <h2 style={{ fontSize: '3rem', fontWeight: 900, color: '#111827', marginBottom: '1.5rem' }}>OFFICIAL SPONSORS</h2>
+            <p style={{ fontSize: '1.25rem', color: '#4B5563', maxWidth: '700px', margin: '0 auto' }}>
+              Didukung oleh brand ternama yang berkomitmen mendukung gaya hidup sehat dan prestasi olahraga.
+            </p>
+          </div>
+
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+            gap: '3rem' 
+          }}>
+            {[
+              { name: 'Ikatan Notaris Indonesia', desc: 'Organisasi profesi tunggal bagi seluruh Notaris di Indonesia yang menjunjung tinggi hukum.', profile: 'https://www.ikatannotarisindonesia.id/beranda', social: 'https://instagram.com/ikatannotarisindonesia' },
+              { name: 'Elite Gear', desc: 'Brand apparel olahraga premium dengan teknologi kain terbaru.', profile: '#', social: '#' },
+              { name: 'HealthTrack', desc: 'Platform kesehatan digital terpadu untuk monitoring performa lari.', profile: '#', social: '#' },
+              { name: 'Summit Water', desc: 'Air mineral murni dari sumber pegunungan untuk kesegaran alami.', profile: '#', social: '#' }
+            ].map((sponsor, index) => (
+              <div key={index} style={{ 
+                background: '#F9FAFB', 
+                padding: '3rem 2rem', 
+                borderRadius: '32px', 
+                textAlign: 'center',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}>
+                <div>
+                  <div style={{ 
+                    width: '140px', 
+                    height: '140px', 
+                    borderRadius: '24px', 
+                    overflow: 'hidden', 
+                    margin: '0 auto 2rem',
+                    backgroundColor: 'white',
+                    boxShadow: '0 8px 20px rgba(0,0,0,0.1)'
+                  }}>
+                    {randomImages[4 + index] && (
+                      <img 
+                        src={randomImages[4 + index]} 
+                        alt={sponsor.name} 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    )}
+                  </div>
+                  <h4 style={{ fontSize: '1.75rem', fontWeight: 900, color: '#111827', marginBottom: '1rem' }}>{sponsor.name}</h4>
+                  <p style={{ color: '#6B7280', fontSize: '1.125rem', lineHeight: 1.6, marginBottom: '2.5rem' }}>{sponsor.desc}</p>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'row', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <a 
+                    href={sponsor.profile} 
+                    style={{ 
+                      background: '#111827', 
+                      color: 'white', 
+                      padding: '0.5rem 1.25rem', 
+                      borderRadius: '9999px', 
+                      fontWeight: 700, 
+                      textDecoration: 'none',
+                      fontSize: '0.75rem',
+                      transition: 'opacity 0.2s',
+                      letterSpacing: '1px'
+                    }}
+                  >
+                    PROFILE
+                  </a>
+                  <a 
+                    href={sponsor.social} 
+                    style={{ 
+                      background: 'white', 
+                      color: '#111827', 
+                      padding: '0.5rem 1.25rem', 
+                      borderRadius: '9999px', 
+                      fontWeight: 700, 
+                      textDecoration: 'none',
+                      fontSize: '0.75rem',
+                      border: '1px solid #E5E7EB',
+                      transition: 'background 0.2s',
+                      letterSpacing: '1px'
+                    }}
+                  >
+                    INSTAGRAM
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

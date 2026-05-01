@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Camera } from 'lucide-react';
-import { featureFlags } from '../utils/featureFlags';
+import { Link } from 'react-router-dom';
+import { Camera, Calendar, MapPin, ChevronRight } from 'lucide-react';
 import heroRunnersImg from '../assets/hero-runners.png';
+import {
+  EVENT_META,
+  PRICING_NOTARIS_IDR,
+  RACE_CATEGORY_CARDS,
+  CATEGORY_DETAILS_ROWS,
+  RACE_PACK_ITEMS,
+  FAQ_PLACEHOLDERS,
+  SPONSOR_TIER_PLACEHOLDERS,
+} from '../data/eventInfo';
+
+const formatIdr = (n: number) =>
+  `Rp.${n.toLocaleString('id-ID')}`;
 
 export const Home: React.FC = () => {
-  const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
 
   useEffect(() => {
-    const targetDate = new Date('2026-11-12T05:00:00').getTime();
+    const targetDate = new Date(EVENT_META.raceStartISO).getTime();
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = targetDate - now;
@@ -41,242 +51,144 @@ export const Home: React.FC = () => {
       .catch(err => console.error('Error loading data.json:', err));
   }, []);
 
-  const handleBuyTicket = (category: string) => {
-    if (!featureFlags.purchase) return;
-    const user = localStorage.getItem('user');
-    if (featureFlags.auth && !user) {
-      localStorage.setItem('redirectAfterLogin', `/buy/${category}`);
-      navigate('/auth');
-    } else {
-      navigate(`/buy/${category}`);
-    }
+  const scrollToSection = (id: string) => () => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+
+  const ticketHref = EVENT_META.ticketRegistrationUrl.trim();
+  const ticketLinkReady = /^https?:\/\//i.test(ticketHref);
 
   return (
     <div className="page-wrapper" style={{ padding: 0 }}>
-      {/* Top Banner */}
-      <div style={{
-        background: 'linear-gradient(90deg, #E8492B, #9C27B0, #38bdf8)',
-        padding: '0.5rem',
-        textAlign: 'center',
-        color: 'white',
-        fontWeight: 800,
-        letterSpacing: '2px',
-        zIndex: 10,
-        fontSize: '0.9rem'
-      }}>
-        13 JULI 2025 • KOTA SUMMARECON BEKASI
+      <a href="#main-content" className="skip-link">
+        Lewati ke konten utama
+      </a>
+
+      <div className="lp-top-banner" role="status">
+        {EVENT_META.topBanner}
       </div>
 
-      {/* Hero Section */}
-      <div 
-        style={{
-          position: 'relative',
-          padding: '6rem 1.5rem',
-          minHeight: '85vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden'
-        }}
-      >
-        {/* Full Color Background Image */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundImage: `url(${heroRunnersImg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          zIndex: 0
-        }}></div>
-        
-        {/* Vibrant Red to Orange Gradient Overlay */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.85) 0%, rgba(245, 158, 11, 0.85) 100%)',
-          zIndex: 1
-        }}></div>
+      <header id="informasi-event" className="lp-hero animate-fade-in" aria-labelledby="hero-heading">
+        <div
+          className="lp-hero__bg-img"
+          style={{ backgroundImage: `url(${heroRunnersImg})` }}
+          aria-hidden
+        />
+        <div className="lp-hero__overlay" aria-hidden />
 
-        <div className="text-center animate-fade-in flex flex-col items-center" style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
-          
-          <div style={{ display: 'inline-block', padding: '0.5rem 1.5rem', border: '2px solid white', color: 'white', borderRadius: 'var(--radius-full)', fontWeight: 700, marginBottom: '2rem', backdropFilter: 'blur(5px)', letterSpacing: '1px' }}>
-            OFFICIAL RUNNING EVENT 2026
+        <div className="lp-hero__inner">
+          <div className="lp-hero__grid">
+            <div className="lp-hero__copy">
+              <p className="lp-eyebrow lp-eyebrow--on-dark">Informasi event</p>
+              <h1 id="hero-heading" className="lp-hero__title">
+                NOTARACE <span className="lp-hero__year">2026</span>
+              </h1>
+              <p className="lp-hero__lead">{EVENT_META.taglinePlaceholder}</p>
+              <p className="lp-hero__meta">{EVENT_META.story} • {EVENT_META.edition}</p>
+              <div className="lp-hero__actions">
+                <a
+                  href={ticketLinkReady ? ticketHref : '#'}
+                  target={ticketLinkReady ? '_blank' : undefined}
+                  rel={ticketLinkReady ? 'noopener noreferrer' : undefined}
+                  onClick={(e) => {
+                    if (!ticketLinkReady) e.preventDefault();
+                  }}
+                  className="lp-btn lp-btn--primary"
+                  aria-disabled={!ticketLinkReady}
+                >
+                  Daftar sekarang
+                  <ChevronRight size={20} strokeWidth={2.5} aria-hidden />
+                </a>
+                <Link to="/photos" className="lp-btn lp-btn--ghost">
+                  <Camera size={22} strokeWidth={2} aria-hidden />
+                  Cari foto
+                </Link>
+              </div>
+            </div>
+
+            <div className="lp-hero__aside">
+              <div className="lp-glass-card">
+                <div className="lp-glass-card__row">
+                  <Calendar size={22} aria-hidden />
+                  <div>
+                    <strong style={{ display: 'block', color: '#fff', marginBottom: '0.2rem' }}>Tanggal & waktu</strong>
+                    {EVENT_META.raceDateLabel}
+                    <span style={{ opacity: 0.85 }}> • {EVENT_META.raceTimePlaceholder}</span>
+                  </div>
+                </div>
+                <div className="lp-glass-card__row">
+                  <MapPin size={22} aria-hidden />
+                  <div>
+                    <span className="lp-glass-card__accent">{EVENT_META.venueShort}</span>
+                    <div style={{ marginTop: '0.35rem', fontSize: '0.88rem', opacity: 0.9 }}>
+                      {EVENT_META.venueAddress}
+                    </div>
+                  </div>
+                </div>
+                <a
+                  href={EVENT_META.googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="lp-glass-card__maps"
+                >
+                  Buka di Google Maps
+                </a>
+              </div>
+
+              <div className="lp-countdown" aria-live="polite" aria-label="Hitung mundur menuju race day">
+                <div className="lp-countdown__cell">
+                  <div className="lp-countdown__value">{String(timeLeft.d).padStart(3, '0')}</div>
+                  <div className="lp-countdown__label">Hari</div>
+                </div>
+                <div className="lp-countdown__cell">
+                  <div className="lp-countdown__value">{String(timeLeft.h).padStart(2, '0')}</div>
+                  <div className="lp-countdown__label">Jam</div>
+                </div>
+                <div className="lp-countdown__cell">
+                  <div className="lp-countdown__value">{String(timeLeft.m).padStart(2, '0')}</div>
+                  <div className="lp-countdown__label">Menit</div>
+                </div>
+                <div className="lp-countdown__cell">
+                  <div className="lp-countdown__value">{String(timeLeft.s).padStart(2, '0')}</div>
+                  <div className="lp-countdown__label">Detik</div>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <h1 className="hero-title text-5xl md:text-8xl font-extrabold mb-8 text-white" style={{ color: 'white', textShadow: '0 4px 15px rgba(0,0,0,0.3)', letterSpacing: '4px' }}>
-            NOTARACE
-          </h1>
-
-          <p className="hero-subtitle text-xl md:text-2xl mb-16 text-white font-medium" style={{ color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
-            The premium race experience. Trust the process, run the distance.
-          </p>
-
-          <div className="flex justify-center gap-6 md:gap-10 mb-16 flex-wrap">
-            <div className="text-center" style={{ background: 'white', borderRadius: '24px', padding: '2rem 1.5rem', width: '140px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
-              <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{String(timeLeft.d).padStart(3, '0')}</div>
-              <div className="text-sm font-bold capitalize" style={{ color: '#374151', letterSpacing: '1px' }}>Days</div>
-            </div>
-            <div className="text-center" style={{ background: 'white', borderRadius: '24px', padding: '2rem 1.5rem', width: '140px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
-              <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{timeLeft.h}</div>
-              <div className="text-sm font-bold capitalize" style={{ color: '#374151', letterSpacing: '1px' }}>Hours</div>
-            </div>
-            <div className="text-center" style={{ background: 'white', borderRadius: '24px', padding: '2rem 1.5rem', width: '140px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
-              <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{timeLeft.m}</div>
-              <div className="text-sm font-bold capitalize" style={{ color: '#374151', letterSpacing: '1px' }}>Mins</div>
-            </div>
-            <div className="text-center" style={{ background: 'white', borderRadius: '24px', padding: '2rem 1.5rem', width: '140px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
-              <div className="text-5xl font-extrabold mb-2" style={{ color: '#111827' }}>{timeLeft.s}</div>
-              <div className="text-sm font-bold capitalize" style={{ color: '#374151', letterSpacing: '1px' }}>Secs</div>
-            </div>
-          </div>
-
-          <Link to="/photos" className="btn flex items-center justify-center gap-2" style={{ background: 'white', color: '#991B1B', padding: '1rem 3rem', fontSize: '1.25rem', borderRadius: '9999px', fontWeight: 700, textDecoration: 'none', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
-            <Camera size={24} /> Cari Foto
-          </Link>
         </div>
-      </div>
+      </header>
 
-      {/* Tickets Section */}
-      <div className="container" style={{ padding: '4rem 1.5rem 8rem', flex: 1, maxWidth: '1100px' }}>
-        
-        <div className="flex flex-col gap-12 justify-center animate-fade-in mt-12">
-          
-          {/* 2.5K Ticket */}
-          <div style={{ display: 'flex', width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', flexWrap: 'wrap', backgroundColor: 'white' }}>
-            <div style={{ flex: '1 1 250px', background: 'linear-gradient(135deg, #A855F7, #EC4899)', padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-              <div style={{ position: 'absolute', left: '10px', top: '10px', bottom: '10px', width: '30px', writingMode: 'vertical-rl', transform: 'rotate(180deg)', color: 'rgba(255,255,255,0.3)', fontSize: '2rem', fontWeight: 800, letterSpacing: '4px', textAlign: 'center' }}>
-                NOTARACE
-              </div>
-              <h3 className="text-5xl md:text-6xl font-extrabold text-white text-center ml-8" style={{ textShadow: '3px 3px 0 #E8492B, 6px 6px 0 rgba(0,0,0,0.1)' }}>
-                2.5K<br/>WALK
-              </h3>
-            </div>
-            <div style={{ flex: '1 1 200px', background: '#FFF5F1', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <div className="mb-4">
-                <p className="text-sm font-bold text-accent">Early Bird</p>
-                <p className="text-xl font-extrabold text-accent">Rp.195.000/ticket</p>
-              </div>
-              <div className="mb-4">
-                <p className="text-sm font-bold text-accent">Regular</p>
-                <p className="text-xl font-extrabold text-accent">Rp.229.000/ticket</p>
-              </div>
-              <div>
-                <p className="text-sm font-bold text-accent">Termasuk Race Pack:</p>
-                <p className="text-sm font-bold text-accent">Jersey, medal, sport goodies</p>
-              </div>
-            </div>
-            <div style={{ flex: '1 1 250px', borderLeft: '4px solid #F5A623', borderTop: '4px solid #F5A623', borderBottom: '4px solid #F5A623', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
-              <p className="text-sm font-bold text-accent mb-2">Start from</p>
-              <p className="text-3xl font-extrabold text-accent mb-6">Rp.195.000<span className="text-lg">/ticket</span></p>
-              {featureFlags.purchase && (
-                <button onClick={() => handleBuyTicket('2.5K')} className="btn" style={{ background: 'white', color: '#E8492B', border: '2px solid #E8492B', padding: '0.75rem 1.5rem' }}>
-                  DAFTAR KLIK DI SINI
-                </button>
-              )}
-            </div>
-          </div>
+      <main id="main-content">
 
-          {/* 5K Ticket */}
-          <div style={{ display: 'flex', width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', flexWrap: 'wrap', backgroundColor: 'white' }}>
-            <div style={{ flex: '1 1 250px', background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)', padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-              <div style={{ position: 'absolute', left: '10px', top: '10px', bottom: '10px', width: '30px', writingMode: 'vertical-rl', transform: 'rotate(180deg)', color: 'rgba(255,255,255,0.3)', fontSize: '2rem', fontWeight: 800, letterSpacing: '4px', textAlign: 'center' }}>
-                NOTARACE
-              </div>
-              <h3 className="text-5xl md:text-6xl font-extrabold text-white text-center ml-8" style={{ textShadow: '3px 3px 0 #1E3A8A, 6px 6px 0 rgba(0,0,0,0.1)' }}>
-                5K<br/>RUN
-              </h3>
-            </div>
-            <div style={{ flex: '1 1 200px', background: '#EFF6FF', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <div className="mb-4">
-                <p className="text-sm font-bold text-blue-600">Early Bird</p>
-                <p className="text-xl font-extrabold text-blue-600">Rp.238.000/ticket</p>
-              </div>
-              <div className="mb-4">
-                <p className="text-sm font-bold text-blue-600">Regular</p>
-                <p className="text-xl font-extrabold text-blue-600">Rp.279.000/ticket</p>
-              </div>
-              <div>
-                <p className="text-sm font-bold text-blue-600">Termasuk Race Pack:</p>
-                <p className="text-sm font-bold text-blue-600">Jersey, medal, BIB, timing chip</p>
-              </div>
-            </div>
-            <div style={{ flex: '1 1 250px', borderLeft: '4px solid #3B82F6', borderTop: '4px solid #3B82F6', borderBottom: '4px solid #3B82F6', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
-              <p className="text-sm font-bold text-blue-600 mb-2">Start from</p>
-              <p className="text-3xl font-extrabold text-blue-600 mb-6">Rp.238.000<span className="text-lg">/ticket</span></p>
-              {featureFlags.purchase && (
-                <button onClick={() => handleBuyTicket('5K')} className="btn" style={{ background: 'white', color: '#3B82F6', border: '2px solid #3B82F6', padding: '0.75rem 1.5rem' }}>
-                  DAFTAR KLIK DI SINI
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* 10K Ticket */}
-          <div style={{ display: 'flex', width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', flexWrap: 'wrap', backgroundColor: 'white' }}>
-            <div style={{ flex: '1 1 250px', background: 'linear-gradient(135deg, #10B981, #059669)', padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-              <div style={{ position: 'absolute', left: '10px', top: '10px', bottom: '10px', width: '30px', writingMode: 'vertical-rl', transform: 'rotate(180deg)', color: 'rgba(255,255,255,0.3)', fontSize: '2rem', fontWeight: 800, letterSpacing: '4px', textAlign: 'center' }}>
-                NOTARACE
-              </div>
-              <h3 className="text-5xl md:text-6xl font-extrabold text-white text-center ml-8" style={{ textShadow: '3px 3px 0 #064E3B, 6px 6px 0 rgba(0,0,0,0.1)' }}>
-                10K<br/>RUN
-              </h3>
-            </div>
-            <div style={{ flex: '1 1 200px', background: '#ECFDF5', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <div className="mb-4">
-                <p className="text-sm font-bold text-emerald-600">Early Bird</p>
-                <p className="text-xl font-extrabold text-emerald-600">Rp.350.000/ticket</p>
-              </div>
-              <div className="mb-4">
-                <p className="text-sm font-bold text-emerald-600">Regular</p>
-                <p className="text-xl font-extrabold text-emerald-600">Rp.399.000/ticket</p>
-              </div>
-              <div>
-                <p className="text-sm font-bold text-emerald-600">Termasuk Race Pack:</p>
-                <p className="text-sm font-bold text-emerald-600">Jersey, medal, BIB, timing chip</p>
-              </div>
-            </div>
-            <div style={{ flex: '1 1 250px', borderLeft: '4px solid #10B981', borderTop: '4px solid #10B981', borderBottom: '4px solid #10B981', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
-              <p className="text-sm font-bold text-emerald-600 mb-2">Start from</p>
-              <p className="text-3xl font-extrabold text-emerald-600 mb-6">Rp.350.000<span className="text-lg">/ticket</span></p>
-              {featureFlags.purchase && (
-                <button onClick={() => handleBuyTicket('10K')} className="btn" style={{ background: 'white', color: '#10B981', border: '2px solid #10B981', padding: '0.75rem 1.5rem' }}>
-                  DAFTAR KLIK DI SINI
-                </button>
-              )}
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Info Sections */}
-      <div style={{ backgroundColor: 'white', padding: '4rem 0' }}>
+      {/* Story sections — langsung di bawah hero */}
+      <div style={{ backgroundColor: 'white', padding: 'clamp(3rem, 8vw, 5rem) 0' }}>
         <div className="container" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 1.5rem' }}>
-          
+
           {/* Section 1: Semuanya Bisa Ikut */}
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'row', 
-            flexWrap: 'wrap', 
-            alignItems: 'center', 
-            gap: '4rem', 
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '4rem',
             marginBottom: '8rem'
           }}>
             <div style={{ flex: '1 1 400px' }}>
-              <div style={{ 
-                width: '100%', 
-                height: '400px', 
-                borderRadius: '24px', 
+              <div style={{
+                width: '100%',
+                height: '400px',
+                borderRadius: '24px',
                 overflow: 'hidden',
                 boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
                 position: 'relative',
                 backgroundColor: '#f3f4f6'
               }}>
                 {randomImages[0] && (
-                  <img 
-                    src={randomImages[0]} 
-                    alt="Semuanya Bisa Ikut" 
+                  <img
+                    src={randomImages[0]}
+                    alt="Semuanya Bisa Ikut"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    loading="lazy"
                   />
                 )}
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.3))' }}></div>
@@ -285,7 +197,7 @@ export const Home: React.FC = () => {
             <div style={{ flex: '1 1 400px' }}>
               <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>FOR EVERYONE</span>
               <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 1.1, marginBottom: '2rem', color: '#111827' }}>
-                SEMUANYA BISA<br/><span style={{ color: '#E8492B' }}>IKUT!</span>
+                SEMUANYA BISA<br /><span style={{ color: '#E8492B' }}>IKUT!</span>
               </h2>
               <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
                 Dari notaris hingga masyarakat umum, dari pejalan santai hingga pelari kompetitif—acara ini terbuka untuk semua orang yang ingin bergerak lebih sehat dan lebih seru!
@@ -294,29 +206,30 @@ export const Home: React.FC = () => {
           </div>
 
           {/* Section 2: Mengenal Profesi Notaris */}
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'row-reverse', 
-            flexWrap: 'wrap', 
-            alignItems: 'center', 
-            gap: '4rem', 
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '4rem',
             marginBottom: '8rem'
           }}>
             <div style={{ flex: '1 1 400px' }}>
-              <div style={{ 
-                width: '100%', 
-                height: '400px', 
-                borderRadius: '24px', 
+              <div style={{
+                width: '100%',
+                height: '400px',
+                borderRadius: '24px',
                 overflow: 'hidden',
                 boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
                 position: 'relative',
                 backgroundColor: '#f3f4f6'
               }}>
                 {randomImages[1] && (
-                  <img 
-                    src={randomImages[1]} 
-                    alt="Mengenal Profesi Notaris" 
+                  <img
+                    src={randomImages[1]}
+                    alt="Mengenal Profesi Notaris"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    loading="lazy"
                   />
                 )}
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.3))' }}></div>
@@ -325,7 +238,7 @@ export const Home: React.FC = () => {
             <div style={{ flex: '1 1 400px' }}>
               <span style={{ color: '#8B5CF6', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>INSIGHTFUL</span>
               <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 1.1, marginBottom: '2rem', color: '#111827' }}>
-                MENGENAL PROFESI<br/><span style={{ color: '#8B5CF6' }}>NOTARIS</span>
+                MENGENAL PROFESI<br /><span style={{ color: '#8B5CF6' }}>NOTARIS</span>
               </h2>
               <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
                 Bukan sekedar lari, lewat acara ini kami mengajak masyarakat mengenal peran penting notaris dalam ragam aspek hukum lintas generasi.
@@ -333,43 +246,340 @@ export const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* Section 3: Sport City & Good Vibes */}
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'row', 
-            flexWrap: 'wrap', 
-            alignItems: 'center', 
-            gap: '4rem', 
-            marginBottom: '4rem'
+          {/* Section 3: Eastvara & Good Vibes */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '4rem',
+            marginBottom: 0
           }}>
             <div style={{ flex: '1 1 400px' }}>
-              <div style={{ 
-                width: '100%', 
-                height: '400px', 
-                borderRadius: '24px', 
+              <div style={{
+                width: '100%',
+                height: '400px',
+                borderRadius: '24px',
                 overflow: 'hidden',
                 boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
                 position: 'relative',
                 backgroundColor: '#f3f4f6'
               }}>
                 {randomImages[2] && (
-                  <img 
-                    src={randomImages[2]} 
-                    alt="Sport City & Good Vibes" 
+                  <img
+                    src={randomImages[2]}
+                    alt="Eastvara BSD City — suasana race village"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    loading="lazy"
                   />
                 )}
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.3))' }}></div>
               </div>
             </div>
             <div style={{ flex: '1 1 400px' }}>
-              <span style={{ color: '#10B981', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>BEKASI FUTURE</span>
+              <span style={{ color: '#10B981', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>BSD CITY</span>
               <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 1.1, marginBottom: '2rem', color: '#111827' }}>
-                SPORT CITY<br/><span style={{ color: '#10B981' }}>& GOOD VIBES!</span>
+                EASTVARA<br /><span style={{ color: '#10B981' }}>& GOOD VIBES!</span>
               </h2>
               <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
-                Dengan semangat menjadikan Kota Bekasi sebagai The Future of Sports City, kami menghadirkan event olahraga yang dikemas dengan hiburan seru, termasuk live music di Race Village setelah lari!
+                Race village di Eastvara — BSD City: suasana komunitas lari, musik, dan aktivitas keluarga setelah finis (detail rundown menyusul).
               </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Tickets & registration */}
+      <section className="lp-section" aria-labelledby="pendaftaran-heading">
+      <div className="container" style={{ flex: 1, maxWidth: '1100px' }}>
+        <div id="pendaftaran" className="lp-section-head">
+          <span className="lp-section-eyebrow">Kategori & harga (Notaris)</span>
+          <h2 id="pendaftaran-heading" className="lp-section-title">
+            Pendaftaran & tiket
+          </h2>
+          <p className="lp-section-desc">
+            {EVENT_META.registrationDeadlinePlaceholder}
+          </p>
+        </div>
+
+        <div className="animate-fade-in">
+          <div className="lp-reg-card">
+            <div
+              style={{
+                background: 'linear-gradient(135deg, rgba(232, 73, 43, 0.08) 0%, rgba(245, 166, 35, 0.12) 45%, rgba(16, 185, 129, 0.1) 100%)',
+                padding: '1.75rem 1.25rem 1.35rem',
+                borderBottom: '1px solid rgba(0,0,0,0.06)',
+              }}
+            >
+              <p style={{
+                textAlign: 'center',
+                fontWeight: 800,
+                fontSize: '0.78rem',
+                letterSpacing: '0.18em',
+                color: '#E8492B',
+                marginBottom: '1.1rem',
+              }}>
+                PILIH KATEGORI
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', justifyContent: 'center' }}>
+                {RACE_CATEGORY_CARDS.map((cat) => (
+                  <div
+                    key={cat.key}
+                    style={{
+                      flex: '1 1 150px',
+                      maxWidth: '240px',
+                      minWidth: '130px',
+                      borderRadius: '16px',
+                      padding: '1.1rem 1rem 1.15rem',
+                      background: 'white',
+                      boxShadow: '0 6px 20px rgba(0,0,0,0.07)',
+                      borderTop: `4px solid ${cat.borderHex}`,
+                      textAlign: 'center',
+                    }}
+                  >
+                    <div style={{
+                      fontSize: '0.68rem',
+                      fontWeight: 800,
+                      letterSpacing: '0.12em',
+                      color: '#9CA3AF',
+                      marginBottom: '0.4rem',
+                    }}>
+                      JARAK
+                    </div>
+                    <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#111827', lineHeight: 1.2 }}>
+                      {cat.headline}
+                    </div>
+                    <div style={{ fontSize: '1.05rem', fontWeight: 800, color: cat.accentHex, marginTop: '0.2rem' }}>
+                      {cat.subline}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'stretch' }}>
+              <div style={{
+                flex: '1 1 320px',
+                padding: '1.25rem',
+                background: 'linear-gradient(180deg, #FFFBF7 0%, #FFF5F1 100%)',
+                borderRight: '1px solid rgba(0,0,0,0.06)',
+                display: 'flex',
+                alignItems: 'stretch',
+              }}>
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
+                  borderRadius: '14px',
+                  overflow: 'hidden',
+                  border: '1px solid rgba(232, 73, 43, 0.15)',
+                  background: 'rgba(255,255,255,0.55)',
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    padding: 'clamp(1.1rem, 3vw, 1.85rem) 1rem',
+                    borderBottom: '1px solid rgba(232, 73, 43, 0.12)',
+                  }}>
+                    <p className="font-bold" style={{ color: '#991B1B', marginBottom: '0.45rem', fontSize: 'clamp(0.72rem, 1.9vw, 0.82rem)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                      Early bird
+                    </p>
+                    <p style={{
+                      margin: 0,
+                      fontWeight: 900,
+                      color: '#E8492B',
+                      fontSize: 'clamp(1.35rem, 5vw, 2.25rem)',
+                      lineHeight: 1.15,
+                      wordBreak: 'break-word',
+                    }}>
+                      {formatIdr(PRICING_NOTARIS_IDR.earlyBird)}
+                      <span style={{ fontSize: '0.52em', fontWeight: 800 }}>/tiket</span>
+                    </p>
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    padding: 'clamp(1.1rem, 3vw, 1.85rem) 1rem',
+                  }}>
+                    <p className="font-bold" style={{ color: '#991B1B', marginBottom: '0.45rem', fontSize: 'clamp(0.72rem, 1.9vw, 0.82rem)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                      Normal
+                    </p>
+                    <p style={{
+                      margin: 0,
+                      fontWeight: 900,
+                      color: '#E8492B',
+                      fontSize: 'clamp(1.35rem, 5vw, 2.25rem)',
+                      lineHeight: 1.15,
+                      wordBreak: 'break-word',
+                    }}>
+                      {formatIdr(PRICING_NOTARIS_IDR.normal)}
+                      <span style={{ fontSize: '0.52em', fontWeight: 800 }}>/tiket</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{
+                flex: '1 1 260px',
+                padding: '2rem',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center',
+                background: 'white',
+              }}>
+                <p className="text-sm font-bold mb-1" style={{ color: '#E8492B' }}>Mulai dari (early bird)</p>
+                <p className="text-4xl font-extrabold mb-6" style={{ color: '#111827' }}>
+                  {formatIdr(PRICING_NOTARIS_IDR.earlyBird)}<span className="text-xl font-bold">/tiket</span>
+                </p>
+                <a
+                  href={ticketLinkReady ? ticketHref : '#'}
+                  target={ticketLinkReady ? '_blank' : undefined}
+                  rel={ticketLinkReady ? 'noopener noreferrer' : undefined}
+                  onClick={(e) => {
+                    if (!ticketLinkReady) e.preventDefault();
+                  }}
+                  aria-disabled={!ticketLinkReady}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.35rem',
+                    width: '100%',
+                    maxWidth: '300px',
+                    padding: '0.85rem 1.5rem',
+                    borderRadius: '9999px',
+                    fontWeight: 800,
+                    fontSize: '0.88rem',
+                    letterSpacing: '0.08em',
+                    textDecoration: 'none',
+                    color: 'white',
+                    background: ticketLinkReady
+                      ? 'linear-gradient(135deg, #E8492B 0%, #EA580C 55%, #F97316 100%)'
+                      : 'linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%)',
+                    boxShadow: ticketLinkReady ? '0 10px 28px rgba(232, 73, 43, 0.38)' : 'none',
+                    cursor: ticketLinkReady ? 'pointer' : 'not-allowed',
+                    opacity: ticketLinkReady ? 1 : 0.85,
+                  }}
+                >
+                  DAFTAR SEKARANG
+                  <ChevronRight size={20} strokeWidth={2.5} />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </section>
+
+      {/* Ringkasan informasi resmi */}
+      <div style={{ background: '#F3F4F6', padding: '4rem 1.5rem', borderTop: '1px solid #e5e7eb' }}>
+        <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
+
+          <div id="detail-lomba" style={{ marginBottom: '3.5rem' }}>
+            <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '1rem' }}>DETAIL LOMBA</span>
+            <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#111827', marginBottom: '1rem' }}>Kategori & race pack</h2>
+            <div style={{ overflowX: 'auto', background: 'white', borderRadius: '14px', boxShadow: '0 4px 18px rgba(0,0,0,0.06)' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.95rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #E5E7EB', textAlign: 'left' }}>
+                    <th style={{ padding: '1rem' }}>Kategori</th>
+                    <th style={{ padding: '1rem' }}>Jarak</th>
+                    <th style={{ padding: '1rem' }}>Cut-off time</th>
+                    <th style={{ padding: '1rem' }}>Harga (Notaris)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {CATEGORY_DETAILS_ROWS.map((row) => (
+                    <tr key={row.category} style={{ borderBottom: '1px solid #F3F4F6' }}>
+                      <td style={{ padding: '1rem', fontWeight: 700 }}>{row.category}</td>
+                      <td style={{ padding: '1rem' }}>{row.jarak}</td>
+                      <td style={{ padding: '1rem', color: '#6B7280' }}>{row.cutoff}</td>
+                      <td style={{ padding: '1rem' }}>
+                        {formatIdr(PRICING_NOTARIS_IDR.earlyBird)} early / {formatIdr(PRICING_NOTARIS_IDR.normal)} normal
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginTop: '1.25rem' }}>
+              <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
+                <h3 style={{ fontWeight: 800, marginBottom: '0.35rem', fontSize: '0.95rem' }}>Isi race pack</h3>
+                <p style={{ color: '#4B5563', margin: 0 }}>{RACE_PACK_ITEMS.join(', ')}</p>
+              </div>
+              <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
+                <h3 style={{ fontWeight: 800, marginBottom: '0.35rem', fontSize: '0.95rem' }}>Peta rute / GPX</h3>
+                <p style={{ color: '#4B5563', margin: 0 }}>{EVENT_META.routePlaceholder}</p>
+              </div>
+              <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
+                <h3 style={{ fontWeight: 800, marginBottom: '0.35rem', fontSize: '0.95rem' }}>Ketentuan usia</h3>
+                <p style={{ color: '#4B5563', margin: 0 }}>{EVENT_META.ageRulesPlaceholder}</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="ketentuan-pendaftaran" style={{ marginBottom: '3.5rem' }}>
+            <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '1rem' }}>PENDAFTARAN</span>
+            <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#111827', marginBottom: '1rem' }}>Link, periode harga & kebijakan</h2>
+            <div style={{ background: 'white', padding: '1.5rem', borderRadius: '14px', lineHeight: 1.6, color: '#374151' }}>
+              <p style={{ margin: '0 0 0.75rem' }}>
+                <strong>Link tiket / pendaftaran:</strong>{' '}
+                <a
+                  href={EVENT_META.ticketRegistrationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#E8492B', fontWeight: 700, wordBreak: 'break-all' }}
+                >
+                  {EVENT_META.ticketRegistrationUrl}
+                </a>
+              </p>
+              <p style={{ margin: '0 0 0.75rem' }}>
+                <strong>Harga Notaris (sama untuk 10K, 5K, Fun Walk 2,5K):</strong> early bird {formatIdr(PRICING_NOTARIS_IDR.earlyBird)}
+                {' '}• normal {formatIdr(PRICING_NOTARIS_IDR.normal)} • late {EVENT_META.latePricePlaceholder}
+              </p>
+              <p style={{ margin: '0 0 0.75rem' }}><strong>Batas pendaftaran:</strong> {EVENT_META.registrationDeadlinePlaceholder}</p>
+              <p style={{ margin: 0 }}><strong>Refund & pembatalan:</strong> {EVENT_META.refundPolicyPlaceholder}</p>
+            </div>
+          </div>
+
+          <div id="logistik" style={{ marginBottom: '3.5rem' }}>
+            <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '1rem' }}>LOGISTIK</span>
+            <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#111827', marginBottom: '1rem' }}>Race pack, parkir & start</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
+              <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
+                <h3 style={{ fontWeight: 800, marginBottom: '0.35rem' }}>Pengambilan race pack</h3>
+                <p style={{ color: '#4B5563', margin: 0 }}><strong>{EVENT_META.racePackPickupSummary}</strong> — {EVENT_META.racePackPickupDetail}</p>
+              </div>
+              <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
+                <h3 style={{ fontWeight: 800, marginBottom: '0.35rem' }}>Parkir</h3>
+                <p style={{ color: '#4B5563', margin: 0 }}>{EVENT_META.parkingPlaceholder}</p>
+              </div>
+              <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
+                <h3 style={{ fontWeight: 800, marginBottom: '0.35rem' }}>Titik kumpul & start</h3>
+                <p style={{ color: '#4B5563', margin: 0 }}>{EVENT_META.assemblyPlaceholder}</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="faq">
+            <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '1rem' }}>FAQ</span>
+            <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#111827', marginBottom: '1.25rem' }}>Pertanyaan umum</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {FAQ_PLACEHOLDERS.map((item) => (
+                <details key={item.q} style={{ background: 'white', borderRadius: '12px', padding: '1rem 1.25rem', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
+                  <summary style={{ fontWeight: 800, cursor: 'pointer', color: '#111827' }}>{item.q}</summary>
+                  <p style={{ margin: '0.75rem 0 0', color: '#4B5563', lineHeight: 1.55 }}>{item.a}</p>
+                </details>
+              ))}
             </div>
           </div>
 
@@ -379,95 +589,45 @@ export const Home: React.FC = () => {
       {/* Sponsors Section */}
       <div style={{ padding: '6rem 1.5rem', backgroundColor: 'white' }}>
         <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div className="text-center mb-16">
+          <div id="sponsor" className="text-center mb-16">
             <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>PARTNERSHIP</span>
-            <h2 style={{ fontSize: '3rem', fontWeight: 900, color: '#111827', marginBottom: '1.5rem' }}>OFFICIAL SPONSORS</h2>
+            <h2 style={{ fontSize: '3rem', fontWeight: 900, color: '#111827', marginBottom: '1.5rem' }}>SPONSOR & MITRA</h2>
             <p style={{ fontSize: '1.25rem', color: '#4B5563', maxWidth: '700px', margin: '0 auto' }}>
-              Didukung oleh brand ternama yang berkomitmen mendukung gaya hidup sehat dan prestasi olahraga.
+              Logo sponsor dan nama tier akan ditampilkan di sini setelah finalisasi partnership.
             </p>
           </div>
 
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-            gap: '3rem' 
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: '1.5rem',
           }}>
-            {[
-              { name: 'Ikatan Notaris Indonesia', desc: 'Organisasi profesi tunggal bagi seluruh Notaris di Indonesia yang menjunjung tinggi hukum.', profile: 'https://www.ikatannotarisindonesia.id/beranda', social: 'https://instagram.com/ikatannotarisindonesia' },
-              { name: 'Elite Gear', desc: 'Brand apparel olahraga premium dengan teknologi kain terbaru.', profile: '#', social: '#' },
-              { name: 'HealthTrack', desc: 'Platform kesehatan digital terpadu untuk monitoring performa lari.', profile: '#', social: '#' },
-              { name: 'Summit Water', desc: 'Air mineral murni dari sumber pegunungan untuk kesegaran alami.', profile: '#', social: '#' }
-            ].map((sponsor, index) => (
-              <div key={index} style={{ 
-                background: '#F9FAFB', 
-                padding: '3rem 2rem', 
-                borderRadius: '32px', 
-                textAlign: 'center',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                transition: 'all 0.3s ease',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between'
-              }}>
-                <div>
-                  <div style={{ 
-                    width: '140px', 
-                    height: '140px', 
-                    borderRadius: '24px', 
-                    overflow: 'hidden', 
-                    margin: '0 auto 2rem',
-                    backgroundColor: 'white',
-                    boxShadow: '0 8px 20px rgba(0,0,0,0.1)'
-                  }}>
-                    {randomImages[4 + index] && (
-                      <img 
-                        src={randomImages[4 + index]} 
-                        alt={sponsor.name} 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    )}
-                  </div>
-                  <h4 style={{ fontSize: '1.75rem', fontWeight: 900, color: '#111827', marginBottom: '1rem' }}>{sponsor.name}</h4>
-                  <p style={{ color: '#6B7280', fontSize: '1.125rem', lineHeight: 1.6, marginBottom: '2.5rem' }}>{sponsor.desc}</p>
+            {SPONSOR_TIER_PLACEHOLDERS.map((s) => (
+              <div
+                key={s.tier}
+                style={{
+                  background: '#F9FAFB',
+                  padding: '2rem 1.5rem',
+                  borderRadius: '24px',
+                  textAlign: 'center',
+                  border: '2px dashed #E5E7EB',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.04)',
+                }}
+              >
+                <p style={{ fontSize: '0.8rem', fontWeight: 800, letterSpacing: '2px', color: '#E8492B', marginBottom: '0.75rem' }}>{s.tier}</p>
+                <div style={{ width: '120px', height: '120px', margin: '0 auto 1rem', borderRadius: '16px', background: '#E5E7EB', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontWeight: 700, fontSize: '0.75rem' }}>
+                  LOGO
                 </div>
-
-                <div style={{ display: 'flex', flexDirection: 'row', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <a 
-                    href={sponsor.profile} 
-                    style={{ 
-                      background: '#111827', 
-                      color: 'white', 
-                      padding: '0.5rem 1.25rem', 
-                      borderRadius: '9999px', 
-                      fontWeight: 700, 
-                      textDecoration: 'none',
-                      fontSize: '0.75rem',
-                      transition: 'opacity 0.2s',
-                      letterSpacing: '1px'
-                    }}
-                  >
-                    PROFILE
-                  </a>
-                  <a 
-                    href={sponsor.social} 
-                    style={{ 
-                      background: 'white', 
-                      color: '#111827', 
-                      padding: '0.5rem 1.25rem', 
-                      borderRadius: '9999px', 
-                      fontWeight: 700, 
-                      textDecoration: 'none',
-                      fontSize: '0.75rem',
-                      border: '1px solid #E5E7EB',
-                      transition: 'background 0.2s',
-                      letterSpacing: '1px'
-                    }}
-                  >
-                    INSTAGRAM
-                  </a>
-                </div>
+                <p style={{ color: '#6B7280', margin: 0, fontSize: '1rem' }}>{s.note}</p>
               </div>
             ))}
+          </div>
+
+          <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
+            <p style={{ color: '#6B7280', marginBottom: '0.75rem' }}>Organisasi profesi</p>
+            <a href="https://www.ikatannotarisindonesia.id/beranda" target="_blank" rel="noreferrer" style={{ fontWeight: 800, color: '#111827' }}>
+              Ikatan Notaris Indonesia (INI)
+            </a>
           </div>
         </div>
       </div>
@@ -479,43 +639,43 @@ export const Home: React.FC = () => {
           <div className="text-center mb-12">
             <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>VENUE</span>
             <h2 style={{ fontSize: '3rem', fontWeight: 900, color: '#111827', marginBottom: '1.5rem' }}>LOKASI ACARA</h2>
-            <p style={{ fontSize: '1.25rem', color: '#4B5563', maxWidth: '700px', margin: '0 auto' }}>
-              Summarecon Mall Bekasi — Titik kumpul energi dan semangat Notarace 2026.
+            <p style={{ fontSize: '1.25rem', color: '#4B5563', maxWidth: '720px', margin: '0 auto' }}>
+              {EVENT_META.venueShort} — {EVENT_META.venueAddress}
             </p>
           </div>
-          
-          <div style={{ 
-            width: '100%', 
-            height: '500px', 
-            borderRadius: '32px', 
-            overflow: 'hidden', 
+
+          <div style={{
+            width: '100%',
+            height: '500px',
+            borderRadius: '32px',
+            overflow: 'hidden',
             boxShadow: '0 20px 50px rgba(0,0,0,0.1)',
             backgroundColor: '#e5e7eb',
             position: 'relative'
           }}>
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.2860575070627!2d107.00070489999999!3d-6.225963999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698c71cf814d97%3A0xd22a5d56809f070a!2sSummarecon%20Mall%20Bekasi!5e0!3m2!1sen!2sid!4v1777219738149!5m2!1sen!2sid" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0 }} 
-              allowFullScreen={true} 
-              loading="lazy" 
+            <iframe
+              src={EVENT_META.googleMapsEmbedUrl}
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Gmap Notarace Location"
+              title="Peta lokasi NOTARACE 2026 — Eastvara BSD"
             ></iframe>
           </div>
-          
+
           <div style={{ marginTop: '3rem', textAlign: 'center' }}>
-            <a 
-              href="https://maps.app.goo.gl/zvWDm4oMiugKg3rb6" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="btn" 
-              style={{ 
+            <a
+              href={EVENT_META.googleMapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="btn"
+              style={{
                 display: 'inline-block',
-                background: 'white', 
-                color: '#E8492B', 
-                border: '2px solid #E8492B', 
+                background: 'white',
+                color: '#E8492B',
+                border: '2px solid #E8492B',
                 padding: '1rem 2.5rem',
                 borderRadius: '9999px',
                 fontWeight: 700,
@@ -530,13 +690,13 @@ export const Home: React.FC = () => {
       </div>
 
       {/* Contact Section */}
-      <div style={{ padding: '2rem 1.5rem 6rem' }}>
-        <div className="container" style={{ 
-          maxWidth: '1100px', 
-          margin: '0 auto', 
-          height: '600px', 
-          borderRadius: '48px', 
-          overflow: 'hidden', 
+      <div id="kontak" style={{ padding: '2rem 1.5rem 6rem' }}>
+        <div className="container" style={{
+          maxWidth: '1100px',
+          margin: '0 auto',
+          height: '600px',
+          borderRadius: '48px',
+          overflow: 'hidden',
           position: 'relative',
           boxShadow: '0 30px 60px rgba(0,0,0,0.2)'
         }}>
@@ -548,7 +708,7 @@ export const Home: React.FC = () => {
             backgroundPosition: 'center',
             zIndex: 0
           }}></div>
-          
+
           {/* Dark Gradient Overlay */}
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
@@ -556,13 +716,13 @@ export const Home: React.FC = () => {
             zIndex: 1
           }}></div>
 
-          <div style={{ 
-            position: 'relative', 
-            zIndex: 2, 
-            height: '100%', 
-            display: 'flex', 
-            flexDirection: 'column', 
-            justifyContent: 'flex-end', 
+          <div style={{
+            position: 'relative',
+            zIndex: 2,
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
             padding: '4rem',
             textAlign: 'center',
             color: 'white'
@@ -571,31 +731,44 @@ export const Home: React.FC = () => {
               Mau tanya soal race kit, rute lari, atau hal-hal seru lainnya? Tim kami siap bantu!
             </p>
 
-            <div style={{ marginBottom: '3rem' }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>EMAIL</h3>
-              <a href="mailto:info@notarace.id" style={{ fontSize: '2.5rem', fontWeight: 900, color: 'white', textDecoration: 'none' }}>info@notarace.id</a>
+            <div style={{ marginBottom: '2rem' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>INSTAGRAM</h3>
+              <a href={EVENT_META.instagramUrl} target="_blank" rel="noreferrer" style={{ fontSize: '2.25rem', fontWeight: 900, color: 'white', textDecoration: 'none' }}>{EVENT_META.instagramHandle}</a>
+            </div>
+
+            <div style={{ marginBottom: '2rem' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>TIKTOK</h3>
+              <p style={{ fontSize: '1.25rem', fontWeight: 700, color: 'rgba(255,255,255,0.95)', margin: 0 }}>{EVENT_META.tiktokPlaceholder}</p>
+            </div>
+
+            <div style={{ marginBottom: '2rem' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>WHATSAPP</h3>
+              <p style={{ fontSize: '1.25rem', fontWeight: 700, color: 'rgba(255,255,255,0.95)', margin: 0 }}>{EVENT_META.whatsappPlaceholder}</p>
             </div>
 
             <div>
-              <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>INSTAGRAM</h3>
-              <a href="https://instagram.com/notarace.id" target="_blank" rel="noreferrer" style={{ fontSize: '2.5rem', fontWeight: 900, color: 'white', textDecoration: 'none' }}>@notarace.id</a>
+              <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>EMAIL</h3>
+              <p style={{ fontSize: '1.25rem', fontWeight: 700, color: 'rgba(255,255,255,0.95)', margin: 0 }}>{EVENT_META.emailPlaceholder}</p>
             </div>
           </div>
         </div>
       </div>
-      
+
+      </main>
+
       <footer style={{ background: '#F9FAFB', padding: '6rem 2rem', textAlign: 'center', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-        <h3 className="text-3xl font-black text-accent mb-4" style={{ letterSpacing: '2px' }}>NOTARACE 2026</h3>
-        <p className="text-lg text-muted mb-8 font-medium">The premium race experience.</p>
+        <h3 className="text-3xl font-black text-accent mb-4" style={{ letterSpacing: '2px' }}>{EVENT_META.name}</h3>
+        <p className="text-lg text-muted mb-8 font-medium">{EVENT_META.footerTagline}</p>
         <div style={{ height: '2px', background: 'linear-gradient(90deg, transparent, #E8492B, transparent)', maxWidth: '600px', margin: '0 auto 3rem' }}></div>
         <div className="flex justify-center gap-8 mb-8 flex-wrap">
-          <a href="#" style={{ color: '#4B5563', textDecoration: 'none', fontWeight: 600 }}>Home</a>
-          <a href="#" style={{ color: '#4B5563', textDecoration: 'none', fontWeight: 600 }}>Registration</a>
-          <a href="#" style={{ color: '#4B5563', textDecoration: 'none', fontWeight: 600 }}>Race Info</a>
-          <a href="#" style={{ color: '#4B5563', textDecoration: 'none', fontWeight: 600 }}>Contact</a>
+          <Link to="/" style={{ color: '#4B5563', textDecoration: 'none', fontWeight: 600 }}>Home</Link>
+          <button type="button" onClick={scrollToSection('pendaftaran')} style={{ background: 'none', border: 'none', color: '#4B5563', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}>Pendaftaran</button>
+          <button type="button" onClick={scrollToSection('detail-lomba')} style={{ background: 'none', border: 'none', color: '#4B5563', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}>Detail lomba</button>
+          <button type="button" onClick={scrollToSection('faq')} style={{ background: 'none', border: 'none', color: '#4B5563', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}>FAQ</button>
+          <button type="button" onClick={scrollToSection('kontak')} style={{ background: 'none', border: 'none', color: '#4B5563', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}>Kontak</button>
         </div>
         <p className="text-muted">© 2026 Notarace. All rights reserved.</p>
-        <p className="text-sm text-muted mt-2">Contact: support@notarace.com | Instagram: @notarace</p>
+        <p className="text-sm text-muted mt-2">Instagram: {EVENT_META.instagramHandle} • {EVENT_META.emailPlaceholder}</p>
       </footer>
     </div>
   );

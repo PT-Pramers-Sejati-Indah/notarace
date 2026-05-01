@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockApi } from '../services/mockApi';
+import { MOCK_CHECKOUT_BASE_PRICE_IDR } from '../data/eventInfo';
 
 export const OrderSummaryPage: React.FC = () => {
   const { category } = useParams<{ category: string }>();
@@ -25,7 +26,7 @@ export const OrderSummaryPage: React.FC = () => {
 
   if (!user || !category) return null;
 
-  const basePrice = category === '2.5K' ? 150000 : category === '5K' ? 250000 : 350000;
+  const basePrice = MOCK_CHECKOUT_BASE_PRICE_IDR;
   const ppn = basePrice * 0.11;
   const serviceFee = 5000;
   const total = basePrice + ppn + serviceFee;

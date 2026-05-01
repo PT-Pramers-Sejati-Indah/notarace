@@ -1,3 +1,5 @@
+import { MOCK_CHECKOUT_BASE_PRICE_IDR } from '../data/eventInfo';
+
 export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export type Role = 'guest' | 'participant' | 'admin';
@@ -42,7 +44,7 @@ export const mockApi = {
 
   submitOrder: async (data: any) => {
     await delay(1000);
-    const basePrice = data.category === '2.5K' ? 150000 : data.category === '5K' ? 250000 : 350000;
+    const basePrice = MOCK_CHECKOUT_BASE_PRICE_IDR;
     const ppn = basePrice * 0.11;
     const serviceFee = 5000;
     return {

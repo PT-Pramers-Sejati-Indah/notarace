@@ -20,6 +20,7 @@ const ScrollToTop = () => {
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const userStr = localStorage.getItem('user');
   const user = userStr ? JSON.parse(userStr) : null;
@@ -34,6 +35,20 @@ const Navbar = () => {
 
   const closeMenu = () => setIsMenuOpen(false);
 
+  const scrollToSection = (sectionId: string) => () => {
+    closeMenu();
+    const doScroll = () => {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(doScroll, 300);
+    } else {
+      doScroll();
+    }
+  };
+
   return (
     <nav className="navbar">
       <Link to="/" className="logo" onClick={closeMenu}>
@@ -47,6 +62,8 @@ const Navbar = () => {
 
       <div className={`navbar-links ${isMenuOpen ? 'open' : ''}`}>
         <Link to="/" className="font-medium hover:text-accent" onClick={closeMenu}>Home</Link>
+        <button className="navbar-scroll-link" onClick={scrollToSection('timeline')}>Timeline</button>
+        <button className="navbar-scroll-link" onClick={scrollToSection('faq')}>FAQ</button>
         {featureFlags.results && <Link to="/results" className="font-medium hover:text-accent" onClick={closeMenu}>Hasil Lomba</Link>}
         {featureFlags.photos && <Link to="/photos" className="font-medium hover:text-accent" onClick={closeMenu}>Lihat Foto</Link>}
 

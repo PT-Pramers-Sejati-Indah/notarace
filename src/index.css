@@ -497,18 +497,92 @@ tr:hover td { background: rgba(0,0,0,0.02); }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .animate-fade-in { animation: fadeIn 0.5s ease forwards; }
 
-.navbar { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 20px rgba(0,0,0,0.05); }
-.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.05em; color: var(--color-primary); display: flex; align-items: center; gap: 0.5rem; }
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2rem;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 4px 20px rgba(0,0,0,0.04);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.04em; color: var(--color-primary); display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+.logo:hover { color: var(--color-primary); }
 .logo span { color: var(--color-accent); }
 .page-wrapper { min-height: calc(100vh - 80px); display: flex; flex-direction: column; }
 
+/* Nav link shared style — overrides global a{color:accent} */
+.navbar-links a,
+.navbar-scroll-link {
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  transition: color var(--transition-fast);
+  letter-spacing: 0.01em;
+}
+
+.navbar-links a::after,
+.navbar-scroll-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-accent);
+  border-radius: 2px;
+  transition: width 0.25s ease;
+}
+
+.navbar-links a:hover,
+.navbar-scroll-link:hover {
+  color: var(--color-accent);
+}
+
+.navbar-links a:hover::after,
+.navbar-scroll-link:hover::after {
+  width: 100%;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
-  .navbar { flex-direction: column; align-items: flex-start; padding: 1rem; }
-  .navbar-links { display: none; flex-direction: column; width: 100%; gap: 1rem; margin-top: 1.5rem; }
+  .navbar { flex-direction: column; align-items: flex-start; padding: 1rem 1.5rem; }
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
   .navbar-links.open { display: flex; }
-  .navbar-links .user-actions { flex-direction: column; align-items: flex-start; margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; width: 100%; }
-  .mobile-menu-btn { display: block; position: absolute; right: 1rem; top: 1rem; background: none; border: none; color: var(--color-text); cursor: pointer; }
+  /* Each nav item fills the full width with consistent left alignment */
+  .navbar-links a,
+  .navbar-scroll-link {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 0;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+  .navbar-links a::after,
+  .navbar-scroll-link::after { display: none; }
+  .navbar-links .user-actions { flex-direction: column; align-items: flex-start; margin-top: 0.5rem; width: 100%; padding-top: 0.75rem; }
+  .mobile-menu-btn { display: block; position: absolute; right: 1.5rem; top: 1.1rem; background: none; border: none; color: var(--color-primary); cursor: pointer; opacity: 0.7; }
   
   .text-5xl { font-size: 2.25rem !important; }
   .text-4xl { font-size: 1.875rem !important; }
@@ -517,10 +591,7 @@ tr:hover td { background: rgba(0,0,0,0.02); }
   
   .card { padding: 1.5rem !important; }
   .flex-wrap { flex-direction: column; align-items: center; }
-  
-  /* Reset scaled card on mobile */
   .card-featured { transform: none !important; margin: 0 !important; width: 100%; }
-  
   .hero-title { font-size: 2.5rem !important; }
   .hero-subtitle { font-size: 1.25rem !important; }
 }
@@ -767,11 +838,13 @@ tr:hover td { background: rgba(0,0,0,0.02); }
 
 @media (min-width: 769px) {
   .mobile-menu-btn { display: none; }
-  .navbar-links { display: flex; gap: 1.5rem; align-items: center; margin-left: auto; }
-  .navbar-links .user-actions { margin-left: 1rem; }
+  .navbar-links { display: flex; gap: 2rem; align-items: center; margin-left: auto; }
+  .navbar-links .user-actions { margin-left: 1.5rem; padding-left: 1.5rem; border-left: 1px solid rgba(0,0,0,0.08); }
 }
 
-/* Timeline Styles - Refined to match "Perjalanan Kami" aesthetic */
+/* .navbar-scroll-link styles are shared with .navbar-links a above */
+
+/* Timeline Styles */
 .timeline-section {
   padding: 100px 0;
   background-color: #fff;

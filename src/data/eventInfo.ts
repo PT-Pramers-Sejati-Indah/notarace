@@ -126,3 +126,42 @@ export const SPONSOR_TIER_PLACEHOLDERS: { tier: string; note: string }[] = [
   { tier: 'Official Partner', note: 'Logo & nama — menyusul' },
   { tier: 'Supporting Partner', note: 'Logo & nama — menyusul' },
 ];
+
+export const TIMELINE_EVENTS = [
+  {
+    title: 'Pendaftaran Early Bird',
+    date: 'Mei 2026',
+    description: 'Dapatkan harga spesial dengan mendaftar lebih awal. Kuota terbatas!',
+    status: 'upcoming' as const,
+  },
+  {
+    title: 'Pendaftaran Umum',
+    date: 'Juni 2026',
+    description: 'Pendaftaran reguler dibuka untuk semua kategori (10K, 5K, dan Fun Walk).',
+    status: 'upcoming' as const,
+  },
+  {
+    "title": "Pengambilan race pack",
+    date: '24–25 Juli 2026',
+    description: 'Lokasi, jam operasional, dan prosedur pengambilan race pack menyusul.',
+    status: 'upcoming' as const,
+  },
+  {
+    title: 'Hari Lomba & Pengumuman Pemenang',
+    date: EVENT_META.raceDateLabel,
+    description: 'Race day di Eastvara BSD City. Pengumuman pemenang dilakukan setelah race selesai.',
+    status: 'upcoming' as const,
+  },
+  {
+    title: 'Pembagian Sertifikat Digital',
+    date: 'Agustus 2026',
+    description: 'Sertifikat dapat diunduh melalui website resmi dengan memasukkan nomor bib.',
+    status: 'upcoming' as const,
+  },
+  {
+    title: 'Pembagian Foto Digital',
+    date: 'Agustus 2026',
+    description: 'Cari dan unduh foto keseruanmu saat lari menggunakan fitur pengenal wajah.',
+    status: 'upcoming' as const,
+  },
+];

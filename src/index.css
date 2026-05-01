@@ -770,3 +770,149 @@ tr:hover td { background: rgba(0,0,0,0.02); }
   .navbar-links { display: flex; gap: 1.5rem; align-items: center; margin-left: auto; }
   .navbar-links .user-actions { margin-left: 1rem; }
 }
+
+/* Timeline Styles - Refined to match "Perjalanan Kami" aesthetic */
+.timeline-section {
+  padding: 100px 0;
+  background-color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-container {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #F5A623 0%, #E8492B 50%, #8B5CF6 100%);
+  border-radius: 2px;
+  opacity: 0.4;
+}
+
+@media (min-width: 768px) {
+  .timeline-line {
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.6;
+  }
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 80px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .timeline-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .timeline-item:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 20px;
+  top: 36px;
+  width: 12px;
+  height: 12px;
+  background: #F5A623;
+  border-radius: 50%;
+  z-index: 10;
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 6px rgba(245, 166, 35, 0.2);
+}
+
+.timeline-item:nth-child(2) .timeline-dot { background: #E8492B; box-shadow: 0 0 0 6px rgba(232, 73, 43, 0.2); }
+.timeline-item:nth-child(3) .timeline-dot { background: #8B5CF6; box-shadow: 0 0 0 6px rgba(139, 92, 246, 0.2); }
+.timeline-item:nth-child(4) .timeline-dot { background: #3B82F6; box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.2); }
+.timeline-item:nth-child(5) .timeline-dot { background: #10B981; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.2); }
+
+@media (min-width: 768px) {
+  .timeline-dot {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.timeline-content {
+  width: calc(100% - 44px);
+  margin-left: 44px;
+  background: white;
+  padding: 36px;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.02);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+.timeline-content:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  border-color: rgba(232, 73, 43, 0.1);
+}
+
+@media (min-width: 768px) {
+  .timeline-content {
+    width: 44%;
+    margin-left: 0;
+  }
+}
+
+.timeline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: #FFF7ED;
+  color: #F5A623;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.timeline-item:nth-child(even) .timeline-badge {
+  background: #F5F3FF;
+  color: #8B5CF6;
+}
+
+.timeline-title {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #111827;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.timeline-description {
+  color: #4B5563;
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 767px) {
+  .timeline-content {
+    padding: 30px;
+  }
+  .timeline-title {
+    font-size: 1.4rem;
+  }
+}

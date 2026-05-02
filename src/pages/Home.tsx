@@ -521,45 +521,104 @@ export const Home: React.FC = () => {
           <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
 
             <div id="detail-lomba" style={{ marginBottom: '3.5rem' }}>
-              <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '1rem' }}>DETAIL LOMBA</span>
-              <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#111827', marginBottom: '1rem' }}>Kategori & race pack</h2>
-              <div style={{ overflowX: 'auto', background: 'white', borderRadius: '14px', boxShadow: '0 4px 18px rgba(0,0,0,0.06)' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.95rem' }}>
-                  <thead>
-                    <tr style={{ borderBottom: '2px solid #E5E7EB', textAlign: 'left' }}>
-                      <th style={{ padding: '1rem' }}>Kategori</th>
-                      <th style={{ padding: '1rem' }}>Jarak</th>
-                      <th style={{ padding: '1rem' }}>Cut-off time</th>
-                      <th style={{ padding: '1rem' }}>Harga (Notaris)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {CATEGORY_DETAILS_ROWS.map((row) => (
-                      <tr key={row.category} style={{ borderBottom: '1px solid #F3F4F6' }}>
-                        <td style={{ padding: '1rem', fontWeight: 700 }}>{row.category}</td>
-                        <td style={{ padding: '1rem' }}>{row.jarak}</td>
-                        <td style={{ padding: '1rem', color: '#6B7280' }}>{row.cutoff}</td>
-                        <td style={{ padding: '1rem' }}>
-                          {formatIdr(PRICING_NOTARIS_IDR.earlyBird)} early / {formatIdr(PRICING_NOTARIS_IDR.normal)} normal
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginTop: '1.25rem' }}>
-                <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
-                  <h3 style={{ fontWeight: 800, marginBottom: '0.35rem', fontSize: '0.95rem' }}>Isi race pack</h3>
-                  <p style={{ color: '#4B5563', margin: 0 }}>{RACE_PACK_ITEMS.join(', ')}</p>
-                </div>
-                <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
-                  <h3 style={{ fontWeight: 800, marginBottom: '0.35rem', fontSize: '0.95rem' }}>Peta rute / GPX</h3>
-                  <p style={{ color: '#4B5563', margin: 0 }}>{EVENT_META.routePlaceholder}</p>
-                </div>
-                <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
-                  <h3 style={{ fontWeight: 800, marginBottom: '0.35rem', fontSize: '0.95rem' }}>Ketentuan usia</h3>
-                  <p style={{ color: '#4B5563', margin: 0 }}>{EVENT_META.ageRulesPlaceholder}</p>
-                </div>
+              <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '0.75rem' }}>DETAIL LOMBA</span>
+              <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#111827', marginBottom: '0.5rem' }}>Kategori & race pack</h2>
+              <p style={{ color: '#6B7280', marginBottom: '2rem', fontSize: '1rem' }}>
+                Setiap kategori memiliki rute, race pack, dan ketentuan tersendiri.
+              </p>
+
+              {/* Vertical category cards */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                {CATEGORY_DETAILS_ROWS.map((row) => (
+                  <div key={row.category} style={{
+                    background: 'white',
+                    borderRadius: '20px',
+                    overflow: 'hidden',
+                    boxShadow: '0 8px 30px rgba(0,0,0,0.07)',
+                    border: '1px solid rgba(0,0,0,0.04)',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                  }}>
+                    {/* Left accent panel */}
+                    <div className="category-card-accent" style={{
+                      background: `linear-gradient(160deg, ${row.gradient[0]}, ${row.gradient[1]})`,
+                      padding: '2rem',
+                      minWidth: '180px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
+                      justifyContent: 'center',
+                      gap: '0.5rem',
+                    }}>
+                      <div style={{
+                        width: '52px', height: '52px',
+                        background: 'rgba(255,255,255,0.2)',
+                        borderRadius: '50%',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '1.5rem',
+                        marginBottom: '0.25rem',
+                      }}>
+                        {row.emoji}
+                      </div>
+                      <div style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.18em', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>
+                        {row.typeLabel}
+                      </div>
+                      <div style={{ fontSize: '2.75rem', fontWeight: 900, color: 'white', lineHeight: 1, letterSpacing: '-0.02em' }}>
+                        {row.jarak}
+                      </div>
+                    </div>
+
+                    {/* Right details panel */}
+                    <div style={{ flex: 1, minWidth: '280px', padding: '1.75rem 2rem', display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+
+                      {/* Cut-off + Pricing row */}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                        <div style={{ flex: '1 1 120px' }}>
+                          <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#9CA3AF', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Cut-off time</div>
+                          <div style={{ fontWeight: 800, color: row.cutoff === 'Menyusul' ? '#F5A623' : '#111827', fontSize: '1rem' }}>
+                            {row.cutoff}
+                          </div>
+                        </div>
+                        <div style={{ flex: '1 1 220px', display: 'flex', gap: '0.6rem' }}>
+                          <div style={{ flex: 1, background: '#FFF7ED', borderRadius: '10px', padding: '0.55rem 0.85rem' }}>
+                            <div style={{ fontSize: '0.6rem', fontWeight: 800, color: '#F5A623', letterSpacing: '0.1em', marginBottom: '0.15rem' }}>EARLY BIRD</div>
+                            <div style={{ fontWeight: 900, color: '#111827', fontSize: '0.95rem' }}>{formatIdr(row.earlyBird)}</div>
+                          </div>
+                          <div style={{ flex: 1, background: '#F9FAFB', borderRadius: '10px', padding: '0.55rem 0.85rem' }}>
+                            <div style={{ fontSize: '0.6rem', fontWeight: 800, color: '#6B7280', letterSpacing: '0.1em', marginBottom: '0.15rem' }}>NORMAL</div>
+                            <div style={{ fontWeight: 900, color: '#111827', fontSize: '0.95rem' }}>{formatIdr(row.normal)}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ height: '1px', background: '#F3F4F6' }} />
+
+                      {/* Race pack + Route + Age in a grid */}
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#E8492B', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Race Pack</div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+                            {row.racePack.map(item => (
+                              <span key={item} style={{ background: '#FFF1EE', color: '#C13118', fontWeight: 700, fontSize: '0.78rem', padding: '0.2rem 0.6rem', borderRadius: '99px' }}>
+                                {item}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#8B5CF6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Rute</div>
+                          <p style={{ color: '#6B7280', margin: 0, fontSize: '0.85rem', lineHeight: 1.5 }}>{row.route}</p>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#10B981', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Ketentuan usia</div>
+                          <p style={{ color: '#6B7280', margin: 0, fontSize: '0.85rem', lineHeight: 1.5 }}>{row.ageRule}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -603,19 +662,6 @@ export const Home: React.FC = () => {
                   <h3 style={{ fontWeight: 800, marginBottom: '0.35rem' }}>Titik kumpul & start</h3>
                   <p style={{ color: '#4B5563', margin: 0 }}>{EVENT_META.assemblyPlaceholder}</p>
                 </div>
-              </div>
-            </div>
-
-            <div id="faq">
-              <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '1rem' }}>FAQ</span>
-              <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#111827', marginBottom: '1.25rem' }}>Pertanyaan umum</h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {FAQ_PLACEHOLDERS.map((item) => (
-                  <details key={item.q} style={{ background: 'white', borderRadius: '12px', padding: '1rem 1.25rem', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
-                    <summary style={{ fontWeight: 800, cursor: 'pointer', color: '#111827' }}>{item.q}</summary>
-                    <p style={{ margin: '0.75rem 0 0', color: '#4B5563', lineHeight: 1.55 }}>{item.a}</p>
-                  </details>
-                ))}
               </div>
             </div>
 
@@ -721,6 +767,22 @@ export const Home: React.FC = () => {
               >
                 BUKA DI GOOGLE MAPS
               </a>
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div id="faq" style={{ background: '#F3F4F6', padding: '4rem 1.5rem' }}>
+          <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '1rem' }}>FAQ</span>
+            <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#111827', marginBottom: '1.25rem' }}>Pertanyaan umum</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {FAQ_PLACEHOLDERS.map((item) => (
+                <details key={item.q} style={{ background: 'white', borderRadius: '12px', padding: '1rem 1.25rem', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
+                  <summary style={{ fontWeight: 800, cursor: 'pointer', color: '#111827' }}>{item.q}</summary>
+                  <p style={{ margin: '0.75rem 0 0', color: '#4B5563', lineHeight: 1.55 }}>{item.a}</p>
+                </details>
+              ))}
             </div>
           </div>
         </div>

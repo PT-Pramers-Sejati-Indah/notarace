@@ -5,7 +5,7 @@ export const ResultsPage: React.FC = () => {
   const [published, setPublished] = useState(false);
   const [results, setResults] = useState<Result[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [page, setPage] = useState(1);
@@ -37,7 +37,7 @@ export const ResultsPage: React.FC = () => {
 
   // Filtering
   let filtered = results.filter(r => category === 'All' || r.category === category);
-  
+
   let foundResult = null;
   if (search) {
     const exactMatch = filtered.find(r => r.bib_number === search);
@@ -73,37 +73,37 @@ export const ResultsPage: React.FC = () => {
 
         <div className="card mb-8">
           <div className="flex justify-between items-center flex-wrap gap-4 mb-6">
-             <div className="flex gap-2">
-               {['All', '2.5K', '5K', '10K'].map(cat => (
-                 <button 
-                   key={cat} 
-                   className={`btn btn-sm ${category === cat ? 'btn-primary' : 'btn-outline'}`}
-                   onClick={() => { setCategory(cat); setPage(1); setSearch(''); }}
-                 >
-                   {cat}
-                 </button>
-               ))}
-             </div>
-             
-             <div className="flex gap-2 items-center">
-               <input 
-                 type="text" 
-                 placeholder="Search BIB..." 
-                 className="form-input" 
-                 style={{ width: '200px', margin: 0 }}
-                 value={search}
-                 onChange={e => setSearch(e.target.value)}
-               />
-               <select className="form-select" style={{ width: '150px', margin: 0 }} value={sortBy} onChange={e => setSortBy(e.target.value as any)}>
-                  <option value="rank">Sort: Rank</option>
-                  <option value="name">Sort: Name A-Z</option>
-               </select>
-             </div>
+            <div className="flex gap-2">
+              {['All', '2.5K', '5K', '10K'].map(cat => (
+                <button
+                  key={cat}
+                  className={`btn btn-sm ${category === cat ? 'btn-primary' : 'btn-outline'}`}
+                  onClick={() => { setCategory(cat); setPage(1); setSearch(''); }}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex gap-2 items-center">
+              <input
+                type="text"
+                placeholder="Search BIB..."
+                className="form-input"
+                style={{ width: '200px', margin: 0 }}
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+              <select className="form-select" style={{ width: '150px', margin: 0 }} value={sortBy} onChange={e => setSortBy(e.target.value as any)}>
+                <option value="rank">Sort: Rank</option>
+                <option value="name">Sort: Name A-Z</option>
+              </select>
+            </div>
           </div>
 
           {search && !foundResult && (
             <div className="text-center p-4 bg-red-900 bg-opacity-20 border border-red-500 rounded text-red-400">
-               BIB {search} tidak ditemukan. Pastikan nomor BIB sudah benar.
+              BIB {search} tidak ditemukan. Pastikan nomor BIB sudah benar.
             </div>
           )}
 

@@ -98,10 +98,60 @@ export const RACE_CATEGORY_CARDS: RaceCategoryCard[] = [
   },
 ];
 
-export const CATEGORY_DETAILS_ROWS: { category: string; jarak: string; cutoff: string }[] = [
-  { category: '10K Run', jarak: '10 km', cutoff: 'Menyusul' },
-  { category: '5K Run', jarak: '5 km', cutoff: 'Menyusul' },
-  { category: 'Fun Walk', jarak: '2,5 km', cutoff: 'Menyusul' },
+export interface CategoryDetailRow {
+  category: string;
+  jarak: string;
+  cutoff: string;
+  typeLabel: string;
+  emoji: string;
+  gradient: [string, string];
+  earlyBird: number;
+  normal: number;
+  racePack: string[];
+  route: string;
+  ageRule: string;
+}
+
+export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
+  {
+    category: '10K Run',
+    jarak: '10 km',
+    cutoff: 'Menyusul',
+    typeLabel: 'Run',
+    emoji: '🏃',
+    gradient: ['#10B981', '#059669'],
+    earlyBird: PRICING_NOTARIS_IDR.earlyBird,
+    normal: PRICING_NOTARIS_IDR.normal,
+    racePack: ['Jersey', 'Medali', 'BIB'],
+    route: 'Rute 10K menyusul — akan tersedia sebagai file GPX.',
+    ageRule: 'Minimum usia 17 tahun.',
+  },
+  {
+    category: '5K Run',
+    jarak: '5 km',
+    cutoff: 'Menyusul',
+    typeLabel: 'Run',
+    emoji: '🏃',
+    gradient: ['#8B5CF6', '#3B82F6'],
+    earlyBird: PRICING_NOTARIS_IDR.earlyBird,
+    normal: PRICING_NOTARIS_IDR.normal,
+    racePack: ['Jersey', 'Medali', 'BIB'],
+    route: 'Rute 5K menyusul — akan tersedia sebagai file GPX.',
+    ageRule: 'Minimum usia 13 tahun.',
+  },
+  {
+    category: 'Fun Walk',
+    jarak: '2,5 km',
+    cutoff: 'Menyusul',
+    typeLabel: 'Fun Walk',
+    emoji: '🚶',
+    gradient: ['#A855F7', '#EC4899'],
+    earlyBird: PRICING_NOTARIS_IDR.earlyBird,
+    normal: PRICING_NOTARIS_IDR.normal,
+    racePack: ['Jersey', 'Medali'],
+    route: 'Rute Fun Walk 2,5K menyusul.',
+    ageRule: 'Terbuka untuk semua usia (anak-anak wajib didampingi).',
+  },
 ];
 
 export const FAQ_PLACEHOLDERS: { q: string; a: string }[] = [

@@ -989,3 +989,18 @@ tr:hover td { background: rgba(0,0,0,0.02); }
     font-size: 1.4rem;
   }
 }
+
+/* Category card: accent panel fills full width on mobile */
+.category-card-accent {
+  flex: 0 0 200px;
+}
+
+@media (max-width: 600px) {
+  .category-card-accent {
+    flex: 1 1 100%;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, AlertCircle, Camera, Calendar, MapPin, ChevronRight, Clock, ExternalLink, Flag, Award, Footprints, Users, Image as ImageIcon, X } from 'lucide-react';
+import { Activity, AlertCircle, Camera, Calendar, MapPin, ChevronRight, Clock, ExternalLink, Flag, Award, Footprints, Users, Image as ImageIcon } from 'lucide-react';
 
 import {
   EVENT_META,
@@ -19,11 +19,6 @@ const formatIdr = (n: number) =>
 
 export const Home: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
-  const [routePreview, setRoutePreview] = useState<{
-    category: string;
-    routeText: string;
-    imageUrl: string;
-  } | null>(null);
 
   useEffect(() => {
     const targetDate = new Date(EVENT_META.raceStartISO).getTime();
@@ -58,27 +53,12 @@ export const Home: React.FC = () => {
       .catch(err => console.error('Error loading data.json:', err));
   }, []);
 
-  useEffect(() => {
-    if (!routePreview) return;
-
-    const onEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setRoutePreview(null);
-      }
-    };
-
-    window.addEventListener('keydown', onEsc);
-    return () => window.removeEventListener('keydown', onEsc);
-  }, [routePreview]);
-
   const scrollToSection = (id: string) => () => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const ticketHref = EVENT_META.ticketRegistrationUrl.trim();
   const ticketLinkReady = /^https?:\/\//i.test(ticketHref);
-  const getMockRouteImage = (seed: string) =>
-    `https://picsum.photos/seed/notarace-route-${encodeURIComponent(seed)}/1200/720`;
 
   return (
     <div className="page-wrapper" style={{ padding: 0 }}>
@@ -306,6 +286,73 @@ export const Home: React.FC = () => {
           </div>
         </div>
 
+        {/* Ikatan Notaris Indonesia — konteks peserta Notaris */}
+        <section
+          id="tentang-ini"
+          className="lp-section lp-ini-section"
+          aria-labelledby="ini-section-heading"
+        >
+          <div className="container lp-ini-section__inner">
+            <header className="lp-section-head">
+              <span className="lp-section-eyebrow">
+                {NOTARIS_REGISTRATION_INFO.panelSubtitle}
+              </span>
+              <h2 id="ini-section-heading" className="lp-section-title">
+                {NOTARIS_REGISTRATION_INFO.panelTitle}
+              </h2>
+              <p className="lp-section-desc">
+                Informasi singkat tentang INI, tautan portal resmi, dan ketentuan
+                poin untuk peserta Notaris di NOTARACE.
+              </p>
+            </header>
+
+            <article className="lp-ini-card">
+              <figure className="lp-ini-card__media">
+                <img
+                  src="/ini-logo.png"
+                  alt="Lambang Ikatan Notaris Indonesia"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+
+              <div className="lp-ini-card__content">
+                <p className="lp-ini-lead">
+                  {NOTARIS_REGISTRATION_INFO.intro}
+                </p>
+                <p className="lp-ini-text">
+                  {NOTARIS_REGISTRATION_INFO.registrationNote}
+                </p>
+
+                <div
+                  className="lp-ini-reward"
+                  role="note"
+                  aria-label="Reward poin untuk Notaris"
+                >
+                  <span className="lp-ini-reward__badge">
+                    <Award size={16} strokeWidth={2.5} aria-hidden />
+                    6 poin
+                  </span>
+                  <span className="lp-ini-reward__text">
+                    untuk Notaris yang menyelesaikan NOTARACE — sesuai ketentuan
+                    &amp; mekanisme di portal INI.
+                  </span>
+                </div>
+
+                <a
+                  href={INI_PORTAL_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline lp-ini-cta"
+                >
+                  {NOTARIS_REGISTRATION_INFO.ctaLabel}
+                  <ExternalLink size={16} strokeWidth={2.25} aria-hidden />
+                </a>
+              </div>
+            </article>
+          </div>
+        </section>
+
         {/* Kategori, race pack, harga & pendaftaran (satu section) */}
         <section className="lp-section" aria-labelledby="pendaftaran-heading">
           <div className="container" style={{ flex: 1, maxWidth: '1100px' }}>
@@ -408,20 +455,15 @@ export const Home: React.FC = () => {
                                 <MapPin strokeWidth={2.5} aria-hidden />
                                 Rute
                               </div>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setRoutePreview({
-                                    category: `${row.typeLabel} ${row.jarak}`,
-                                    routeText: row.route,
-                                    imageUrl: getMockRouteImage(`${row.category}-${row.jarak}`),
-                                  });
-                                }}
-                                className="lp-route-btn"
-                                aria-label={`Lihat mock gambar rute ${row.typeLabel} ${row.jarak}`}
+                              <span
+                                className="lp-cat__cutoff"
+                                data-pending={true}
+                                role="status"
+                                aria-label={`Rute ${row.typeLabel} ${row.jarak} akan diumumkan`}
                               >
-                                Lihat rute
-                              </button>
+                                <Clock size={12} strokeWidth={2.5} aria-hidden />
+                                Akan diumumkan
+                              </span>
                             </div>
                             <div>
                               <div className="lp-cat__field-label lp-cat__field-label--age">
@@ -450,7 +492,11 @@ export const Home: React.FC = () => {
                       Khusus peserta Notaris, wajib akun INI aktif
                     </h3>
                     <p className="lp-notice__text">
-                      {NOTARIS_REGISTRATION_INFO.registrationNote}
+                      {NOTARIS_REGISTRATION_INFO.registrationReminder}{' '}
+                      <a href="#tentang-ini" className="lp-notice__inline-link">
+                        Baca penjelasan lengkap
+                      </a>
+                      .
                     </p>
                     <a
                       href={INI_PORTAL_URL}
@@ -458,7 +504,7 @@ export const Home: React.FC = () => {
                       rel="noopener noreferrer"
                       className="lp-notice__link"
                     >
-                      Buka portal Ikatan Notaris Indonesia
+                      {NOTARIS_REGISTRATION_INFO.ctaLabel}
                       <ExternalLink size={14} strokeWidth={2.5} aria-hidden />
                     </a>
                   </div>
@@ -740,49 +786,6 @@ export const Home: React.FC = () => {
         </div>
 
       </main>
-
-      {routePreview && (
-        <div
-          role="presentation"
-          onClick={() => setRoutePreview(null)}
-          className="lp-route-modal-overlay"
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="route-preview-title"
-            onClick={(event) => event.stopPropagation()}
-            className="lp-route-modal"
-          >
-            <div className="lp-route-modal__header">
-              <div>
-                <h3 id="route-preview-title" style={{ margin: 0, color: '#111827' }}>
-                  Mock rute {routePreview.category}
-                </h3>
-                <p style={{ margin: '0.35rem 0 0', color: '#4b5563', fontSize: '0.92rem' }}>
-                  {routePreview.routeText}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setRoutePreview(null)}
-                aria-label="Tutup pop up rute"
-                className="lp-route-modal__close"
-              >
-                <X size={18} strokeWidth={2.25} />
-              </button>
-            </div>
-            <img
-              src={routePreview.imageUrl}
-              alt={`Mock gambar rute untuk ${routePreview.category}`}
-              width={1200}
-              height={720}
-              loading="lazy"
-              className="lp-route-modal__image"
-            />
-          </div>
-        </div>
-      )}
 
       <footer style={{ background: '#F9FAFB', padding: '6rem 2rem', textAlign: 'center', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
         <h3 className="text-3xl font-black text-accent mb-4" style={{ letterSpacing: '2px' }}>{EVENT_META.name}</h3>

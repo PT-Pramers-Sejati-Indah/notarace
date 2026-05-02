@@ -497,6 +497,159 @@ a:focus-visible {
   border-radius: 2px;
 }
 
+.lp-notice__inline-link {
+  font-weight: 700;
+  color: #B45309;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--transition-fast);
+}
+
+.lp-notice__inline-link:hover {
+  color: #7C2D12;
+}
+
+.lp-notice__inline-link:focus-visible {
+  outline: 2px solid #F59E0B;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* --- Section: Ikatan Notaris Indonesia (INI) --- */
+.lp-ini-section {
+  background: var(--color-bg-alt);
+}
+
+.lp-ini-section__inner {
+  max-width: 980px;
+  margin-inline: auto;
+}
+
+.lp-ini-card {
+  display: grid;
+  grid-template-columns: minmax(160px, 200px) 1fr;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  align-items: center;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  border-radius: var(--lp-radius-lg);
+  background: #fff;
+  border: 1px solid rgba(17, 24, 39, 0.06);
+  box-shadow: var(--lp-shadow-card);
+}
+
+.lp-ini-card__media {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lp-ini-card__media img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.lp-ini-card__content {
+  min-width: 0;
+}
+
+.lp-ini-lead {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--color-primary);
+  letter-spacing: -0.01em;
+}
+
+.lp-ini-text {
+  margin: 0 0 1.15rem;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  max-width: 60ch;
+}
+
+.lp-ini-reward {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  padding: 0.85rem 1rem;
+  border-radius: var(--lp-radius-md);
+  background: rgba(232, 73, 43, 0.06);
+  border: 1px solid rgba(232, 73, 43, 0.18);
+  margin-bottom: 1.25rem;
+}
+
+.lp-ini-reward__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.lp-ini-reward__badge svg {
+  flex-shrink: 0;
+}
+
+.lp-ini-reward__text {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  flex: 1;
+  min-width: 0;
+}
+
+.lp-ini-cta {
+  gap: 0.4rem;
+  padding: 0.65rem 1.15rem;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 720px) {
+  .lp-ini-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: clamp(1.25rem, 5vw, 1.75rem);
+  }
+
+  .lp-ini-card__media img {
+    max-width: 132px;
+  }
+
+  .lp-ini-card__content {
+    text-align: left;
+  }
+
+  .lp-ini-text,
+  .lp-ini-lead {
+    max-width: none;
+  }
+
+  .lp-ini-reward {
+    text-align: left;
+  }
+
+  .lp-ini-cta {
+    width: 100%;
+  }
+}
+
 @media (max-width: 480px) {
   .lp-notice {
     gap: 0.7rem;
@@ -1326,6 +1479,13 @@ tr:hover td { background: rgba(0,0,0,0.02); }
   gap: 1rem 1.1rem;
 }
 
+.lp-cat__grid > div {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+}
+
 @media (max-width: 900px) {
   .lp-cat__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -1347,7 +1507,7 @@ tr:hover td { background: rgba(0,0,0,0.02); }
 }
 
 .lp-cat__field-label--racepack { color: var(--color-accent); }
-.lp-cat__field-label--route    { color: #7C3AED; }
+.lp-cat__field-label--route    { color: var(--color-accent); }
 .lp-cat__field-label--age      { color: #059669; }
 
 .lp-cat__field-label svg { width: 14px; height: 14px; }
@@ -1372,126 +1532,6 @@ tr:hover td { background: rgba(0,0,0,0.02); }
   color: var(--color-text-muted);
   line-height: 1.55;
   margin: 0;
-}
-
-.lp-route-btn {
-  width: 100%;
-  min-height: 46px;
-  border: 1px solid #059669;
-  border-radius: 14px;
-  background: #10b981;
-  color: #ffffff;
-  font-size: 0.875rem;
-  font-weight: 800;
-  text-align: left;
-  padding: 0.7rem 0.9rem;
-  cursor: pointer;
-  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
-}
-
-.lp-route-btn:hover {
-  background: #059669;
-  border-color: #047857;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-}
-
-.lp-route-btn:active {
-  background: #047857;
-  transform: translateY(1px);
-}
-
-.lp-route-btn:focus-visible {
-  outline: 3px solid rgba(16, 185, 129, 0.35);
-  outline-offset: 1px;
-}
-
-.lp-route-modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1200;
-  background: rgba(17, 24, 39, 0.65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.lp-route-modal {
-  width: min(980px, 100%);
-  max-height: 92dvh;
-  background: #fff;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
-  display: flex;
-  flex-direction: column;
-}
-
-.lp-route-modal__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 1rem 1rem 0.75rem 1rem;
-}
-
-.lp-route-modal__close {
-  flex: 0 0 auto;
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  border-radius: 999px;
-  width: 2.25rem;
-  height: 2.25rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.lp-route-modal__close:focus-visible {
-  outline: 3px solid rgba(17, 24, 39, 0.15);
-  outline-offset: 2px;
-}
-
-.lp-route-modal__image {
-  width: 100%;
-  height: auto;
-  max-height: calc(92dvh - 120px);
-  object-fit: cover;
-  display: block;
-  background: #f3f4f6;
-}
-
-@media (max-width: 640px) {
-  .lp-route-btn {
-    min-height: 52px;
-    font-size: 0.95rem;
-    padding: 0.85rem 1rem;
-  }
-
-  .lp-route-modal-overlay {
-    padding: 0.5rem;
-    align-items: flex-end;
-  }
-
-  .lp-route-modal {
-    width: 100%;
-    max-height: 95dvh;
-    border-radius: 16px 16px 0 0;
-  }
-
-  .lp-route-modal__header {
-    padding: 0.9rem 0.9rem 0.7rem 0.9rem;
-  }
-
-  .lp-route-modal__header h3 {
-    font-size: 1.15rem;
-    line-height: 1.3;
-  }
-
-  .lp-route-modal__image {
-    max-height: calc(95dvh - 108px);
-  }
 }
 
 /* --- Primary submit CTA inside lp-reg-card (paired with pricing block) --- */

@@ -47,12 +47,15 @@ export const NOTARIS_REGISTRATION_INFO = {
   panelTitle: 'Tentang I.N.I',
   panelSubtitle: 'Pendaftaran peserta Notaris',
   intro:
-    'Ikatan Notaris Indonesia adalah organisasi profesi bagi notaris di seluruh Indonesia. INI berperan menjaga standar profesi, etika, dan kualitas layanan hukum notaris.',
+    'Ikatan Notaris Indonesia (INI) adalah organisasi profesi bagi notaris di seluruh Indonesia. INI berperan menjaga standar profesi, etika, dan kualitas layanan hukum notaris.',
   registrationNote:
     'Pendaftaran sebagai peserta Notaris berbeda dengan peserta umum. Calon peserta Notaris wajib memiliki akun aktif di portal resmi INI agar dapat divalidasi. Tanpa akun yang valid, peserta akan tercatat sebagai peserta umum.',
+  /** Ringkas untuk callout di kartu tiket */
+  registrationReminder:
+    'Wajib akun portal INI aktif untuk validasi peserta Notaris. Tanpa itu, pendaftaran diperlakukan sebagai peserta umum.',
   benefit:
-    'Keunggulan mendaftar sebagai Notaris: Anda berhak mendapat 6 poin sertifikat yang dapat diunduh setelah ketentuan acara terpenuhi.',
-  ctaLabel: 'Buka portal ikatannotarisindonesia.id',
+    'Notaris yang menyelesaikan NOTARACE ini berhak mendapat 6 poin (sesuai ketentuan dan mekanisme yang berlaku di portal INI).',
+  ctaLabel: 'Buka portal Ikatan Notaris Indonesia',
 } as const;
 
 export const PRICING_NOTARIS_IDR = {

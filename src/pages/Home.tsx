@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Camera, Calendar, MapPin, ChevronRight, Clock, Flag, Award, Image as ImageIcon } from 'lucide-react';
+import { Activity, Camera, Calendar, MapPin, ChevronRight, Clock, ExternalLink, Flag, Award, Footprints, Image as ImageIcon } from 'lucide-react';
 
 import {
   EVENT_META,
+  INI_PORTAL_URL,
+  NOTARIS_REGISTRATION_INFO,
   PRICING_NOTARIS_IDR,
-  RACE_CATEGORY_CARDS,
   CATEGORY_DETAILS_ROWS,
-  RACE_PACK_ITEMS,
   FAQ_PLACEHOLDERS,
   SPONSOR_TIER_PLACEHOLDERS,
   TIMELINE_EVENTS,
 } from '../data/eventInfo';
+
+/** Logo INI: letakkan PNG apa adanya di `public/ini-logo.png` (Vite menyajikan file itu langsung, tanpa pemrosesan). */
+const INI_LOGO_PNG = `${import.meta.env.BASE_URL}ini-logo.png`;
 
 const formatIdr = (n: number) =>
   `Rp.${n.toLocaleString('id-ID')}`;
@@ -286,16 +289,16 @@ export const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* Tickets & registration */}
+        {/* Kategori, race pack, harga & pendaftaran (satu section) */}
         <section className="lp-section" aria-labelledby="pendaftaran-heading">
           <div className="container" style={{ flex: 1, maxWidth: '1100px' }}>
             <div id="pendaftaran" className="lp-section-head">
-              <span className="lp-section-eyebrow">Kategori & harga (Notaris)</span>
+              <span className="lp-section-eyebrow">Kategori & pendaftaran Notaris</span>
               <h2 id="pendaftaran-heading" className="lp-section-title">
-                Pendaftaran & tiket
+                Race pack, detail kategori & tiket
               </h2>
               <p className="lp-section-desc">
-                {EVENT_META.registrationDeadlinePlaceholder}
+                Race pack, rute, cut-off, dan ketentuan usia per jarak tercantum pada kartu di bawah.
               </p>
             </div>
 
@@ -303,173 +306,216 @@ export const Home: React.FC = () => {
               <div className="lp-reg-card">
                 <div
                   style={{
-                    background: 'linear-gradient(135deg, rgba(232, 73, 43, 0.08) 0%, rgba(245, 166, 35, 0.12) 45%, rgba(16, 185, 129, 0.1) 100%)',
-                    padding: '1.75rem 1.25rem 1.35rem',
+                    padding: '1.25rem clamp(1rem, 3vw, 1.75rem) 1.5rem',
                     borderBottom: '1px solid rgba(0,0,0,0.06)',
+                    background: 'linear-gradient(180deg, #FFFBF7 0%, #FFF5F1 100%)',
                   }}
                 >
                   <p style={{
                     textAlign: 'center',
                     fontWeight: 800,
-                    fontSize: '0.78rem',
-                    letterSpacing: '0.18em',
-                    color: '#E8492B',
-                    marginBottom: '1.1rem',
+                    fontSize: '0.72rem',
+                    letterSpacing: '0.14em',
+                    color: '#6B7280',
+                    marginBottom: '1rem',
+                    textTransform: 'uppercase',
                   }}>
-                    PILIH KATEGORI
+                    Harga tiket sama untuk 10K, 5K, 2,5K
                   </p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', justifyContent: 'center' }}>
-                    {RACE_CATEGORY_CARDS.map((cat) => (
-                      <div
-                        key={cat.key}
-                        style={{
-                          flex: '1 1 150px',
-                          maxWidth: '240px',
-                          minWidth: '130px',
-                          borderRadius: '16px',
-                          padding: '1.1rem 1rem 1.15rem',
-                          background: 'white',
-                          boxShadow: '0 6px 20px rgba(0,0,0,0.07)',
-                          borderTop: `4px solid ${cat.borderHex}`,
-                          textAlign: 'center',
-                        }}
-                      >
-                        <div style={{
-                          fontSize: '0.68rem',
-                          fontWeight: 800,
-                          letterSpacing: '0.12em',
-                          color: '#9CA3AF',
-                          marginBottom: '0.4rem',
-                        }}>
-                          JARAK
-                        </div>
-                        <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#111827', lineHeight: 1.2 }}>
-                          {cat.headline}
-                        </div>
-                        <div style={{ fontSize: '1.05rem', fontWeight: 800, color: cat.accentHex, marginTop: '0.2rem' }}>
-                          {cat.subline}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'stretch' }}>
-                  <div style={{
-                    flex: '1 1 320px',
-                    padding: '1.25rem',
-                    background: 'linear-gradient(180deg, #FFFBF7 0%, #FFF5F1 100%)',
-                    borderRight: '1px solid rgba(0,0,0,0.06)',
-                    display: 'flex',
-                    alignItems: 'stretch',
-                  }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center', alignItems: 'stretch' }}>
                     <div style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '100%',
+                      flex: '1 1 160px',
+                      maxWidth: '280px',
+                      background: '#FFF7ED',
                       borderRadius: '14px',
-                      overflow: 'hidden',
-                      border: '1px solid rgba(232, 73, 43, 0.15)',
-                      background: 'rgba(255,255,255,0.55)',
+                      padding: '1rem 1.15rem',
+                      border: '1px solid rgba(245, 158, 11, 0.25)',
+                      textAlign: 'center',
                     }}>
-                      <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        textAlign: 'center',
-                        padding: 'clamp(1.1rem, 3vw, 1.85rem) 1rem',
-                        borderBottom: '1px solid rgba(232, 73, 43, 0.12)',
-                      }}>
-                        <p className="font-bold" style={{ color: '#991B1B', marginBottom: '0.45rem', fontSize: 'clamp(0.72rem, 1.9vw, 0.82rem)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                          Early bird
-                        </p>
-                        <p style={{
-                          margin: 0,
-                          fontWeight: 900,
-                          color: '#E8492B',
-                          fontSize: 'clamp(1.35rem, 5vw, 2.25rem)',
-                          lineHeight: 1.15,
-                          wordBreak: 'break-word',
-                        }}>
-                          {formatIdr(PRICING_NOTARIS_IDR.earlyBird)}
-                          <span style={{ fontSize: '0.52em', fontWeight: 800 }}>/tiket</span>
-                        </p>
+                      <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#D97706', letterSpacing: '0.1em', marginBottom: '0.35rem' }}>EARLY BIRD</div>
+                      <div style={{ fontWeight: 900, color: '#111827', fontSize: 'clamp(1.15rem, 4vw, 1.65rem)' }}>
+                        {formatIdr(PRICING_NOTARIS_IDR.earlyBird)}<span style={{ fontSize: '0.55em', fontWeight: 800 }}>/tiket</span>
                       </div>
-                      <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        textAlign: 'center',
-                        padding: 'clamp(1.1rem, 3vw, 1.85rem) 1rem',
-                      }}>
-                        <p className="font-bold" style={{ color: '#991B1B', marginBottom: '0.45rem', fontSize: 'clamp(0.72rem, 1.9vw, 0.82rem)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                          Normal
-                        </p>
-                        <p style={{
-                          margin: 0,
-                          fontWeight: 900,
-                          color: '#E8492B',
-                          fontSize: 'clamp(1.35rem, 5vw, 2.25rem)',
-                          lineHeight: 1.15,
-                          wordBreak: 'break-word',
-                        }}>
-                          {formatIdr(PRICING_NOTARIS_IDR.normal)}
-                          <span style={{ fontSize: '0.52em', fontWeight: 800 }}>/tiket</span>
-                        </p>
+                    </div>
+                    <div style={{
+                      flex: '1 1 160px',
+                      maxWidth: '280px',
+                      background: '#F9FAFB',
+                      borderRadius: '14px',
+                      padding: '1rem 1.15rem',
+                      border: '1px solid rgba(0,0,0,0.06)',
+                      textAlign: 'center',
+                    }}>
+                      <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#6B7280', letterSpacing: '0.1em', marginBottom: '0.35rem' }}>NORMAL</div>
+                      <div style={{ fontWeight: 900, color: '#111827', fontSize: 'clamp(1.15rem, 4vw, 1.65rem)' }}>
+                        {formatIdr(PRICING_NOTARIS_IDR.normal)}<span style={{ fontSize: '0.55em', fontWeight: 800 }}>/tiket</span>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div style={{
-                    flex: '1 1 260px',
-                    padding: '2rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    textAlign: 'center',
-                    background: 'white',
-                  }}>
-                    <p className="text-sm font-bold mb-1" style={{ color: '#E8492B' }}>Mulai dari (early bird)</p>
-                    <p className="text-4xl font-extrabold mb-6" style={{ color: '#111827' }}>
-                      {formatIdr(PRICING_NOTARIS_IDR.earlyBird)}<span className="text-xl font-bold">/tiket</span>
-                    </p>
-                    <a
-                      href={ticketLinkReady ? ticketHref : '#'}
-                      target={ticketLinkReady ? '_blank' : undefined}
-                      rel={ticketLinkReady ? 'noopener noreferrer' : undefined}
-                      onClick={(e) => {
-                        if (!ticketLinkReady) e.preventDefault();
-                      }}
-                      aria-disabled={!ticketLinkReady}
+                <div className="lp-ini-banner" role="region" aria-labelledby="ini-reg-heading">
+                  <div className="lp-ini-banner__grid">
+                    <div>
+                      <h3 id="ini-reg-heading" className="lp-ini-banner__title">
+                        {NOTARIS_REGISTRATION_INFO.panelTitle}
+                      </h3>
+                      <p className="lp-ini-banner__subtitle">{NOTARIS_REGISTRATION_INFO.panelSubtitle}</p>
+                    </div>
+                    <div className="lp-ini-banner__body">
+                      <p className="lp-ini-banner__text">{NOTARIS_REGISTRATION_INFO.intro}</p>
+                      <p className="lp-ini-banner__text">{NOTARIS_REGISTRATION_INFO.registrationNote}</p>
+                      <p className="lp-ini-banner__text">{NOTARIS_REGISTRATION_INFO.benefit}</p>
+                      <a
+                        href={INI_PORTAL_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="lp-ini-banner__cta"
+                      >
+                        {NOTARIS_REGISTRATION_INFO.ctaLabel}
+                        <ExternalLink size={18} strokeWidth={2.25} aria-hidden />
+                      </a>
+                    </div>
+                    <div className="lp-ini-banner__mark">
+                      <img
+                        src={INI_LOGO_PNG}
+                        alt="Logo Ikatan Notaris Indonesia"
+                        className="lp-ini-banner__logo"
+                        width={140}
+                        height={158}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ padding: '1.35rem clamp(0.85rem, 2.5vw, 1.35rem) 0', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                  {CATEGORY_DETAILS_ROWS.map((row) => (
+                    <div
+                      key={row.category}
                       style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '0.35rem',
-                        width: '100%',
-                        maxWidth: '300px',
-                        padding: '0.85rem 1.5rem',
-                        borderRadius: '9999px',
-                        fontWeight: 800,
-                        fontSize: '0.88rem',
-                        letterSpacing: '0.08em',
-                        textDecoration: 'none',
-                        color: 'white',
-                        background: ticketLinkReady
-                          ? 'linear-gradient(135deg, #E8492B 0%, #EA580C 55%, #F97316 100%)'
-                          : 'linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%)',
-                        boxShadow: ticketLinkReady ? '0 10px 28px rgba(232, 73, 43, 0.38)' : 'none',
-                        cursor: ticketLinkReady ? 'pointer' : 'not-allowed',
-                        opacity: ticketLinkReady ? 1 : 0.85,
+                        background: 'white',
+                        borderRadius: '20px',
+                        overflow: 'hidden',
+                        boxShadow: '0 8px 30px rgba(0,0,0,0.07)',
+                        border: '1px solid rgba(0,0,0,0.04)',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
                       }}
                     >
-                      DAFTAR SEKARANG
-                      <ChevronRight size={20} strokeWidth={2.5} />
-                    </a>
-                  </div>
+                      <div
+                        className="category-card-accent"
+                        style={{
+                          background: `linear-gradient(160deg, ${row.gradient[0]}, ${row.gradient[1]})`,
+                          padding: '2rem',
+                          minWidth: '180px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'flex-start',
+                          justifyContent: 'center',
+                          gap: '0.5rem',
+                        }}
+                      >
+                        <div style={{
+                          width: '52px',
+                          height: '52px',
+                          background: 'rgba(255,255,255,0.2)',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginBottom: '0.25rem',
+                        }}>
+                          {row.typeLabel === 'Fun Walk' ? (
+                            <Footprints size={28} strokeWidth={2.25} color="#fff" aria-hidden />
+                          ) : (
+                            <Activity size={28} strokeWidth={2.25} color="#fff" aria-hidden />
+                          )}
+                        </div>
+                        <div style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.18em', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>
+                          {row.typeLabel}
+                        </div>
+                        <div style={{ fontSize: '2.75rem', fontWeight: 900, color: 'white', lineHeight: 1, letterSpacing: '-0.02em' }}>
+                          {row.jarak}
+                        </div>
+                      </div>
+
+                      <div style={{ flex: 1, minWidth: '280px', padding: '1.75rem 2rem', display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#9CA3AF', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Cut-off time</div>
+                          <div style={{ fontWeight: 800, color: row.cutoff === 'Menyusul' ? '#F5A623' : '#111827', fontSize: '1rem' }}>
+                            {row.cutoff}
+                          </div>
+                        </div>
+
+                        <div style={{ height: '1px', background: '#F3F4F6' }} />
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
+                          <div>
+                            <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#E8492B', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Race pack</div>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+                              {row.racePack.map((item) => (
+                                <span key={item} style={{ background: '#FFF1EE', color: '#C13118', fontWeight: 700, fontSize: '0.78rem', padding: '0.2rem 0.6rem', borderRadius: '99px' }}>
+                                  {item}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#8B5CF6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Rute</div>
+                            <p style={{ color: '#6B7280', margin: 0, fontSize: '0.85rem', lineHeight: 1.5 }}>{row.route}</p>
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#10B981', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Ketentuan usia</div>
+                            <p style={{ color: '#6B7280', margin: 0, fontSize: '0.85rem', lineHeight: 1.5 }}>{row.ageRule}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{
+                  padding: '1.75rem clamp(1rem, 3vw, 2rem) 2rem',
+                  borderTop: '1px solid rgba(0,0,0,0.06)',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}>
+                  <a
+                    href={ticketLinkReady ? ticketHref : '#'}
+                    target={ticketLinkReady ? '_blank' : undefined}
+                    rel={ticketLinkReady ? 'noopener noreferrer' : undefined}
+                    onClick={(e) => {
+                      if (!ticketLinkReady) e.preventDefault();
+                    }}
+                    aria-disabled={!ticketLinkReady}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.35rem',
+                      width: '100%',
+                      maxWidth: '340px',
+                      padding: '0.85rem 1.5rem',
+                      borderRadius: '9999px',
+                      fontWeight: 800,
+                      fontSize: '0.88rem',
+                      letterSpacing: '0.08em',
+                      textDecoration: 'none',
+                      color: 'white',
+                      background: ticketLinkReady
+                        ? 'linear-gradient(135deg, #E8492B 0%, #EA580C 55%, #F97316 100%)'
+                        : 'linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%)',
+                      boxShadow: ticketLinkReady ? '0 10px 28px rgba(232, 73, 43, 0.38)' : 'none',
+                      cursor: ticketLinkReady ? 'pointer' : 'not-allowed',
+                      opacity: ticketLinkReady ? 1 : 0.85,
+                    }}
+                  >
+                    DAFTAR SEKARANG
+                    <ChevronRight size={20} strokeWidth={2.5} aria-hidden />
+                  </a>
                 </div>
               </div>
             </div>
@@ -515,108 +561,6 @@ export const Home: React.FC = () => {
         <div style={{ background: '#F3F4F6', padding: '4rem 1.5rem', borderTop: '1px solid #e5e7eb' }}>
           <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
 
-            <div id="detail-lomba" style={{ marginBottom: '3.5rem' }}>
-              <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '0.75rem' }}>DETAIL LOMBA</span>
-              <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#111827', marginBottom: '0.5rem' }}>Kategori & race pack</h2>
-              <p style={{ color: '#6B7280', marginBottom: '2rem', fontSize: '1rem' }}>
-                Setiap kategori memiliki rute, race pack, dan ketentuan tersendiri.
-              </p>
-
-              {/* Vertical category cards */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                {CATEGORY_DETAILS_ROWS.map((row) => (
-                  <div key={row.category} style={{
-                    background: 'white',
-                    borderRadius: '20px',
-                    overflow: 'hidden',
-                    boxShadow: '0 8px 30px rgba(0,0,0,0.07)',
-                    border: '1px solid rgba(0,0,0,0.04)',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                  }}>
-                    {/* Left accent panel */}
-                    <div className="category-card-accent" style={{
-                      background: `linear-gradient(160deg, ${row.gradient[0]}, ${row.gradient[1]})`,
-                      padding: '2rem',
-                      minWidth: '180px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      justifyContent: 'center',
-                      gap: '0.5rem',
-                    }}>
-                      <div style={{
-                        width: '52px', height: '52px',
-                        background: 'rgba(255,255,255,0.2)',
-                        borderRadius: '50%',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '1.5rem',
-                        marginBottom: '0.25rem',
-                      }}>
-                        {row.emoji}
-                      </div>
-                      <div style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.18em', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>
-                        {row.typeLabel}
-                      </div>
-                      <div style={{ fontSize: '2.75rem', fontWeight: 900, color: 'white', lineHeight: 1, letterSpacing: '-0.02em' }}>
-                        {row.jarak}
-                      </div>
-                    </div>
-
-                    {/* Right details panel */}
-                    <div style={{ flex: 1, minWidth: '280px', padding: '1.75rem 2rem', display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
-
-                      {/* Cut-off + Pricing row */}
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-                        <div style={{ flex: '1 1 120px' }}>
-                          <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#9CA3AF', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Cut-off time</div>
-                          <div style={{ fontWeight: 800, color: row.cutoff === 'Menyusul' ? '#F5A623' : '#111827', fontSize: '1rem' }}>
-                            {row.cutoff}
-                          </div>
-                        </div>
-                        <div style={{ flex: '1 1 220px', display: 'flex', gap: '0.6rem' }}>
-                          <div style={{ flex: 1, background: '#FFF7ED', borderRadius: '10px', padding: '0.55rem 0.85rem' }}>
-                            <div style={{ fontSize: '0.6rem', fontWeight: 800, color: '#F5A623', letterSpacing: '0.1em', marginBottom: '0.15rem' }}>EARLY BIRD</div>
-                            <div style={{ fontWeight: 900, color: '#111827', fontSize: '0.95rem' }}>{formatIdr(row.earlyBird)}</div>
-                          </div>
-                          <div style={{ flex: 1, background: '#F9FAFB', borderRadius: '10px', padding: '0.55rem 0.85rem' }}>
-                            <div style={{ fontSize: '0.6rem', fontWeight: 800, color: '#6B7280', letterSpacing: '0.1em', marginBottom: '0.15rem' }}>NORMAL</div>
-                            <div style={{ fontWeight: 900, color: '#111827', fontSize: '0.95rem' }}>{formatIdr(row.normal)}</div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div style={{ height: '1px', background: '#F3F4F6' }} />
-
-                      {/* Race pack + Route + Age in a grid */}
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
-                        <div>
-                          <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#E8492B', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Race Pack</div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
-                            {row.racePack.map(item => (
-                              <span key={item} style={{ background: '#FFF1EE', color: '#C13118', fontWeight: 700, fontSize: '0.78rem', padding: '0.2rem 0.6rem', borderRadius: '99px' }}>
-                                {item}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                        <div>
-                          <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#8B5CF6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Rute</div>
-                          <p style={{ color: '#6B7280', margin: 0, fontSize: '0.85rem', lineHeight: 1.5 }}>{row.route}</p>
-                        </div>
-                        <div>
-                          <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#10B981', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Ketentuan usia</div>
-                          <p style={{ color: '#6B7280', margin: 0, fontSize: '0.85rem', lineHeight: 1.5 }}>{row.ageRule}</p>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             {/* <div id="ketentuan-pendaftaran" style={{ marginBottom: '3.5rem' }}>
               <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '1rem' }}>PENDAFTARAN</span>
               <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#111827', marginBottom: '1rem' }}>Link, periode harga & kebijakan</h2>
@@ -634,7 +578,7 @@ export const Home: React.FC = () => {
                 </p>
                 <p style={{ margin: '0 0 0.75rem' }}>
                   <strong>Harga Notaris (sama untuk 10K, 5K, Fun Walk 2,5K):</strong> early bird {formatIdr(PRICING_NOTARIS_IDR.earlyBird)}
-                  {' '}• normal {formatIdr(PRICING_NOTARIS_IDR.normal)} • late {EVENT_META.latePricePlaceholder}
+                  {' '}• normal {formatIdr(PRICING_NOTARIS_IDR.normal)}
                 </p>
                 <p style={{ margin: '0 0 0.75rem' }}><strong>Batas pendaftaran:</strong> {EVENT_META.registrationDeadlinePlaceholder}</p>
                 <p style={{ margin: 0 }}><strong>Refund & pembatalan:</strong> {EVENT_META.refundPolicyPlaceholder}</p>
@@ -856,7 +800,7 @@ export const Home: React.FC = () => {
         <div className="flex justify-center gap-8 mb-8 flex-wrap">
           <Link to="/" style={{ color: '#4B5563', textDecoration: 'none', fontWeight: 600 }}>Home</Link>
           <button type="button" onClick={scrollToSection('pendaftaran')} style={{ background: 'none', border: 'none', color: '#4B5563', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}>Pendaftaran</button>
-          <button type="button" onClick={scrollToSection('detail-lomba')} style={{ background: 'none', border: 'none', color: '#4B5563', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}>Detail lomba</button>
+          <button type="button" onClick={scrollToSection('pendaftaran')} style={{ background: 'none', border: 'none', color: '#4B5563', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}>Detail lomba</button>
           <button type="button" onClick={scrollToSection('faq')} style={{ background: 'none', border: 'none', color: '#4B5563', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}>FAQ</button>
           <button type="button" onClick={scrollToSection('kontak')} style={{ background: 'none', border: 'none', color: '#4B5563', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}>Kontak</button>
         </div>

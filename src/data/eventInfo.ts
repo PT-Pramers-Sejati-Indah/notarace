@@ -37,76 +37,38 @@ export const EVENT_META = {
   registrationDeadlinePlaceholder: 'Batas waktu pendaftaran menyusul.',
   refundPolicyPlaceholder:
     'Kebijakan refund & pembatalan menyusul — akan dipublikasikan bersama channel pendaftaran resmi.',
-  latePricePlaceholder: 'Harga periode late registration menyusul.',
   footerTagline: 'Meriahkan HUT INI ke-118 — edisi kedua.',
+} as const;
+
+/** Portal resmi PP Ikatan Notaris Indonesia — verifikasi peserta Notaris NOTARACE. */
+export const INI_PORTAL_URL = 'https://www.ikatannotarisindonesia.id/beranda' as const;
+
+export const NOTARIS_REGISTRATION_INFO = {
+  panelTitle: 'Tentang I.N.I',
+  panelSubtitle: 'Pendaftaran peserta Notaris',
+  intro:
+    'Ikatan Notaris Indonesia adalah organisasi profesi bagi notaris di seluruh Indonesia. INI berperan menjaga standar profesi, etika, dan kualitas layanan hukum notaris.',
+  registrationNote:
+    'Pendaftaran sebagai peserta Notaris berbeda dengan peserta umum. Calon peserta Notaris wajib memiliki akun aktif di portal resmi INI agar dapat divalidasi. Tanpa akun yang valid, peserta akan tercatat sebagai peserta umum.',
+  benefit:
+    'Keunggulan mendaftar sebagai Notaris: Anda berhak mendapat 6 poin sertifikat yang dapat diunduh setelah ketentuan acara terpenuhi.',
+  ctaLabel: 'Buka portal ikatannotarisindonesia.id',
 } as const;
 
 export const PRICING_NOTARIS_IDR = {
   earlyBird: 475_000,
   normal: 650_000,
-  late: null as number | null,
 } as const;
 
 /** Dasar perhitungan alur checkout demo (periode early bird). */
 export const MOCK_CHECKOUT_BASE_PRICE_IDR = PRICING_NOTARIS_IDR.earlyBird;
-
-export const RACE_PACK_ITEMS: readonly string[] = ['Jersey', 'Medali'];
-
-export type RaceCategoryKey = '2.5K' | '5K' | '10K';
-
-export interface RaceCategoryCard {
-  key: RaceCategoryKey;
-  headline: string;
-  subline: string;
-  gradient: [string, string];
-  shadowColor: string;
-  middleBg: string;
-  accentHex: string;
-  borderHex: string;
-}
-
-export const RACE_CATEGORY_CARDS: RaceCategoryCard[] = [
-  {
-    key: '2.5K',
-    headline: '2,5K',
-    subline: 'FUN WALK',
-    gradient: ['#A855F7', '#EC4899'],
-    shadowColor: '#E8492B',
-    middleBg: '#FFF5F1',
-    accentHex: '#E8492B',
-    borderHex: '#F5A623',
-  },
-  {
-    key: '5K',
-    headline: '5K',
-    subline: 'RUN',
-    gradient: ['#8B5CF6', '#3B82F6'],
-    shadowColor: '#1E3A8A',
-    middleBg: '#EFF6FF',
-    accentHex: '#2563EB',
-    borderHex: '#3B82F6',
-  },
-  {
-    key: '10K',
-    headline: '10K',
-    subline: 'RUN',
-    gradient: ['#10B981', '#059669'],
-    shadowColor: '#064E3B',
-    middleBg: '#ECFDF5',
-    accentHex: '#059669',
-    borderHex: '#10B981',
-  },
-];
 
 export interface CategoryDetailRow {
   category: string;
   jarak: string;
   cutoff: string;
   typeLabel: string;
-  emoji: string;
   gradient: [string, string];
-  earlyBird: number;
-  normal: number;
   racePack: string[];
   route: string;
   ageRule: string;
@@ -118,10 +80,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     jarak: '10 km',
     cutoff: 'Menyusul',
     typeLabel: 'Run',
-    emoji: '🏃',
     gradient: ['#10B981', '#059669'],
-    earlyBird: PRICING_NOTARIS_IDR.earlyBird,
-    normal: PRICING_NOTARIS_IDR.normal,
     racePack: ['Jersey', 'Medali', 'BIB'],
     route: 'Rute 10K menyusul — akan tersedia sebagai file GPX.',
     ageRule: 'Minimum usia 17 tahun.',
@@ -131,10 +90,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     jarak: '5 km',
     cutoff: 'Menyusul',
     typeLabel: 'Run',
-    emoji: '🏃',
     gradient: ['#8B5CF6', '#3B82F6'],
-    earlyBird: PRICING_NOTARIS_IDR.earlyBird,
-    normal: PRICING_NOTARIS_IDR.normal,
     racePack: ['Jersey', 'Medali', 'BIB'],
     route: 'Rute 5K menyusul — akan tersedia sebagai file GPX.',
     ageRule: 'Minimum usia 13 tahun.',
@@ -144,10 +100,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     jarak: '2,5 km',
     cutoff: 'Menyusul',
     typeLabel: 'Fun Walk',
-    emoji: '🚶',
     gradient: ['#A855F7', '#EC4899'],
-    earlyBird: PRICING_NOTARIS_IDR.earlyBird,
-    normal: PRICING_NOTARIS_IDR.normal,
     racePack: ['Jersey', 'Medali'],
     route: 'Rute Fun Walk 2,5K menyusul.',
     ageRule: 'Terbuka untuk semua usia (anak-anak wajib didampingi).',

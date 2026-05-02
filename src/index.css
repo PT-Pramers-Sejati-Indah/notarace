@@ -419,6 +419,124 @@ a:focus-visible {
   border: 1px solid rgba(17, 24, 39, 0.06);
 }
 
+/* INI / pendaftaran Notaris — kartu lembut, selaras strip harga & kartu kategori */
+.lp-ini-banner {
+  margin: clamp(0.75rem, 2vw, 1rem) clamp(0.65rem, 2vw, 1.15rem) clamp(1rem, 2.5vw, 1.35rem);
+  padding: clamp(1.35rem, 3.5vw, 1.85rem) clamp(1.1rem, 3vw, 1.65rem);
+  border-radius: var(--lp-radius-md);
+  border: 1px solid rgba(232, 73, 43, 0.14);
+  border-left: 4px solid var(--color-accent);
+  background: linear-gradient(165deg, #fffdfb 0%, #fff8f4 42%, #fef3ee 100%);
+  box-shadow: var(--lp-shadow-soft);
+}
+
+.lp-ini-banner__grid {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 768px) {
+  .lp-ini-banner__grid {
+    grid-template-columns: minmax(130px, 1fr) minmax(0, 2.4fr) auto;
+    gap: clamp(1.25rem, 3vw, 2rem);
+    align-items: start;
+  }
+}
+
+.lp-ini-banner__title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.25rem, 3vw, 1.65rem);
+  line-height: 1.2;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.lp-ini-banner__subtitle {
+  margin: 0.45rem 0 0;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.lp-ini-banner__body {
+  min-width: 0;
+}
+
+.lp-ini-banner__text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  max-width: 58ch;
+}
+
+.lp-ini-banner__text + .lp-ini-banner__text {
+  margin-top: 0.75rem;
+}
+
+.lp-ini-banner__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.15rem;
+  padding: 0.75rem 1.35rem;
+  min-height: 48px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #ea580c 55%, #f97316 100%);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(232, 73, 43, 0.28);
+  transition: filter var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.lp-ini-banner__cta:hover {
+  color: #fff;
+  filter: brightness(1.05);
+  box-shadow: 0 10px 26px rgba(232, 73, 43, 0.34);
+}
+
+.lp-ini-banner__cta:focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 3px;
+}
+
+.lp-ini-banner__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lp-ini-banner__logo {
+  display: block;
+  width: clamp(5.25rem, 13vw, 6.75rem);
+  height: auto;
+  max-height: 140px;
+  object-fit: contain;
+}
+
+@media (max-width: 767px) {
+  .lp-ini-banner__mark {
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-ini-banner__cta {
+    transition: none;
+  }
+}
+
 a { color: var(--color-accent); text-decoration: none; transition: color var(--transition-fast); }
 a:hover { color: var(--color-accent-hover); }
 

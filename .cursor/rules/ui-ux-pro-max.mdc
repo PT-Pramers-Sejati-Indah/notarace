@@ -1,0 +1,15 @@
+---
+description: UI/UX design — always use the project UI skill for styling and interface work
+alwaysApply: true
+---
+
+# UI & styling authority
+
+For **any** task that changes how the product **looks, feels, moves, or is interacted with** (pages, components, CSS, layout, typography, color, animation, forms, navigation, a11y):
+
+1. **Read and follow** `docs/skills/ui-ux-pro-max/SKILL.md` (UI/UX Pro Max).
+2. Prioritize its checklist order: **accessibility → touch/interaction → performance → style → layout → typography/color → animation**, then forms and navigation as relevant.
+3. **Reuse** existing project tokens and patterns in `src/index.css` (e.g. `--color-accent`, `--font-heading`, `lp-*` landing classes) before introducing one-off styles.
+4. **Do not** use emoji as UI icons; use **Lucide** (or SVG) consistently with stable stroke/hover/focus states.
+
+If the task is backend-only or non-visual, ignore this rule.

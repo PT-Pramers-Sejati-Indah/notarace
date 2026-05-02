@@ -61,7 +61,7 @@ const Navbar = () => {
       </button>
 
       <div className={`navbar-links ${isMenuOpen ? 'open' : ''}`}>
-        <Link to="/" className="font-medium hover:text-accent" onClick={closeMenu}>Home</Link>
+        <Link to="/" className="font-medium hover:text-accent" onClick={() => { closeMenu(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Home</Link>
         <button className="navbar-scroll-link" onClick={scrollToSection('timeline')}>Timeline</button>
         <button className="navbar-scroll-link" onClick={scrollToSection('faq')}>FAQ</button>
         {featureFlags.results && <Link to="/results" className="font-medium hover:text-accent" onClick={closeMenu}>Hasil Lomba</Link>}

@@ -5,14 +5,14 @@
 export const EVENT_META = {
   name: 'NOTARACE 2026',
   taglinePlaceholder:
-    'Tagline resmi akan diumumkan — pantau @notarace.id untuk info terbaru.',
+    'Tagline resmi akan diumumkan. Pantau @notarace.id untuk info terbaru.',
   edition: 'Edisi ke-2',
   story:
     'Acara ini diadakan dalam rangka memperingati Hari Ulang Tahun Ikatan Notaris Indonesia (INI) ke-118.',
   raceDateLabel: '26 Juli 2026',
   raceTimePlaceholder: 'Waktu pelaksanaan menyusul',
   raceStartISO: '2026-07-26T06:00:00+07:00',
-  venueShort: 'Eastvara — BSD City',
+  venueShort: 'Eastvara, BSD City',
   venueAddress:
     'Jl. BSD Boulevard Utara, Cijantra, Pagedangan, Kabupaten Tangerang, Banten 15345',
   googleMapsUrl:
@@ -22,9 +22,9 @@ export const EVENT_META = {
   topBanner: '26 JULI 2026 • EASTVARA BSD CITY',
   instagramUrl: 'https://instagram.com/notarace.id',
   instagramHandle: '@notarace.id',
-  tiktokPlaceholder: 'TikTok — akun resmi menyusul',
-  emailPlaceholder: 'Email panitia — menyusul',
-  whatsappPlaceholder: 'WhatsApp panitia — menyusul',
+  tiktokPlaceholder: 'TikTok (akun resmi menyusul)',
+  emailPlaceholder: 'Email panitia (menyusul)',
+  whatsappPlaceholder: 'WhatsApp panitia (menyusul)',
   /** URL halaman tiket / pendaftaran (mockup — ganti dengan link produksi). */
   ticketRegistrationUrl: 'https://example.com/notarace-2026-daftar',
   racePackPickupSummary: '24–25 Juli 2026',
@@ -36,8 +36,8 @@ export const EVENT_META = {
   ageRulesPlaceholder: 'Ketentuan usia minimum/maksimum per kategori menyusul.',
   registrationDeadlinePlaceholder: 'Batas waktu pendaftaran menyusul.',
   refundPolicyPlaceholder:
-    'Kebijakan refund & pembatalan menyusul — akan dipublikasikan bersama channel pendaftaran resmi.',
-  footerTagline: 'Meriahkan HUT INI ke-118 — edisi kedua.',
+    'Kebijakan refund & pembatalan menyusul, akan dipublikasikan bersama channel pendaftaran resmi.',
+  footerTagline: 'Meriahkan HUT INI ke-118, edisi kedua.',
 } as const;
 
 /** Portal resmi PP Ikatan Notaris Indonesia — verifikasi peserta Notaris NOTARACE. */
@@ -82,7 +82,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     typeLabel: 'Run',
     gradient: ['#10B981', '#059669'],
     racePack: ['Jersey', 'Medali', 'BIB'],
-    route: 'Rute 10K menyusul — akan tersedia sebagai file GPX.',
+    route: 'Rute 10K menyusul, akan tersedia sebagai file GPX.',
     ageRule: 'Minimum usia 17 tahun.',
   },
   {
@@ -92,7 +92,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     typeLabel: 'Run',
     gradient: ['#8B5CF6', '#3B82F6'],
     racePack: ['Jersey', 'Medali', 'BIB'],
-    route: 'Rute 5K menyusul — akan tersedia sebagai file GPX.',
+    route: 'Rute 5K menyusul, akan tersedia sebagai file GPX.',
     ageRule: 'Minimum usia 13 tahun.',
   },
   {
@@ -115,19 +115,19 @@ export const FAQ_PLACEHOLDERS: { q: string; a: string }[] = [
   {
     q: 'Kapan batas pendaftaran?',
     a:
-      'Batas waktu pendaftaran menyusul — akan diumumkan di kanal resmi @notarace.id.',
+      'Batas waktu pendaftaran menyusul, akan diumumkan di kanal resmi @notarace.id.',
   },
   {
     q: 'Bagaimana kebijakan refund dan pembatalan?',
     a:
-      'Kebijakan refund & pembatalan menyusul — akan dipublikasikan bersama channel pendaftaran resmi.',
+      'Kebijakan refund & pembatalan menyusul, akan dipublikasikan bersama channel pendaftaran resmi.',
   },
 ];
 
 export const SPONSOR_TIER_PLACEHOLDERS: { tier: string; note: string }[] = [
-  { tier: 'Title Sponsor', note: 'Logo & nama — menyusul' },
-  { tier: 'Official Partner', note: 'Logo & nama — menyusul' },
-  { tier: 'Supporting Partner', note: 'Logo & nama — menyusul' },
+  { tier: 'Title Sponsor', note: 'Logo & nama (menyusul)' },
+  { tier: 'Official Partner', note: 'Logo & nama (menyusul)' },
+  { tier: 'Supporting Partner', note: 'Logo & nama (menyusul)' },
 ];
 
 export const TIMELINE_EVENTS = [

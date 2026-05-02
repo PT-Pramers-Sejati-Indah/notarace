@@ -197,7 +197,7 @@ export const Home: React.FC = () => {
                   SEMUANYA BISA<br /><span style={{ color: '#E8492B' }}>IKUT!</span>
                 </h2>
                 <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
-                  Dari notaris hingga masyarakat umum, dari pejalan santai hingga pelari kompetitif—acara ini terbuka untuk semua orang yang ingin bergerak lebih sehat dan lebih seru!
+                  Dari notaris hingga masyarakat umum, dari pejalan santai hingga pelari kompetitif, acara ini terbuka untuk semua orang yang ingin bergerak lebih sehat dan lebih seru!
                 </p>
               </div>
             </div>
@@ -265,7 +265,7 @@ export const Home: React.FC = () => {
                   {randomImages[2] && (
                     <img
                       src={randomImages[2]}
-                      alt="Eastvara BSD City — suasana race village"
+                      alt="Eastvara BSD City: suasana race village"
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       loading="lazy"
                     />
@@ -279,7 +279,7 @@ export const Home: React.FC = () => {
                   EASTVARA<br /><span style={{ color: '#10B981' }}>& GOOD VIBES!</span>
                 </h2>
                 <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
-                  Race village di Eastvara — BSD City: suasana komunitas lari, musik, dan aktivitas keluarga setelah finis (detail rundown menyusul).
+                  Race village di Eastvara, BSD City: suasana komunitas lari, musik, dan aktivitas keluarga setelah finis (detail rundown menyusul).
                 </p>
               </div>
             </div>
@@ -505,7 +505,7 @@ export const Home: React.FC = () => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
                 <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
                   <h3 style={{ fontWeight: 800, marginBottom: '0.35rem' }}>Pengambilan race pack</h3>
-                  <p style={{ color: '#4B5563', margin: 0 }}><strong>{EVENT_META.racePackPickupSummary}</strong> — {EVENT_META.racePackPickupDetail}</p>
+                  <p style={{ color: '#4B5563', margin: 0 }}><strong>{EVENT_META.racePackPickupSummary}</strong>: {EVENT_META.racePackPickupDetail}</p>
                 </div>
                 <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
                   <h3 style={{ fontWeight: 800, marginBottom: '0.35rem' }}>Parkir</h3>
@@ -577,7 +577,7 @@ export const Home: React.FC = () => {
               <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>VENUE</span>
               <h2 style={{ fontSize: '3rem', fontWeight: 900, color: '#111827', marginBottom: '1.5rem' }}>LOKASI ACARA</h2>
               <p style={{ fontSize: '1.25rem', color: '#4B5563', maxWidth: '720px', margin: '0 auto' }}>
-                {EVENT_META.venueShort} — {EVENT_META.venueAddress}
+                {EVENT_META.venueShort}: {EVENT_META.venueAddress}
               </p>
             </div>
 
@@ -598,7 +598,7 @@ export const Home: React.FC = () => {
                 allowFullScreen={true}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Peta lokasi NOTARACE 2026 — Eastvara BSD"
+                title="Peta lokasi NOTARACE 2026, Eastvara BSD"
               ></iframe>
             </div>
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, Camera, Calendar, MapPin, ChevronRight, Clock, ExternalLink, Flag, Award, Footprints, Image as ImageIcon } from 'lucide-react';
+import { Activity, AlertCircle, Camera, Calendar, MapPin, ChevronRight, Clock, ExternalLink, Flag, Award, Footprints, Users, Image as ImageIcon } from 'lucide-react';
 
 import {
   EVENT_META,
@@ -12,9 +12,7 @@ import {
   SPONSOR_TIER_PLACEHOLDERS,
   TIMELINE_EVENTS,
 } from '../data/eventInfo';
-
-/** Logo INI: letakkan PNG apa adanya di `public/ini-logo.png` (Vite menyajikan file itu langsung, tanpa pemrosesan). */
-const INI_LOGO_PNG = `${import.meta.env.BASE_URL}ini-logo.png`;
+import { featureFlags } from '../utils/featureFlags';
 
 const formatIdr = (n: number) =>
   `Rp.${n.toLocaleString('id-ID')}`;
@@ -304,219 +302,135 @@ export const Home: React.FC = () => {
 
             <div className="animate-fade-in">
               <div className="lp-reg-card">
-                <div
-                  style={{
-                    padding: '1.25rem clamp(1rem, 3vw, 1.75rem) 1.5rem',
-                    borderBottom: '1px solid rgba(0,0,0,0.06)',
-                    background: 'linear-gradient(180deg, #FFFBF7 0%, #FFF5F1 100%)',
-                  }}
-                >
-                  <p style={{
-                    textAlign: 'center',
-                    fontWeight: 800,
-                    fontSize: '0.72rem',
-                    letterSpacing: '0.14em',
-                    color: '#6B7280',
-                    marginBottom: '1rem',
-                    textTransform: 'uppercase',
-                  }}>
+                <div className="lp-pricing">
+                  <p className="lp-pricing__caption">
                     Harga tiket sama untuk 10K, 5K, 2,5K
                   </p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center', alignItems: 'stretch' }}>
-                    <div style={{
-                      flex: '1 1 160px',
-                      maxWidth: '280px',
-                      background: '#FFF7ED',
-                      borderRadius: '14px',
-                      padding: '1rem 1.15rem',
-                      border: '1px solid rgba(245, 158, 11, 0.25)',
-                      textAlign: 'center',
-                    }}>
-                      <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#D97706', letterSpacing: '0.1em', marginBottom: '0.35rem' }}>EARLY BIRD</div>
-                      <div style={{ fontWeight: 900, color: '#111827', fontSize: 'clamp(1.15rem, 4vw, 1.65rem)' }}>
-                        {formatIdr(PRICING_NOTARIS_IDR.earlyBird)}<span style={{ fontSize: '0.55em', fontWeight: 800 }}>/tiket</span>
+                  <div className="lp-pricing__grid">
+                    <div className="lp-price lp-price--featured">
+                      <span className="lp-price__savings">
+                        Hemat {formatIdr(PRICING_NOTARIS_IDR.normal - PRICING_NOTARIS_IDR.earlyBird)}
+                      </span>
+                      <div className="lp-price__tag">Early bird</div>
+                      <div className="lp-price__amount">
+                        {formatIdr(PRICING_NOTARIS_IDR.earlyBird)}
+                        <span className="lp-price__amount-suffix">/tiket</span>
                       </div>
                     </div>
-                    <div style={{
-                      flex: '1 1 160px',
-                      maxWidth: '280px',
-                      background: '#F9FAFB',
-                      borderRadius: '14px',
-                      padding: '1rem 1.15rem',
-                      border: '1px solid rgba(0,0,0,0.06)',
-                      textAlign: 'center',
-                    }}>
-                      <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#6B7280', letterSpacing: '0.1em', marginBottom: '0.35rem' }}>NORMAL</div>
-                      <div style={{ fontWeight: 900, color: '#111827', fontSize: 'clamp(1.15rem, 4vw, 1.65rem)' }}>
-                        {formatIdr(PRICING_NOTARIS_IDR.normal)}<span style={{ fontSize: '0.55em', fontWeight: 800 }}>/tiket</span>
+                    <div className="lp-price lp-price--normal">
+                      <div className="lp-price__tag">Normal</div>
+                      <div className="lp-price__amount">
+                        {formatIdr(PRICING_NOTARIS_IDR.normal)}
+                        <span className="lp-price__amount-suffix">/tiket</span>
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="lp-ini-banner" role="region" aria-labelledby="ini-reg-heading">
-                  <div className="lp-ini-banner__grid">
-                    <div>
-                      <h3 id="ini-reg-heading" className="lp-ini-banner__title">
-                        {NOTARIS_REGISTRATION_INFO.panelTitle}
-                      </h3>
-                      <p className="lp-ini-banner__subtitle">{NOTARIS_REGISTRATION_INFO.panelSubtitle}</p>
-                    </div>
-                    <div className="lp-ini-banner__body">
-                      <p className="lp-ini-banner__text">{NOTARIS_REGISTRATION_INFO.intro}</p>
-                      <p className="lp-ini-banner__text">{NOTARIS_REGISTRATION_INFO.registrationNote}</p>
-                      <p className="lp-ini-banner__text">{NOTARIS_REGISTRATION_INFO.benefit}</p>
-                      <a
-                        href={INI_PORTAL_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="lp-ini-banner__cta"
-                      >
-                        {NOTARIS_REGISTRATION_INFO.ctaLabel}
-                        <ExternalLink size={18} strokeWidth={2.25} aria-hidden />
-                      </a>
-                    </div>
-                    <div className="lp-ini-banner__mark">
-                      <img
-                        src={INI_LOGO_PNG}
-                        alt="Logo Ikatan Notaris Indonesia"
-                        className="lp-ini-banner__logo"
-                        width={140}
-                        height={158}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ padding: '1.35rem clamp(0.85rem, 2.5vw, 1.35rem) 0', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                  {CATEGORY_DETAILS_ROWS.map((row) => (
-                    <div
-                      key={row.category}
-                      style={{
-                        background: 'white',
-                        borderRadius: '20px',
-                        overflow: 'hidden',
-                        boxShadow: '0 8px 30px rgba(0,0,0,0.07)',
-                        border: '1px solid rgba(0,0,0,0.04)',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
+                  <div className="lp-pricing__cta">
+                    <a
+                      href={ticketLinkReady ? ticketHref : '#'}
+                      target={ticketLinkReady ? '_blank' : undefined}
+                      rel={ticketLinkReady ? 'noopener noreferrer' : undefined}
+                      onClick={(e) => {
+                        if (!ticketLinkReady) e.preventDefault();
                       }}
+                      aria-disabled={!ticketLinkReady}
+                      className="lp-btn lp-btn--primary lp-reg-card__cta"
                     >
-                      <div
-                        className="category-card-accent"
-                        style={{
-                          background: `linear-gradient(160deg, ${row.gradient[0]}, ${row.gradient[1]})`,
-                          padding: '2rem',
-                          minWidth: '180px',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'flex-start',
-                          justifyContent: 'center',
-                          gap: '0.5rem',
-                        }}
-                      >
-                        <div style={{
-                          width: '52px',
-                          height: '52px',
-                          background: 'rgba(255,255,255,0.2)',
-                          borderRadius: '50%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          marginBottom: '0.25rem',
-                        }}>
-                          {row.typeLabel === 'Fun Walk' ? (
-                            <Footprints size={28} strokeWidth={2.25} color="#fff" aria-hidden />
-                          ) : (
-                            <Activity size={28} strokeWidth={2.25} color="#fff" aria-hidden />
-                          )}
-                        </div>
-                        <div style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.18em', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>
-                          {row.typeLabel}
-                        </div>
-                        <div style={{ fontSize: '2.75rem', fontWeight: 900, color: 'white', lineHeight: 1, letterSpacing: '-0.02em' }}>
-                          {row.jarak}
-                        </div>
-                      </div>
+                      Daftar sekarang
+                      <ChevronRight size={20} strokeWidth={2.5} aria-hidden />
+                    </a>
+                  </div>
+                </div>
 
-                      <div style={{ flex: 1, minWidth: '280px', padding: '1.75rem 2rem', display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
-                        <div>
-                          <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#9CA3AF', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.3rem' }}>Cut-off time</div>
-                          <div style={{ fontWeight: 800, color: row.cutoff === 'Menyusul' ? '#F5A623' : '#111827', fontSize: '1rem' }}>
-                            {row.cutoff}
+                <div className="lp-cats">
+                  {CATEGORY_DETAILS_ROWS.map((row) => {
+                    const cutoffPending = row.cutoff.trim().toLowerCase() === 'menyusul';
+                    const isWalk = row.typeLabel === 'Fun Walk';
+                    const TypeIcon = isWalk ? Footprints : Activity;
+                    return (
+                      <article
+                        key={row.category}
+                        className="lp-cat"
+                        aria-label={`${row.typeLabel} ${row.jarak}`}
+                      >
+                        <div
+                          className="lp-cat__accent"
+                          style={{ background: `linear-gradient(160deg, ${row.gradient[0]}, ${row.gradient[1]})` }}
+                        >
+                          <div className="lp-cat__icon">
+                            <TypeIcon size={22} strokeWidth={2.25} color="#fff" aria-hidden />
+                          </div>
+                          <div className="lp-cat__heading">
+                            <span className="lp-cat__type">{row.typeLabel}</span>
+                            <span className="lp-cat__distance">{row.jarak}</span>
                           </div>
                         </div>
 
-                        <div style={{ height: '1px', background: '#F3F4F6' }} />
-
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
-                          <div>
-                            <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#E8492B', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Race pack</div>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
-                              {row.racePack.map((item) => (
-                                <span key={item} style={{ background: '#FFF1EE', color: '#C13118', fontWeight: 700, fontSize: '0.78rem', padding: '0.2rem 0.6rem', borderRadius: '99px' }}>
-                                  {item}
-                                </span>
-                              ))}
+                        <div className="lp-cat__body">
+                          <span className="lp-cat__cutoff" data-pending={cutoffPending}>
+                            <Clock size={12} strokeWidth={2.5} aria-hidden />
+                            Cut-off: {row.cutoff}
+                          </span>
+                          <div className="lp-cat__divider" />
+                          <div className="lp-cat__grid">
+                            <div>
+                              <div className="lp-cat__field-label lp-cat__field-label--racepack">
+                                <Award strokeWidth={2.5} aria-hidden />
+                                Race pack
+                              </div>
+                              <div className="lp-cat__chips">
+                                {row.racePack.map((item) => (
+                                  <span key={item} className="lp-cat__chip">{item}</span>
+                                ))}
+                              </div>
+                            </div>
+                            <div>
+                              <div className="lp-cat__field-label lp-cat__field-label--route">
+                                <MapPin strokeWidth={2.5} aria-hidden />
+                                Rute
+                              </div>
+                              <p className="lp-cat__field-text">{row.route}</p>
+                            </div>
+                            <div>
+                              <div className="lp-cat__field-label lp-cat__field-label--age">
+                                <Users strokeWidth={2.5} aria-hidden />
+                                Ketentuan usia
+                              </div>
+                              <p className="lp-cat__field-text">{row.ageRule}</p>
                             </div>
                           </div>
-                          <div>
-                            <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#8B5CF6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Rute</div>
-                            <p style={{ color: '#6B7280', margin: 0, fontSize: '0.85rem', lineHeight: 1.5 }}>{row.route}</p>
-                          </div>
-                          <div>
-                            <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#10B981', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Ketentuan usia</div>
-                            <p style={{ color: '#6B7280', margin: 0, fontSize: '0.85rem', lineHeight: 1.5 }}>{row.ageRule}</p>
-                          </div>
                         </div>
-                      </div>
-                    </div>
-                  ))}
+                      </article>
+                    );
+                  })}
                 </div>
 
-                <div style={{
-                  padding: '1.75rem clamp(1rem, 3vw, 2rem) 2rem',
-                  borderTop: '1px solid rgba(0,0,0,0.06)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}>
-                  <a
-                    href={ticketLinkReady ? ticketHref : '#'}
-                    target={ticketLinkReady ? '_blank' : undefined}
-                    rel={ticketLinkReady ? 'noopener noreferrer' : undefined}
-                    onClick={(e) => {
-                      if (!ticketLinkReady) e.preventDefault();
-                    }}
-                    aria-disabled={!ticketLinkReady}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.35rem',
-                      width: '100%',
-                      maxWidth: '340px',
-                      padding: '0.85rem 1.5rem',
-                      borderRadius: '9999px',
-                      fontWeight: 800,
-                      fontSize: '0.88rem',
-                      letterSpacing: '0.08em',
-                      textDecoration: 'none',
-                      color: 'white',
-                      background: ticketLinkReady
-                        ? 'linear-gradient(135deg, #E8492B 0%, #EA580C 55%, #F97316 100%)'
-                        : 'linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%)',
-                      boxShadow: ticketLinkReady ? '0 10px 28px rgba(232, 73, 43, 0.38)' : 'none',
-                      cursor: ticketLinkReady ? 'pointer' : 'not-allowed',
-                      opacity: ticketLinkReady ? 1 : 0.85,
-                    }}
-                  >
-                    DAFTAR SEKARANG
-                    <ChevronRight size={20} strokeWidth={2.5} aria-hidden />
-                  </a>
-                </div>
+                <aside
+                  className="lp-notice"
+                  role="note"
+                  aria-labelledby="ini-notice-heading"
+                >
+                  <div className="lp-notice__icon" aria-hidden>
+                    <AlertCircle size={20} strokeWidth={2.25} />
+                  </div>
+                  <div className="lp-notice__body">
+                    <h3 id="ini-notice-heading" className="lp-notice__title">
+                      Khusus peserta Notaris, wajib akun INI aktif
+                    </h3>
+                    <p className="lp-notice__text">
+                      {NOTARIS_REGISTRATION_INFO.registrationNote}
+                    </p>
+                    <a
+                      href={INI_PORTAL_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="lp-notice__link"
+                    >
+                      Buka portal Ikatan Notaris Indonesia
+                      <ExternalLink size={14} strokeWidth={2.5} aria-hidden />
+                    </a>
+                  </div>
+                </aside>
               </div>
             </div>
           </div>
@@ -607,51 +521,53 @@ export const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* Sponsors Section */}
-        <div style={{ padding: '6rem 1.5rem', backgroundColor: 'white' }}>
-          <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div id="sponsor" className="text-center mb-16">
-              <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>PARTNERSHIP</span>
-              <h2 style={{ fontSize: '3rem', fontWeight: 900, color: '#111827', marginBottom: '1.5rem' }}>SPONSOR & MITRA</h2>
-              <p style={{ fontSize: '1.25rem', color: '#4B5563', maxWidth: '700px', margin: '0 auto' }}>
-                Logo sponsor dan nama tier akan ditampilkan di sini setelah finalisasi partnership.
-              </p>
-            </div>
+        {/* Sponsors Section — toggle via VITE_FEATURE_SPONSORS */}
+        {featureFlags.sponsors && (
+          <div style={{ padding: '6rem 1.5rem', backgroundColor: 'white' }}>
+            <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
+              <div id="sponsor" className="text-center mb-16">
+                <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>PARTNERSHIP</span>
+                <h2 style={{ fontSize: '3rem', fontWeight: 900, color: '#111827', marginBottom: '1.5rem' }}>SPONSOR & MITRA</h2>
+                <p style={{ fontSize: '1.25rem', color: '#4B5563', maxWidth: '700px', margin: '0 auto' }}>
+                  Logo sponsor dan nama tier akan ditampilkan di sini setelah finalisasi partnership.
+                </p>
+              </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-              gap: '1.5rem',
-            }}>
-              {SPONSOR_TIER_PLACEHOLDERS.map((s) => (
-                <div
-                  key={s.tier}
-                  style={{
-                    background: '#F9FAFB',
-                    padding: '2rem 1.5rem',
-                    borderRadius: '24px',
-                    textAlign: 'center',
-                    border: '2px dashed #E5E7EB',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.04)',
-                  }}
-                >
-                  <p style={{ fontSize: '0.8rem', fontWeight: 800, letterSpacing: '2px', color: '#E8492B', marginBottom: '0.75rem' }}>{s.tier}</p>
-                  <div style={{ width: '120px', height: '120px', margin: '0 auto 1rem', borderRadius: '16px', background: '#E5E7EB', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontWeight: 700, fontSize: '0.75rem' }}>
-                    LOGO
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                gap: '1.5rem',
+              }}>
+                {SPONSOR_TIER_PLACEHOLDERS.map((s) => (
+                  <div
+                    key={s.tier}
+                    style={{
+                      background: '#F9FAFB',
+                      padding: '2rem 1.5rem',
+                      borderRadius: '24px',
+                      textAlign: 'center',
+                      border: '2px dashed #E5E7EB',
+                      boxShadow: '0 8px 24px rgba(0,0,0,0.04)',
+                    }}
+                  >
+                    <p style={{ fontSize: '0.8rem', fontWeight: 800, letterSpacing: '2px', color: '#E8492B', marginBottom: '0.75rem' }}>{s.tier}</p>
+                    <div style={{ width: '120px', height: '120px', margin: '0 auto 1rem', borderRadius: '16px', background: '#E5E7EB', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontWeight: 700, fontSize: '0.75rem' }}>
+                      LOGO
+                    </div>
+                    <p style={{ color: '#6B7280', margin: 0, fontSize: '1rem' }}>{s.note}</p>
                   </div>
-                  <p style={{ color: '#6B7280', margin: 0, fontSize: '1rem' }}>{s.note}</p>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
-              <p style={{ color: '#6B7280', marginBottom: '0.75rem' }}>Organisasi profesi</p>
-              <a href="https://www.ikatannotarisindonesia.id/beranda" target="_blank" rel="noreferrer" style={{ fontWeight: 800, color: '#111827' }}>
-                Ikatan Notaris Indonesia (INI)
-              </a>
+              <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
+                <p style={{ color: '#6B7280', marginBottom: '0.75rem' }}>Organisasi profesi</p>
+                <a href="https://www.ikatannotarisindonesia.id/beranda" target="_blank" rel="noreferrer" style={{ fontWeight: 800, color: '#111827' }}>
+                  Ikatan Notaris Indonesia (INI)
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
 
         {/* Location Section */}

@@ -101,7 +101,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     cutoff: 'Menyusul',
     typeLabel: 'Fun Walk',
     gradient: ['#A855F7', '#EC4899'],
-    racePack: ['Jersey', 'Medali'],
+    racePack: ['Jersey', 'Medali', 'BIB'],
     route: 'Rute Fun Walk 2,5K menyusul.',
     ageRule: 'Terbuka untuk semua usia (anak-anak wajib didampingi).',
   },

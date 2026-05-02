@@ -4,4 +4,5 @@ export const featureFlags = {
   profile: import.meta.env.VITE_FEATURE_PROFILE === 'true',
   results: import.meta.env.VITE_FEATURE_RESULTS === 'true',
   photos: true,
+  sponsors: import.meta.env.VITE_FEATURE_SPONSORS === 'true',
 };

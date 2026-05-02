@@ -157,13 +157,13 @@ export const TIMELINE_EVENTS = [
   },
   {
     title: 'Pembagian Sertifikat Digital',
-    date: 'Agustus 2026',
+    date: 'Tanggal Menyusul',
     description: 'Sertifikat dapat diunduh melalui website resmi dengan memasukkan nomor bib.',
     status: 'upcoming' as const,
   },
   {
     title: 'Pembagian Foto Digital',
-    date: 'Agustus 2026',
+    date: 'Tanggal Menyusul',
     description: 'Cari dan unduh foto keseruanmu saat lari menggunakan fitur pengenal wajah.',
     status: 'upcoming' as const,
   },

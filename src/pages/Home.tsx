@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, AlertCircle, Camera, Calendar, MapPin, ChevronRight, Clock, ExternalLink, Flag, Award, Footprints, Users, Image as ImageIcon } from 'lucide-react';
+import { Activity, AlertCircle, Camera, Calendar, MapPin, ChevronRight, Clock, ExternalLink, Flag, Award, Footprints, Users, Image as ImageIcon, X } from 'lucide-react';
 
 import {
   EVENT_META,
@@ -19,6 +19,11 @@ const formatIdr = (n: number) =>
 
 export const Home: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [routePreview, setRoutePreview] = useState<{
+    category: string;
+    routeText: string;
+    imageUrl: string;
+  } | null>(null);
 
   useEffect(() => {
     const targetDate = new Date(EVENT_META.raceStartISO).getTime();
@@ -53,12 +58,27 @@ export const Home: React.FC = () => {
       .catch(err => console.error('Error loading data.json:', err));
   }, []);
 
+  useEffect(() => {
+    if (!routePreview) return;
+
+    const onEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setRoutePreview(null);
+      }
+    };
+
+    window.addEventListener('keydown', onEsc);
+    return () => window.removeEventListener('keydown', onEsc);
+  }, [routePreview]);
+
   const scrollToSection = (id: string) => () => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const ticketHref = EVENT_META.ticketRegistrationUrl.trim();
   const ticketLinkReady = /^https?:\/\//i.test(ticketHref);
+  const getMockRouteImage = (seed: string) =>
+    `https://picsum.photos/seed/notarace-route-${encodeURIComponent(seed)}/1200/720`;
 
   return (
     <div className="page-wrapper" style={{ padding: 0 }}>
@@ -388,7 +408,20 @@ export const Home: React.FC = () => {
                                 <MapPin strokeWidth={2.5} aria-hidden />
                                 Rute
                               </div>
-                              <p className="lp-cat__field-text">{row.route}</p>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setRoutePreview({
+                                    category: `${row.typeLabel} ${row.jarak}`,
+                                    routeText: row.route,
+                                    imageUrl: getMockRouteImage(`${row.category}-${row.jarak}`),
+                                  });
+                                }}
+                                className="lp-route-btn"
+                                aria-label={`Lihat mock gambar rute ${row.typeLabel} ${row.jarak}`}
+                              >
+                                Lihat rute
+                              </button>
                             </div>
                             <div>
                               <div className="lp-cat__field-label lp-cat__field-label--age">
@@ -707,6 +740,49 @@ export const Home: React.FC = () => {
         </div>
 
       </main>
+
+      {routePreview && (
+        <div
+          role="presentation"
+          onClick={() => setRoutePreview(null)}
+          className="lp-route-modal-overlay"
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="route-preview-title"
+            onClick={(event) => event.stopPropagation()}
+            className="lp-route-modal"
+          >
+            <div className="lp-route-modal__header">
+              <div>
+                <h3 id="route-preview-title" style={{ margin: 0, color: '#111827' }}>
+                  Mock rute {routePreview.category}
+                </h3>
+                <p style={{ margin: '0.35rem 0 0', color: '#4b5563', fontSize: '0.92rem' }}>
+                  {routePreview.routeText}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setRoutePreview(null)}
+                aria-label="Tutup pop up rute"
+                className="lp-route-modal__close"
+              >
+                <X size={18} strokeWidth={2.25} />
+              </button>
+            </div>
+            <img
+              src={routePreview.imageUrl}
+              alt={`Mock gambar rute untuk ${routePreview.category}`}
+              width={1200}
+              height={720}
+              loading="lazy"
+              className="lp-route-modal__image"
+            />
+          </div>
+        </div>
+      )}
 
       <footer style={{ background: '#F9FAFB', padding: '6rem 2rem', textAlign: 'center', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
         <h3 className="text-3xl font-black text-accent mb-4" style={{ letterSpacing: '2px' }}>{EVENT_META.name}</h3>

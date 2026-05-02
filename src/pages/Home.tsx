@@ -81,7 +81,6 @@ export const Home: React.FC = () => {
         <div className="lp-hero__inner">
           <div className="lp-hero__grid">
             <div className="lp-hero__copy">
-              <p className="lp-eyebrow lp-eyebrow--on-dark">Informasi event</p>
               <h1 id="hero-heading" className="lp-hero__title">
                 NOTARACE <span className="lp-hero__year">2026</span>
               </h1>
@@ -134,7 +133,7 @@ export const Home: React.FC = () => {
 
               <div className="lp-countdown" aria-live="polite" aria-label="Hitung mundur menuju race day">
                 <div className="lp-countdown__cell">
-                  <div className="lp-countdown__value">{String(timeLeft.d).padStart(3, '0')}</div>
+                  <div className="lp-countdown__value">{timeLeft.d}</div>
                   <div className="lp-countdown__label">Hari</div>
                 </div>
                 <div className="lp-countdown__cell">

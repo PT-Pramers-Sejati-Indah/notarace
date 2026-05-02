@@ -11,7 +11,7 @@ export const EVENT_META = {
     'Acara ini diadakan dalam rangka memperingati Hari Ulang Tahun Ikatan Notaris Indonesia (INI) ke-118.',
   raceDateLabel: '26 Juli 2026',
   raceTimePlaceholder: 'Waktu pelaksanaan menyusul',
-  raceStartISO: '2026-07-26T06:00:00+07:00',
+  raceStartISO: '2026-07-26T05:00:00+07:00',
   venueShort: 'Eastvara, BSD City',
   venueAddress:
     'Jl. BSD Boulevard Utara, Cijantra, Pagedangan, Kabupaten Tangerang, Banten 15345',

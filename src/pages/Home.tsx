@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, AlertCircle, Camera, Calendar, MapPin, ChevronRight, Clock, ExternalLink, FileSignature, Flag, Award, Footprints, Users, Image as ImageIcon, Tag } from 'lucide-react';
+import { Activity, AlertCircle, Camera, Calendar, Car, MapPin, ChevronRight, Clock, ExternalLink, FileSignature, Flag, Award, Footprints, Users, Image as ImageIcon, Tag } from 'lucide-react';
 
 import {
   EVENT_META,
@@ -590,8 +590,8 @@ export const Home: React.FC = () => {
         </section>
 
         {/* Ringkasan informasi resmi */}
-        <div style={{ background: '#F3F4F6', padding: '4rem 1.5rem', borderTop: '1px solid #e5e7eb' }}>
-          <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
+        <div className="lp-info-strip">
+          <div className="container lp-info-strip__inner">
 
             {/* <div id="ketentuan-pendaftaran" style={{ marginBottom: '3.5rem' }}>
               <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '1rem' }}>PENDAFTARAN</span>
@@ -616,24 +616,75 @@ export const Home: React.FC = () => {
               </div>
             </div> */}
 
-            <div id="logistik" style={{ marginBottom: '3.5rem' }}>
-              <span style={{ color: '#E8492B', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', display: 'block', marginBottom: '1rem' }}>LOGISTIK</span>
-              <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#111827', marginBottom: '1rem' }}>Race pack, parkir & start</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
-                <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
-                  <h3 style={{ fontWeight: 800, marginBottom: '0.35rem' }}>Pengambilan race pack</h3>
-                  <p style={{ color: '#4B5563', margin: 0 }}><strong>{EVENT_META.racePackPickupSummary}</strong>: {EVENT_META.racePackPickupDetail}</p>
-                </div>
-                <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
-                  <h3 style={{ fontWeight: 800, marginBottom: '0.35rem' }}>Parkir</h3>
-                  <p style={{ color: '#4B5563', margin: 0 }}>{EVENT_META.parkingPlaceholder}</p>
-                </div>
-                <div style={{ background: 'white', padding: '1.25rem', borderRadius: '14px' }}>
-                  <h3 style={{ fontWeight: 800, marginBottom: '0.35rem' }}>Titik kumpul & start</h3>
-                  <p style={{ color: '#4B5563', margin: 0 }}>{EVENT_META.assemblyPlaceholder}</p>
-                </div>
+            <section id="logistik" className="lp-logistik" aria-labelledby="logistik-heading">
+              <span className="lp-section-eyebrow">Logistik</span>
+              <h2 id="logistik-heading" className="lp-section-title lp-logistik__title">
+                Race pack, titik kumpul &amp; parkir
+              </h2>
+              <div className="lp-logistik__grid">
+                <article className="lp-logistik-card">
+                  <div className="lp-logistik-card__head">
+                    <span className="lp-logistik-card__icon-wrap" aria-hidden>
+                      <Calendar size={20} strokeWidth={2.25} />
+                    </span>
+                    <h3 className="lp-logistik-card__title">Pengambilan race pack</h3>
+                  </div>
+                  <p className="lp-logistik-card__kicker">
+                    <strong>{EVENT_META.racePackPickupSummary}</strong>
+                  </p>
+                  <ul className="lp-logistik-card__list">
+                    {EVENT_META.racePackPickupBullets.map((line) => (
+                      <li key={line}>{line}</li>
+                    ))}
+                  </ul>
+                </article>
+                <article className="lp-logistik-card">
+                  <div className="lp-logistik-card__head">
+                    <span className="lp-logistik-card__icon-wrap" aria-hidden>
+                      <Flag size={20} strokeWidth={2.25} />
+                    </span>
+                    <h3 className="lp-logistik-card__title">Titik kumpul &amp; start</h3>
+                  </div>
+                  <p className="lp-logistik-card__text">{EVENT_META.assemblyLocationLine}</p>
+                  <div className="lp-logistik-schedule">
+                    <p className="lp-logistik-schedule__label" id="logistik-jadwal-heading">
+                      Jadwal hari-H
+                    </p>
+                    <table
+                      className="lp-logistik-schedule__table"
+                      aria-labelledby="logistik-jadwal-heading"
+                    >
+                      <caption className="lp-sr-only">
+                        Opening ceremony dan flag-off per jarak, waktu WIB
+                      </caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Acara</th>
+                          <th scope="col">Waktu</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {EVENT_META.assemblyScheduleRows.map((row) => (
+                          <tr key={row.label}>
+                            <th scope="row">{row.label}</th>
+                            <td>{row.time}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </article>
+                <article className="lp-logistik-card">
+                  <div className="lp-logistik-card__head">
+                    <span className="lp-logistik-card__icon-wrap" aria-hidden>
+                      <Car size={20} strokeWidth={2.25} />
+                    </span>
+                    <h3 className="lp-logistik-card__title">Parkir</h3>
+                  </div>
+                  <p className="lp-logistik-card__text">{EVENT_META.parkingPlaceholder}</p>
+                </article>
               </div>
-            </div>
+            </section>
 
           </div>
         </div>

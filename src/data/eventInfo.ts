@@ -35,11 +35,22 @@ export const EVENT_META = {
   /** Pendaftaran kategori umum (Public) - ganti dengan link produksi. */
   ticketRegistrationPublicUrl: 'https://example.com/notarace-2026-daftar-public',
   racePackPickupSummary: '24–25 Juli 2026',
-  racePackPickupDetail:
-    'Berlangsung 2 hari di Eastvara BSD City, pukul 09.00–20.00 WIB. Peserta wajib membawa email konfirmasi pendaftaran dan identitas diri (KTP/SIM). Tersedia juga talkshow, notary consultation, Fitness Day Fest (Zumba & Pound Fit), pop-up booth, serta fun games & challenge.',
+  /** Poin per baris untuk kartu logistik (mudah dibaca). */
+  racePackPickupBullets: [
+    'Berlangsung 2 hari di Eastvara BSD City, pukul 09.00–20.00 WIB.',
+    'Peserta wajib membawa email konfirmasi pendaftaran dan identitas diri (KTP/SIM).',
+    'Tersedia juga talkshow, notary consultation, Fitness Day Fest (Zumba & Pound Fit), pop-up booth, serta fun games & challenge.',
+  ] as const,
   parkingPlaceholder: 'Informasi parkir menyusul.',
-  assemblyPlaceholder:
-    'Titik kumpul & start di Eastvara BSD City. Opening ceremony pukul 05:30 WIB, flag-off 10K pukul 05:55, 5K pukul 06:00, dan Fun Walk 2,5K pukul 06:05 WIB.',
+  /** Lokasi titik kumpul & start (kartu logistik). */
+  assemblyLocationLine: 'Titik kumpul & start di Eastvara BSD City.',
+  /** Baris jadwal hari-H: label singkat + waktu (tampil sebagai tabel). */
+  assemblyScheduleRows: [
+    { label: 'Opening ceremony', time: '05.30 WIB' },
+    { label: 'Flag-off 10K', time: '05.55 WIB' },
+    { label: 'Flag-off 5K', time: '06.00 WIB' },
+    { label: 'Flag-off Fun Walk 2,5K', time: '06.05 WIB' },
+  ] as const,
   routePlaceholder: 'Gambar peta rute & unduhan GPX menyusul.',
   ageRulesPlaceholder: 'Ketentuan usia minimum/maksimum per kategori menyusul.',
   registrationDeadlinePlaceholder:

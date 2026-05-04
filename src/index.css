@@ -496,6 +496,162 @@ a:focus-visible {
   line-height: 1.6;
 }
 
+/* --- Info strip (logistik ringkas) --- */
+.lp-info-strip {
+  background: #e8ecf1;
+  padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+  border-top: 1px solid rgba(17, 24, 39, 0.08);
+}
+
+.lp-info-strip__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.lp-logistik__title {
+  margin-bottom: clamp(1.1rem, 3vw, 1.5rem);
+}
+
+.lp-logistik__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: clamp(1rem, 2.5vw, 1.35rem);
+  align-items: start;
+}
+
+.lp-logistik-card {
+  background: #fff;
+  border-radius: var(--lp-radius-md);
+  padding: clamp(1.25rem, 3vw, 1.65rem);
+  border: 1px solid rgba(17, 24, 39, 0.08);
+  box-shadow: 0 2px 14px rgba(17, 24, 39, 0.05);
+}
+
+.lp-logistik-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.lp-logistik-card__icon-wrap {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(232, 73, 43, 0.1);
+  color: var(--color-accent);
+}
+
+.lp-logistik-card__title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  font-weight: 800;
+  color: var(--color-primary);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.lp-logistik-card__kicker {
+  margin: 0 0 0.75rem;
+  font-size: 1.0625rem;
+  color: var(--color-primary);
+  line-height: 1.45;
+}
+
+.lp-logistik-card__text {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--color-text);
+}
+
+.lp-logistik-card__list {
+  margin: 0;
+  padding-left: 1.35rem;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--color-text);
+}
+
+.lp-logistik-card__list li {
+  margin-bottom: 0.65rem;
+  padding-left: 0.2rem;
+}
+
+.lp-logistik-card__list li:last-child {
+  margin-bottom: 0;
+}
+
+.lp-logistik-card__list li::marker {
+  color: var(--color-accent);
+}
+
+.lp-logistik-schedule {
+  margin-top: 1rem;
+}
+
+.lp-logistik-schedule__label {
+  font-family: var(--font-heading);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 0.5rem;
+}
+
+.lp-logistik-schedule__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.lp-logistik-schedule__table thead th {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  text-align: left;
+  padding: 0.35rem 0.5rem 0.45rem 0;
+  border-bottom: 1px solid rgba(17, 24, 39, 0.1);
+}
+
+.lp-logistik-schedule__table thead th:last-child {
+  text-align: right;
+  padding-right: 0;
+}
+
+.lp-logistik-schedule__table tbody th {
+  font-weight: 700;
+  text-align: left;
+  padding: 0.55rem 0.5rem 0.55rem 0;
+  border-bottom: 1px solid rgba(17, 24, 39, 0.06);
+  vertical-align: top;
+}
+
+.lp-logistik-schedule__table tbody td {
+  text-align: right;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(17, 24, 39, 0.06);
+  white-space: nowrap;
+  color: var(--color-primary);
+}
+
+.lp-logistik-schedule__table tbody tr:last-child th,
+.lp-logistik-schedule__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
 .lp-reg-card {
   border-radius: var(--lp-radius-lg);
   overflow: hidden;

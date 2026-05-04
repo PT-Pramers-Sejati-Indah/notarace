@@ -812,9 +812,41 @@ tr:hover td { background: rgba(0,0,0,0.02); }
   box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 4px 20px rgba(0,0,0,0.04);
   border-bottom: 1px solid rgba(0,0,0,0.04);
 }
-.logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.04em; color: var(--color-primary); display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-.logo:hover { color: var(--color-primary); }
-.logo span { color: var(--color-accent); }
+.logo {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+.logo:hover {
+  color: var(--color-primary);
+}
+.logo:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+.logo__img {
+  display: block;
+  height: 34px;
+  width: auto;
+  max-width: min(200px, 52vw);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.logo:hover .logo__img {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+@media (max-width: 480px) {
+  .logo__img {
+    height: 28px;
+    max-width: min(160px, 48vw);
+  }
+}
 .page-wrapper { min-height: calc(100vh - 80px); display: flex; flex-direction: column; }
 
 /* Nav link shared style - overrides global a{color:accent} */

@@ -7,7 +7,7 @@ import { OrderSummaryPage } from './pages/OrderSummaryPage';
 import { PaymentPage } from './pages/PaymentPage';
 import { ResultsPage } from './pages/ResultsPage';
 import { ImageViewerPage } from './pages/ImageViewerPage';
-import { FileSignature, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import { featureFlags } from './utils/featureFlags';
 
 const ScrollToTop = () => {
@@ -51,9 +51,8 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <Link to="/" className="logo" onClick={closeMenu}>
-        <FileSignature className="text-accent" size={28} />
-        Notarace<span className="text-accent">2026</span>
+      <Link to="/" className="logo" onClick={closeMenu} aria-label="Notarace 2026, kembali ke beranda">
+        <img src="/notarace-mark.png" alt="" className="logo__img" decoding="async" />
       </Link>
 
       <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>

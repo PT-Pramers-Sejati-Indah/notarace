@@ -762,7 +762,7 @@ tr:hover td { background: rgba(0,0,0,0.02); }
 .logo span { color: var(--color-accent); }
 .page-wrapper { min-height: calc(100vh - 80px); display: flex; flex-direction: column; }
 
-/* Nav link shared style — overrides global a{color:accent} */
+/* Nav link shared style - overrides global a{color:accent} */
 .navbar-links a,
 .navbar-scroll-link {
   font-family: var(--font-family);

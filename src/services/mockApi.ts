@@ -26,7 +26,7 @@ export interface Result {
 }
 
 // ---------------------------------------------------------------------------
-// Seeded mock results — realistic across all 3 categories
+// Seeded mock results - realistic across all 3 categories
 // ---------------------------------------------------------------------------
 const SEED_RESULTS: Result[] = [
   // ── 10K ──────────────────────────────────────────────────────────────────
@@ -39,7 +39,7 @@ const SEED_RESULTS: Result[] = [
   { bib_number: '1007', participant_name: 'Gita Sari',     category: '10K', gun_time: '1:08:44', chip_time: '1:08:30', pace: '6:51/km', rank_overall: 12, rank_category: 7,  status: 'Finisher' },
   { bib_number: '1008', participant_name: 'Hendra Wijaya', category: '10K', gun_time: '1:15:22', chip_time: '1:15:10', pace: '7:31/km', rank_overall: 15, rank_category: 8,  status: 'Finisher' },
   { bib_number: '1009', participant_name: 'Indah Lestari', category: '10K', gun_time: '1:22:09', chip_time: '1:21:55', pace: '8:12/km', rank_overall: 18, rank_category: 9,  status: 'Finisher' },
-  { bib_number: '1010', participant_name: 'Joko Prabowo',  category: '10K', gun_time: '0:00:00', chip_time: '0:00:00', pace: '—',       rank_overall: 999, rank_category: 999, status: 'DNF' },
+  { bib_number: '1010', participant_name: 'Joko Prabowo',  category: '10K', gun_time: '0:00:00', chip_time: '0:00:00', pace: '-',       rank_overall: 999, rank_category: 999, status: 'DNF' },
 
   // ── 5K ───────────────────────────────────────────────────────────────────
   { bib_number: '2001', participant_name: 'Kartika Ayu',   category: '5K',  gun_time: '0:23:44', chip_time: '0:23:38', pace: '4:44/km', rank_overall: 4,  rank_category: 1,  status: 'Finisher' },

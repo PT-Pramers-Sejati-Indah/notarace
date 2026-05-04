@@ -156,7 +156,7 @@ export const Home: React.FC = () => {
 
       <main id="main-content">
 
-        {/* Story sections — langsung di bawah hero */}
+        {/* Story sections - langsung di bawah hero */}
         <div style={{ backgroundColor: 'white', padding: 'clamp(3rem, 8vw, 5rem) 0' }}>
           <div className="container" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 1.5rem' }}>
 
@@ -196,7 +196,7 @@ export const Home: React.FC = () => {
                   SEMUANYA BISA<br /><span style={{ color: '#E8492B' }}>IKUT!</span>
                 </h2>
                 <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
-                  Dari notaris hingga masyarakat umum, dari pejalan santai hingga pelari kompetitif, acara ini terbuka untuk semua orang yang ingin bergerak lebih sehat dan lebih seru!
+                  Notarace hadir sebagai wadah bagi anggota INI dan masyarakat umum untuk meraih hidup yang sehat, didukung fasilitas yang memadai dan berkualitas, dari pejalan santai hingga pelari kompetitif.
                 </p>
               </div>
             </div>
@@ -237,7 +237,7 @@ export const Home: React.FC = () => {
                   MENGENAL PROFESI<br /><span style={{ color: '#8B5CF6' }}>NOTARIS</span>
                 </h2>
                 <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
-                  Bukan sekedar lari, lewat acara ini kami mengajak masyarakat mengenal peran penting notaris dalam ragam aspek hukum lintas generasi.
+                  Lebih dari sekadar lari, Notarace menjadi <em>Notary Generation Social Hub</em>: ruang berbagi inspirasi dan informasi antar anggota INI untuk terus bergerak aktif dan menjaga kesehatan bersama.
                 </p>
               </div>
             </div>
@@ -278,7 +278,7 @@ export const Home: React.FC = () => {
                   EASTVARA<br /><span style={{ color: '#10B981' }}>& GOOD VIBES!</span>
                 </h2>
                 <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
-                  Race village di Eastvara, BSD City: suasana komunitas lari, musik, dan aktivitas keluarga setelah finis (detail rundown menyusul).
+                  Race village di Eastvara BSD City: Race 2,5K/5K/10K, INI Cheering, Concert, Talkshow, Workout, Fun Games &amp; Challenge, hingga Bazzar. Satu hari penuh keseruan untuk Notarunners dan keluarga.
                 </p>
               </div>
             </div>
@@ -286,7 +286,7 @@ export const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* Ikatan Notaris Indonesia — konteks peserta Notaris */}
+        {/* Ikatan Notaris Indonesia: konteks peserta Notaris */}
         <section
           id="tentang-ini"
           className="lp-section lp-ini-section"
@@ -334,7 +334,7 @@ export const Home: React.FC = () => {
                     6 poin
                   </span>
                   <span className="lp-ini-reward__text">
-                    untuk Notaris yang menyelesaikan NOTARACE — sesuai ketentuan
+                    untuk Notaris yang menyelesaikan NOTARACE, sesuai ketentuan
                     &amp; mekanisme di portal INI.
                   </span>
                 </div>
@@ -599,7 +599,7 @@ export const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* Sponsors Section — toggle via VITE_FEATURE_SPONSORS */}
+        {/* Sponsors Section - toggle via VITE_FEATURE_SPONSORS */}
         {featureFlags.sponsors && (
           <div style={{ padding: '6rem 1.5rem', backgroundColor: 'white' }}>
             <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>

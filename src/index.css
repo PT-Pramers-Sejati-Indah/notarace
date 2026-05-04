@@ -90,7 +90,7 @@ a:focus-visible {
   font-size: clamp(0.75rem, 2vw, 0.875rem);
   letter-spacing: 0.12em;
   color: #fff;
-  background: linear-gradient(90deg, #c2410c 0%, #E8492B 40%, #ea580c 100%);
+  background: linear-gradient(90deg, #b45309 0%, #ea580c 42%, #f97316 100%);
   position: relative;
   z-index: 20;
 }
@@ -108,14 +108,17 @@ a:focus-visible {
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
+  background-position: center 38%;
   z-index: 0;
 }
 
+/* Lighter tint so the photo reads; vignette + soft brand wash (not a heavy orange slab) */
 .lp-hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(127, 29, 29, 0.88) 0%, rgba(194, 65, 12, 0.82) 48%, rgba(234, 88, 12, 0.78) 100%);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.22) 42%, rgba(12, 10, 10, 0.5) 100%),
+    linear-gradient(135deg, rgba(234, 88, 12, 0.22) 0%, rgba(194, 65, 12, 0.14) 45%, rgba(127, 29, 29, 0.18) 100%);
   z-index: 1;
 }
 
@@ -129,13 +132,14 @@ a:focus-visible {
 
 .lp-hero__grid {
   display: grid;
-  gap: clamp(2rem, 5vw, 3.5rem);
-  align-items: center;
+  gap: clamp(1.75rem, 4vw, 2.75rem);
+  align-items: start;
 }
 
 @media (min-width: 1024px) {
   .lp-hero__grid {
     grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    align-items: center;
   }
 }
 
@@ -165,50 +169,78 @@ a:focus-visible {
 .lp-hero__title {
   font-family: var(--font-heading);
   font-weight: 900;
-  font-size: clamp(2.75rem, 8vw, 5rem);
-  line-height: 1.02;
+  font-size: 1rem;
+  line-height: 0;
   color: #fff;
   letter-spacing: -0.02em;
-  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-  margin-bottom: 1.25rem;
+  margin: 0 0 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.5rem 0.85rem;
+}
+
+@media (min-width: 1024px) {
+  .lp-hero__title {
+    justify-content: flex-start;
+  }
+}
+
+.lp-hero__logo {
+  display: block;
+  width: min(100%, 520px);
+  max-width: 100%;
+  height: auto;
+  vertical-align: bottom;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.2));
 }
 
 .lp-hero__year {
-  font-size: 0.42em;
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
   font-weight: 800;
-  letter-spacing: 0.08em;
-  vertical-align: super;
-  opacity: 0.95;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  line-height: 1;
+  padding-bottom: 0.12em;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
 }
 
 .lp-hero__lead {
   font-size: clamp(1.05rem, 2.4vw, 1.35rem);
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.96);
-  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.98);
+  line-height: 1.5;
   max-width: 38rem;
-  margin: 0 auto 1rem;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  margin: 0 auto 0.55rem;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 2px 14px rgba(0, 0, 0, 0.35);
 }
 
 @media (min-width: 1024px) {
   .lp-hero__lead {
-    margin: 0 0 1rem;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
 .lp-hero__meta {
   font-size: clamp(0.95rem, 2vw, 1.05rem);
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.92);
   line-height: 1.5;
   max-width: 36rem;
-  margin: 0 auto 1.75rem;
+  margin: 0 auto 1.35rem;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.5),
+    0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
 @media (min-width: 1024px) {
   .lp-hero__meta {
-    margin: 0 0 1.75rem;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
@@ -217,7 +249,7 @@ a:focus-visible {
   flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: center;
-  margin-top: 0.25rem;
+  margin-top: 0.15rem;
 }
 
 @media (min-width: 1024px) {
@@ -282,11 +314,33 @@ a:focus-visible {
 .lp-glass-card {
   border-radius: var(--lp-radius-lg);
   padding: 1.35rem 1.5rem;
-  background: rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  background: rgba(15, 23, 42, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16);
+}
+
+/* Hero aside: date/venue without a heavy card frame */
+.lp-glass-card--plain {
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.lp-glass-card--plain .lp-glass-card__row {
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.lp-glass-card--plain .lp-glass-card__row:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0.65rem;
+  margin-bottom: 0.65rem;
 }
 
 .lp-glass-card__row {
@@ -350,27 +404,28 @@ a:focus-visible {
 
 .lp-countdown__cell {
   text-align: center;
-  background: #fff;
-  border-radius: 18px;
-  padding: 1.15rem 0.65rem;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 14px;
+  padding: 1rem 0.55rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .lp-countdown__value {
   font-family: var(--font-heading);
   font-weight: 900;
-  font-size: clamp(1.65rem, 5vw, 2.35rem);
-  color: #111827;
+  font-size: clamp(1.55rem, 4.5vw, 2.15rem);
+  color: #0f172a;
   font-variant-numeric: tabular-nums;
   line-height: 1.1;
 }
 
 .lp-countdown__label {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #6b7280;
+  color: #475569;
   margin-top: 0.35rem;
 }
 

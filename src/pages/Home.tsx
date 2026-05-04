@@ -73,7 +73,7 @@ export const Home: React.FC = () => {
       <header id="informasi-event" className="lp-hero animate-fade-in" aria-labelledby="hero-heading">
         <div
           className="lp-hero__bg-img"
-          style={{ backgroundImage: `url('https://photos.gotag.me/uploads/SH_5_0181_f9e23f7500.jpg')` }}
+          style={{ backgroundImage: `url('/hero-notarace-start.png')` }}
           aria-hidden
         />
         <div className="lp-hero__overlay" aria-hidden />
@@ -82,7 +82,13 @@ export const Home: React.FC = () => {
           <div className="lp-hero__grid">
             <div className="lp-hero__copy">
               <h1 id="hero-heading" className="lp-hero__title">
-                NOTARACE <span className="lp-hero__year">2026</span>
+                <img
+                  src="/notarace-logo.png"
+                  alt="NOTARACE"
+                  className="lp-hero__logo"
+                  loading="eager"
+                  decoding="async"
+                />
               </h1>
               <p className="lp-hero__lead">{EVENT_META.taglinePlaceholder}</p>
               <p className="lp-hero__meta">{EVENT_META.story} • {EVENT_META.edition}</p>
@@ -103,7 +109,7 @@ export const Home: React.FC = () => {
             </div>
 
             <div className="lp-hero__aside">
-              <div className="lp-glass-card">
+              <div className="lp-glass-card lp-glass-card--plain">
                 <div className="lp-glass-card__row">
                   <Calendar size={22} aria-hidden />
                   <div>

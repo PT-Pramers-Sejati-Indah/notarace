@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, AlertCircle, Camera, Calendar, MapPin, ChevronRight, Clock, ExternalLink, Flag, Award, Footprints, Users, Image as ImageIcon } from 'lucide-react';
+import { Activity, AlertCircle, Camera, Calendar, MapPin, ChevronRight, Clock, ExternalLink, FileSignature, Flag, Award, Footprints, Users, Image as ImageIcon, Tag } from 'lucide-react';
 
 import {
   EVENT_META,
   INI_PORTAL_URL,
   NOTARIS_REGISTRATION_INFO,
-  PRICING_NOTARIS_IDR,
   CATEGORY_DETAILS_ROWS,
   FAQ_PLACEHOLDERS,
   SPONSOR_TIER_PLACEHOLDERS,
@@ -57,8 +56,10 @@ export const Home: React.FC = () => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const ticketHref = EVENT_META.ticketRegistrationUrl.trim();
-  const ticketLinkReady = /^https?:\/\//i.test(ticketHref);
+  const ticketNotarisHref = EVENT_META.ticketRegistrationNotarisUrl.trim();
+  const ticketPublicHref = EVENT_META.ticketRegistrationPublicUrl.trim();
+  const ticketNotarisReady = /^https?:\/\//i.test(ticketNotarisHref);
+  const ticketPublicReady = /^https?:\/\//i.test(ticketPublicHref);
 
   return (
     <div className="page-wrapper" style={{ padding: 0 }}>
@@ -363,62 +364,20 @@ export const Home: React.FC = () => {
         <section className="lp-section" aria-labelledby="pendaftaran-heading">
           <div className="container" style={{ flex: 1, maxWidth: '1100px' }}>
             <div id="pendaftaran" className="lp-section-head">
-              <span className="lp-section-eyebrow">Kategori & pendaftaran Notaris</span>
+              <span className="lp-section-eyebrow">Tiket &amp; harga</span>
               <h2 id="pendaftaran-heading" className="lp-section-title">
-                Race pack, detail kategori & tiket
+                Harga tiket NOTARACE 2026
               </h2>
-              <p className="lp-section-desc">
-                Race pack, rute, cut-off, dan ketentuan usia per jarak tercantum pada kartu di bawah.
-              </p>
             </div>
 
             <div className="animate-fade-in">
               <div className="lp-reg-card">
-                <div className="lp-pricing">
-                  <p className="lp-pricing__caption">
-                    Harga tiket sama untuk 10K, 5K, 2,5K
-                  </p>
-                  <div className="lp-pricing__grid">
-                    <div className="lp-price lp-price--featured">
-                      <span className="lp-price__savings">
-                        Hemat {formatIdr(PRICING_NOTARIS_IDR.normal - PRICING_NOTARIS_IDR.earlyBird)}
-                      </span>
-                      <div className="lp-price__tag">Early bird</div>
-                      <div className="lp-price__amount">
-                        {formatIdr(PRICING_NOTARIS_IDR.earlyBird)}
-                        <span className="lp-price__amount-suffix">/tiket</span>
-                      </div>
-                    </div>
-                    <div className="lp-price lp-price--normal">
-                      <div className="lp-price__tag">Normal</div>
-                      <div className="lp-price__amount">
-                        {formatIdr(PRICING_NOTARIS_IDR.normal)}
-                        <span className="lp-price__amount-suffix">/tiket</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="lp-pricing__cta">
-                    <a
-                      href={ticketLinkReady ? ticketHref : '#'}
-                      target={ticketLinkReady ? '_blank' : undefined}
-                      rel={ticketLinkReady ? 'noopener noreferrer' : undefined}
-                      onClick={(e) => {
-                        if (!ticketLinkReady) e.preventDefault();
-                      }}
-                      aria-disabled={!ticketLinkReady}
-                      className="lp-btn lp-btn--primary lp-reg-card__cta"
-                    >
-                      Daftar sekarang
-                      <ChevronRight size={20} strokeWidth={2.5} aria-hidden />
-                    </a>
-                  </div>
-                </div>
-
                 <div className="lp-cats">
                   {CATEGORY_DETAILS_ROWS.map((row) => {
                     const cutoffPending = row.cutoff.trim().toLowerCase() === 'menyusul';
                     const isWalk = row.typeLabel === 'Fun Walk';
                     const TypeIcon = isWalk ? Footprints : Activity;
+                    const priceHeadingId = `harga-${row.category.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase()}`;
                     return (
                       <article
                         key={row.category}
@@ -443,6 +402,48 @@ export const Home: React.FC = () => {
                             <Clock size={12} strokeWidth={2.5} aria-hidden />
                             Cut-off: {row.cutoff}
                           </span>
+
+                          <div className="lp-cat__pricing">
+                            <p className="lp-cat__field-label lp-cat__field-label--price" id={priceHeadingId}>
+                              <Tag size={14} strokeWidth={2.5} aria-hidden />
+                              Harga per tiket
+                            </p>
+                            <table className="lp-cat__price-table" aria-labelledby={priceHeadingId}>
+                              <caption className="lp-sr-only">
+                                Harga early bird dan normal untuk Notaris serta Umum (Public), {row.jarak}
+                              </caption>
+                              <thead>
+                                <tr>
+                                  <th scope="col" className="lp-cat__price-th lp-cat__price-th--seg">
+                                    Kategori
+                                  </th>
+                                  <th scope="col" className="lp-cat__price-th lp-cat__price-th--num">
+                                    Early bird
+                                  </th>
+                                  <th scope="col" className="lp-cat__price-th lp-cat__price-th--num">
+                                    Normal
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <th scope="row" className="lp-cat__price-rowhd">
+                                    Notaris
+                                  </th>
+                                  <td className="lp-cat__price-amt">{formatIdr(row.pricing.notaris.earlyBird)}</td>
+                                  <td className="lp-cat__price-amt">{formatIdr(row.pricing.notaris.normal)}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row" className="lp-cat__price-rowhd">
+                                    Umum (Public)
+                                  </th>
+                                  <td className="lp-cat__price-amt">{formatIdr(row.pricing.public.earlyBird)}</td>
+                                  <td className="lp-cat__price-amt">{formatIdr(row.pricing.public.normal)}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+
                           <div className="lp-cat__divider" />
                           <div className="lp-cat__grid">
                             <div>
@@ -483,6 +484,39 @@ export const Home: React.FC = () => {
                       </article>
                     );
                   })}
+                </div>
+
+                <div className="lp-ticket-cta-bar">
+                  <div className="lp-ticket-cta-bar__actions">
+                    <a
+                      href={ticketNotarisReady ? ticketNotarisHref : '#'}
+                      target={ticketNotarisReady ? '_blank' : undefined}
+                      rel={ticketNotarisReady ? 'noopener noreferrer' : undefined}
+                      onClick={(e) => {
+                        if (!ticketNotarisReady) e.preventDefault();
+                      }}
+                      aria-disabled={!ticketNotarisReady}
+                      className="lp-btn lp-btn--primary lp-reg-card__cta lp-reg-card__cta--split"
+                    >
+                      <FileSignature size={18} strokeWidth={2.25} aria-hidden />
+                      Daftar Notaris
+                      <ChevronRight size={20} strokeWidth={2.5} aria-hidden />
+                    </a>
+                    <a
+                      href={ticketPublicReady ? ticketPublicHref : '#'}
+                      target={ticketPublicReady ? '_blank' : undefined}
+                      rel={ticketPublicReady ? 'noopener noreferrer' : undefined}
+                      onClick={(e) => {
+                        if (!ticketPublicReady) e.preventDefault();
+                      }}
+                      aria-disabled={!ticketPublicReady}
+                      className="lp-btn lp-btn--outline-dark lp-reg-card__cta lp-reg-card__cta--split"
+                    >
+                      <Users size={18} strokeWidth={2.25} aria-hidden />
+                      Daftar Umum (Public)
+                      <ChevronRight size={20} strokeWidth={2.5} aria-hidden />
+                    </a>
+                  </div>
                 </div>
 
                 <aside
@@ -575,8 +609,7 @@ export const Home: React.FC = () => {
                   </a>
                 </p>
                 <p style={{ margin: '0 0 0.75rem' }}>
-                  <strong>Harga Notaris (sama untuk 10K, 5K, Fun Walk 2,5K):</strong> early bird {formatIdr(PRICING_NOTARIS_IDR.earlyBird)}
-                  {' '}• normal {formatIdr(PRICING_NOTARIS_IDR.normal)}
+                  <strong>Harga tiket (deck NOTA RACE):</strong> lihat tabel di atas untuk Notaris (10K vs 5K/2,5K) dan Public.
                 </p>
                 <p style={{ margin: '0 0 0.75rem' }}><strong>Batas pendaftaran:</strong> {EVENT_META.registrationDeadlinePlaceholder}</p>
                 <p style={{ margin: 0 }}><strong>Refund & pembatalan:</strong> {EVENT_META.refundPolicyPlaceholder}</p>

@@ -25,8 +25,15 @@ export const EVENT_META = {
   tiktokPlaceholder: 'TikTok (akun resmi menyusul)',
   emailPlaceholder: 'Email panitia (menyusul)',
   whatsappPlaceholder: 'WhatsApp panitia (menyusul)',
-  /** URL halaman tiket / pendaftaran (mockup, ganti dengan link produksi). */
-  ticketRegistrationUrl: 'https://example.com/notarace-2026-daftar',
+  /**
+   * URL pendaftaran umum (legacy / fallback).
+   * @deprecated Prefer ticketRegistrationNotarisUrl & ticketRegistrationPublicUrl.
+   */
+  ticketRegistrationUrl: 'https://example.com/notarace-2026-daftar-public',
+  /** Pendaftaran kategori Notaris (notary) - ganti dengan link produksi. */
+  ticketRegistrationNotarisUrl: 'https://example.com/notarace-2026-daftar-notaris',
+  /** Pendaftaran kategori umum (Public) - ganti dengan link produksi. */
+  ticketRegistrationPublicUrl: 'https://example.com/notarace-2026-daftar-public',
   racePackPickupSummary: '24–25 Juli 2026',
   racePackPickupDetail:
     'Berlangsung 2 hari di Eastvara BSD City, pukul 09.00–20.00 WIB. Peserta wajib membawa email konfirmasi pendaftaran dan identitas diri (KTP/SIM). Tersedia juga talkshow, notary consultation, Fitness Day Fest (Zumba & Pound Fit), pop-up booth, serta fun games & challenge.',
@@ -60,9 +67,35 @@ export const NOTARIS_REGISTRATION_INFO = {
   ctaLabel: 'Buka portal Ikatan Notaris Indonesia',
 } as const;
 
+/**
+ * Harga tiket sesuai slide "TICKET PRICING" pada deck NOTA RACE (Notary vs Public).
+ * Notaris: 10K memakai tier tersendiri; 5K dan Fun Walk 2,5K memakai tier yang sama.
+ * Public: satu tarif untuk 10K, 5K, dan 2,5K.
+ */
+export const TICKET_PRICE_TIERS = {
+  notaris10k: { earlyBird: 450_000, normal: 500_000 },
+  notaris5kFun25: { earlyBird: 300_000, normal: 350_000 },
+  publicAll: { earlyBird: 200_000, normal: 250_000 },
+} as const;
+
+export type TicketPricePair = {
+  earlyBird: number;
+  normal: number;
+};
+
+/** Ringkasan baris (FAQ / materi); angka mengacu ke {@link TICKET_PRICE_TIERS}. */
+export const TICKET_PRICING_ROWS = [
+  { segment: 'Notaris', jarakLabel: '10 km', ...TICKET_PRICE_TIERS.notaris10k },
+  { segment: 'Notaris', jarakLabel: '5 km & Fun Walk 2,5 km', ...TICKET_PRICE_TIERS.notaris5kFun25 },
+  { segment: 'Umum (Public)', jarakLabel: '10K, 5K, 2,5K', ...TICKET_PRICE_TIERS.publicAll },
+] as const;
+
+export type TicketPricingRow = (typeof TICKET_PRICING_ROWS)[number];
+
+/** Referensi demo checkout (Notaris 5K / 2,5K early bird). */
 export const PRICING_NOTARIS_IDR = {
-  earlyBird: 450_000,
-  normal: 500_000,
+  earlyBird: TICKET_PRICE_TIERS.notaris5kFun25.earlyBird,
+  normal: TICKET_PRICE_TIERS.notaris5kFun25.normal,
 } as const;
 
 /** Dasar perhitungan alur checkout demo (periode early bird). */
@@ -74,6 +107,11 @@ export interface CategoryDetailRow {
   cutoff: string;
   typeLabel: string;
   gradient: [string, string];
+  /** Harga per tiket untuk tier Notaris vs Umum (Public) pada jarak ini. */
+  pricing: {
+    notaris: TicketPricePair;
+    public: TicketPricePair;
+  };
   racePack: string[];
   route: string;
   ageRule: string;
@@ -86,9 +124,13 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     cutoff: 'Menyusul',
     typeLabel: 'Run',
     gradient: ['#10B981', '#059669'],
+    pricing: {
+      notaris: TICKET_PRICE_TIERS.notaris10k,
+      public: TICKET_PRICE_TIERS.publicAll,
+    },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute 10K Eastvara BSD City. File GPX menyusul.',
-    ageRule: 'Minimum usia 17 tahun.',
+    ageRule: 'Kategori umum: di bawah 50 tahun. Kategori Master: di atas 50 tahun.',
   },
   {
     category: '5K Run',
@@ -96,9 +138,13 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     cutoff: 'Menyusul',
     typeLabel: 'Run',
     gradient: ['#8B5CF6', '#3B82F6'],
+    pricing: {
+      notaris: TICKET_PRICE_TIERS.notaris5kFun25,
+      public: TICKET_PRICE_TIERS.publicAll,
+    },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute 5K Eastvara BSD City. File GPX menyusul.',
-    ageRule: 'Minimum usia 13 tahun.',
+    ageRule: 'Kategori umum: di bawah 50 tahun. Kategori Master: di atas 50 tahun.',
   },
   {
     category: 'Fun Walk',
@@ -106,9 +152,13 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     cutoff: 'Menyusul',
     typeLabel: 'Fun Walk',
     gradient: ['#A855F7', '#EC4899'],
+    pricing: {
+      notaris: TICKET_PRICE_TIERS.notaris5kFun25,
+      public: TICKET_PRICE_TIERS.publicAll,
+    },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute Fun Walk 2,5K Eastvara BSD City.',
-    ageRule: 'Terbuka untuk semua usia (anak-anak wajib didampingi).',
+    ageRule: 'Kategori umum: di bawah 50 tahun. Kategori Master: di atas 50 tahun.',
   },
 ];
 

@@ -210,12 +210,6 @@ export const SPONSOR_TIER_PLACEHOLDERS: { tier: string; note: string }[] = [
 
 export const TIMELINE_EVENTS = [
   {
-    title: 'Promosi Notarace',
-    date: '25 April – 25 Juli 2026',
-    description: 'Periode kampanye dan promosi event Notarace 2026 di kanal resmi @notarace.id.',
-    status: 'upcoming' as const,
-  },
-  {
     title: 'Pendaftaran Peserta',
     date: '3 Mei – 12 Juli 2026',
     description: 'Pendaftaran dibuka untuk semua kategori: 10K, 5K, dan Fun Walk 2,5K.',
@@ -223,7 +217,7 @@ export const TIMELINE_EVENTS = [
   },
   {
     title: 'Pendaftaran Ditutup',
-    date: '14 Juli 2026',
+    date: '13 Juli 2026',
     description: 'Batas akhir pendaftaran Notarace 2026. Pastikan kamu sudah amankan slot sebelum tanggal ini.',
     status: 'upcoming' as const,
   },

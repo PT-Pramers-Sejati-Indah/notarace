@@ -52,7 +52,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <Link to="/" className="logo" onClick={closeMenu} aria-label="Notarace 2026, kembali ke beranda">
-        <img src="/notarace-mark.png" alt="" className="logo__img" decoding="async" />
+        <img src="/notarace-mark.svg" alt="" className="logo__img" decoding="async" />
       </Link>
 
       <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>

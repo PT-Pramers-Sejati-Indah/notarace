@@ -74,7 +74,7 @@ export const Home: React.FC = () => {
       <header id="informasi-event" className="lp-hero animate-fade-in" aria-labelledby="hero-heading">
         <div
           className="lp-hero__bg-img"
-          style={{ backgroundImage: `url('/hero-notarace-start.png')` }}
+          style={{ backgroundImage: `url('/hero-notarace-start.svg')` }}
           aria-hidden
         />
         <div className="lp-hero__overlay" aria-hidden />
@@ -84,7 +84,7 @@ export const Home: React.FC = () => {
             <div className="lp-hero__copy">
               <h1 id="hero-heading" className="lp-hero__title">
                 <img
-                  src="/notarace-logo.png"
+                  src="/notarace-logo.svg"
                   alt="NOTARACE"
                   className="lp-hero__logo"
                   loading="eager"
@@ -316,7 +316,7 @@ export const Home: React.FC = () => {
             <article className="lp-ini-card">
               <figure className="lp-ini-card__media">
                 <img
-                  src="/ini-logo.png"
+                  src="/ini-logo.svg"
                   alt="Lambang Ikatan Notaris Indonesia"
                   loading="lazy"
                   decoding="async"

@@ -52,7 +52,8 @@ export const EVENT_META = {
     { label: 'Flag-off Fun Walk 2,5K', time: '06.05 WIB' },
   ] as const,
   routePlaceholder: 'Gambar peta rute & unduhan GPX menyusul.',
-  ageRulesPlaceholder: 'Ketentuan usia minimum/maksimum per kategori menyusul.',
+  ageRulesPlaceholder:
+    'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   registrationDeadlinePlaceholder:
     'Pendaftaran dibuka 3 Mei – 12 Juli 2026 dan resmi ditutup pada 14 Juli 2026.',
   refundPolicyPlaceholder:
@@ -79,14 +80,14 @@ export const NOTARIS_REGISTRATION_INFO = {
 } as const;
 
 /**
- * Harga tiket sesuai slide "TICKET PRICING" pada deck NOTA RACE (Notary vs Public).
- * Notaris: 10K memakai tier tersendiri; 5K dan Fun Walk 2,5K memakai tier yang sama.
- * Public: satu tarif untuk 10K, 5K, dan 2,5K.
+ * Harga tiket (Notaris vs Umum/Public).
+ * Notaris: satu tarif untuk Fun Walk 2,5K, 5K, dan 10K.
+ * Umum: 10K berbeda dari 5K; Fun Walk 2,5K mengikuti tarif 5K.
  */
 export const TICKET_PRICE_TIERS = {
-  notaris10k: { earlyBird: 450_000, normal: 500_000 },
-  notaris5kFun25: { earlyBird: 300_000, normal: 350_000 },
-  publicAll: { earlyBird: 200_000, normal: 250_000 },
+  notarisAll: { earlyBird: 475_000, normal: 650_000 },
+  public10k: { earlyBird: 300_000, normal: 350_000 },
+  public5kFun25: { earlyBird: 200_000, normal: 250_000 },
 } as const;
 
 export type TicketPricePair = {
@@ -96,17 +97,17 @@ export type TicketPricePair = {
 
 /** Ringkasan baris (FAQ / materi); angka mengacu ke {@link TICKET_PRICE_TIERS}. */
 export const TICKET_PRICING_ROWS = [
-  { segment: 'Notaris', jarakLabel: '10 km', ...TICKET_PRICE_TIERS.notaris10k },
-  { segment: 'Notaris', jarakLabel: '5 km & Fun Walk 2,5 km', ...TICKET_PRICE_TIERS.notaris5kFun25 },
-  { segment: 'Umum (Public)', jarakLabel: '10K, 5K, 2,5K', ...TICKET_PRICE_TIERS.publicAll },
+  { segment: 'Notaris', jarakLabel: '10K, 5K & Fun Walk 2,5K', ...TICKET_PRICE_TIERS.notarisAll },
+  { segment: 'Umum (Public)', jarakLabel: '10 km', ...TICKET_PRICE_TIERS.public10k },
+  { segment: 'Umum (Public)', jarakLabel: '5 km & Fun Walk 2,5 km', ...TICKET_PRICE_TIERS.public5kFun25 },
 ] as const;
 
 export type TicketPricingRow = (typeof TICKET_PRICING_ROWS)[number];
 
-/** Referensi demo checkout (Notaris 5K / 2,5K early bird). */
+/** Referensi demo checkout (Notaris, periode early bird). */
 export const PRICING_NOTARIS_IDR = {
-  earlyBird: TICKET_PRICE_TIERS.notaris5kFun25.earlyBird,
-  normal: TICKET_PRICE_TIERS.notaris5kFun25.normal,
+  earlyBird: TICKET_PRICE_TIERS.notarisAll.earlyBird,
+  normal: TICKET_PRICE_TIERS.notarisAll.normal,
 } as const;
 
 /** Dasar perhitungan alur checkout demo (periode early bird). */
@@ -136,12 +137,12 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     typeLabel: 'Run',
     gradient: ['#10B981', '#059669'],
     pricing: {
-      notaris: TICKET_PRICE_TIERS.notaris10k,
-      public: TICKET_PRICE_TIERS.publicAll,
+      notaris: TICKET_PRICE_TIERS.notarisAll,
+      public: TICKET_PRICE_TIERS.public10k,
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute 10K Eastvara BSD City. File GPX menyusul.',
-    ageRule: 'Kategori umum: di bawah 50 tahun. Kategori Master: di atas 50 tahun.',
+    ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
   {
     category: '5K Run',
@@ -150,12 +151,12 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     typeLabel: 'Run',
     gradient: ['#8B5CF6', '#3B82F6'],
     pricing: {
-      notaris: TICKET_PRICE_TIERS.notaris5kFun25,
-      public: TICKET_PRICE_TIERS.publicAll,
+      notaris: TICKET_PRICE_TIERS.notarisAll,
+      public: TICKET_PRICE_TIERS.public5kFun25,
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute 5K Eastvara BSD City. File GPX menyusul.',
-    ageRule: 'Kategori umum: di bawah 50 tahun. Kategori Master: di atas 50 tahun.',
+    ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
   {
     category: 'Fun Walk',
@@ -164,12 +165,12 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     typeLabel: 'Fun Walk',
     gradient: ['#A855F7', '#EC4899'],
     pricing: {
-      notaris: TICKET_PRICE_TIERS.notaris5kFun25,
-      public: TICKET_PRICE_TIERS.publicAll,
+      notaris: TICKET_PRICE_TIERS.notarisAll,
+      public: TICKET_PRICE_TIERS.public5kFun25,
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute Fun Walk 2,5K Eastvara BSD City.',
-    ageRule: 'Kategori umum: di bawah 50 tahun. Kategori Master: di atas 50 tahun.',
+    ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
 ];
 

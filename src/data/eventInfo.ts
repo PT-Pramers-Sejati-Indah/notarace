@@ -55,7 +55,7 @@ export const EVENT_META = {
   ageRulesPlaceholder:
     'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   registrationDeadlinePlaceholder:
-    'Pendaftaran dibuka 3 Mei – 12 Juli 2026 dan resmi ditutup pada 14 Juli 2026.',
+    'Pendaftaran dibuka 3 Mei – 12 Juli 2026 dan resmi ditutup pada 13 Juli 2026.',
   refundPolicyPlaceholder:
     'Kebijakan refund & pembatalan menyusul, akan dipublikasikan bersama channel pendaftaran resmi.',
   footerTagline: 'Tepat di atas kertas, cepat di atas lintasan.',
@@ -178,7 +178,7 @@ export const FAQ_PLACEHOLDERS: { q: string; a: string }[] = [
   {
     q: 'Kapan jadwal pendaftaran Notarace 2026?',
     a:
-      'Promosi event berlangsung 25 April – 25 Juli 2026. Pendaftaran dibuka 3 Mei – 12 Juli 2026, dan resmi ditutup pada 14 Juli 2026.',
+      'Pendaftaran dibuka 3 Mei – 12 Juli 2026, dan resmi ditutup pada 13 Juli 2026.',
   },
   {
     q: 'Apa saja aktivitas yang bisa dinikmati peserta?',

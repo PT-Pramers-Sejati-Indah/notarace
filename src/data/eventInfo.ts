@@ -23,7 +23,7 @@ export const EVENT_META = {
   instagramUrl: 'https://instagram.com/notarace.id',
   instagramHandle: '@notarace.id',
   tiktokPlaceholder: 'TikTok (akun resmi menyusul)',
-  emailPlaceholder: 'Email panitia (menyusul)',
+  emailPlaceholder: 'admin@notarace.id',
   whatsappPlaceholder: 'WhatsApp panitia (menyusul)',
   /**
    * URL pendaftaran umum (legacy / fallback).

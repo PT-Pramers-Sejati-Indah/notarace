@@ -926,7 +926,18 @@ export const Home: React.FC = () => {
 
               <div>
                 <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>EMAIL</h3>
-                <p style={{ fontSize: '1.25rem', fontWeight: 700, color: 'rgba(255,255,255,0.95)', margin: 0 }}>{EVENT_META.emailPlaceholder}</p>
+                <a
+                  href={`mailto:${EVENT_META.emailPlaceholder}`}
+                  style={{
+                    fontSize: '1.25rem',
+                    fontWeight: 700,
+                    color: 'rgba(255,255,255,0.95)',
+                    textDecoration: 'underline',
+                    textUnderlineOffset: '4px',
+                  }}
+                >
+                  {EVENT_META.emailPlaceholder}
+                </a>
               </div>
             </div>
           </div>
@@ -946,7 +957,12 @@ export const Home: React.FC = () => {
           <button type="button" onClick={scrollToSection('kontak')} style={{ background: 'none', border: 'none', color: '#4B5563', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}>Kontak</button>
         </div>
         <p className="text-muted">© 2026 Notarace. All rights reserved.</p>
-        <p className="text-sm text-muted mt-2">Instagram: {EVENT_META.instagramHandle} • {EVENT_META.emailPlaceholder}</p>
+        <p className="text-sm text-muted mt-2">
+          Instagram: {EVENT_META.instagramHandle} •{' '}
+          <a href={`mailto:${EVENT_META.emailPlaceholder}`} className="text-muted" style={{ fontWeight: 600, color: 'inherit' }}>
+            {EVENT_META.emailPlaceholder}
+          </a>
+        </p>
       </footer>
 
       {routeModal && (

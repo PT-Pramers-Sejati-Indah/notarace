@@ -189,8 +189,13 @@ export const ImageViewerPage = () => {
       {selectedPhoto && (
         <div className="modal-overlay" onClick={() => setSelectedPhoto(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setSelectedPhoto(null)}>
-              <X size={24} />
+            <button
+              type="button"
+              className="modal-close modal-close--floating"
+              onClick={() => setSelectedPhoto(null)}
+              aria-label="Tutup pratinjau foto"
+            >
+              <X size={24} strokeWidth={2} aria-hidden />
             </button>
             
             <div className="modal-image-wrapper">

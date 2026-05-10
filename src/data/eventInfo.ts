@@ -5,7 +5,7 @@
 export const EVENT_META = {
   name: 'NOTARACE 2026',
   taglinePlaceholder:
-    'Tepat di Atas Kertas, Cepat di Atas Lintasan.',
+    'Legal Precision, Racing Passion',
   edition: 'Edisi ke-2',
   story:
     'Acara ini diadakan dalam rangka memperingati Hari Ulang Tahun Ikatan Notaris Indonesia (INI) ke-118.',
@@ -58,7 +58,7 @@ export const EVENT_META = {
     'Pendaftaran dibuka 3 Mei – 12 Juli 2026 dan resmi ditutup pada 13 Juli 2026.',
   refundPolicyPlaceholder:
     'Kebijakan refund & pembatalan menyusul, akan dipublikasikan bersama channel pendaftaran resmi.',
-  footerTagline: 'Tepat di atas kertas, cepat di atas lintasan.',
+  footerTagline: 'Legal Precision, Racing Passion',
 } as const;
 
 /** Portal resmi PP Ikatan Notaris Indonesia, verifikasi peserta Notaris NOTARACE. */
@@ -73,7 +73,7 @@ export const NOTARIS_REGISTRATION_INFO = {
     'Pendaftaran sebagai peserta Notaris berbeda dengan peserta umum. Calon peserta Notaris wajib memiliki akun aktif di portal resmi INI agar dapat divalidasi. Tanpa akun yang valid, peserta akan tercatat sebagai peserta umum.',
   /** Ringkas untuk callout di kartu tiket */
   registrationReminder:
-    'Wajib akun portal INI aktif untuk validasi peserta Notaris. Tanpa itu, pendaftaran diperlakukan sebagai peserta umum.',
+    'Wajib akun portal INI aktif untuk validasi peserta Notaris.',
   benefit:
     'Peserta notaris atau ALB yang menyelesaikan lari dan terdaftar pada kategori notary berhak mendapat 6 poin notaris (sesuai ketentuan dan mekanisme di portal INI).',
   ctaLabel: 'Buka portal Ikatan Notaris Indonesia',
@@ -126,6 +126,8 @@ export interface CategoryDetailRow {
   };
   racePack: string[];
   route: string;
+  /** Gambar peta rute (statis di `public/routes/`). */
+  routeMapImageSrc: string;
   ageRule: string;
 }
 
@@ -142,6 +144,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute 10K Eastvara BSD City. File GPX menyusul.',
+    routeMapImageSrc: '/routes/route-10k.svg',
     ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
   {
@@ -156,6 +159,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute 5K Eastvara BSD City. File GPX menyusul.',
+    routeMapImageSrc: '/routes/route-5k.svg',
     ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
   {
@@ -170,6 +174,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute Fun Walk 2,5K Eastvara BSD City.',
+    routeMapImageSrc: '/routes/route-2-5k.svg',
     ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
 ];

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, AlertCircle, Camera, Calendar, Car, MapPin, ChevronRight, Clock, ExternalLink, FileSignature, Flag, Award, Footprints, Users, Image as ImageIcon, Tag } from 'lucide-react';
+import { Activity, AlertCircle, Camera, Calendar, Car, MapPin, ChevronRight, Clock, ExternalLink, FileSignature, Flag, Award, Footprints, Users, Image as ImageIcon, Tag, X } from 'lucide-react';
 
 import {
   EVENT_META,
@@ -16,8 +16,21 @@ import { featureFlags } from '../utils/featureFlags';
 const formatIdr = (n: number) =>
   `Rp.${n.toLocaleString('id-ID')}`;
 
+type RouteModalState = {
+  src: string;
+  title: string;
+  imageAlt: string;
+};
+
+function routeModalCaption(category: string): string {
+  if (category === '10K Run') return 'Rute 10K';
+  if (category === '5K Run') return 'Rute 5K';
+  return 'Rute 2,5K';
+}
+
 export const Home: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [routeModal, setRouteModal] = useState<RouteModalState | null>(null);
 
   useEffect(() => {
     const targetDate = new Date(EVENT_META.raceStartISO).getTime();
@@ -39,6 +52,20 @@ export const Home: React.FC = () => {
   }, []);
 
   const [randomImages, setRandomImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!routeModal) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setRouteModal(null);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [routeModal]);
 
   useEffect(() => {
     fetch('https://raw.githubusercontent.com/PT-Pramers-Sejati-Indah/notarace/refs/heads/main/public/data.json')
@@ -462,15 +489,32 @@ export const Home: React.FC = () => {
                                 <MapPin strokeWidth={2.5} aria-hidden />
                                 Rute
                               </div>
-                              <span
-                                className="lp-cat__cutoff"
-                                data-pending={true}
-                                role="status"
-                                aria-label={`Rute ${row.typeLabel} ${row.jarak} akan diumumkan`}
+                              <button
+                                type="button"
+                                className="lp-route-map-btn"
+                                onClick={() =>
+                                  setRouteModal({
+                                    src: row.routeMapImageSrc,
+                                    title: routeModalCaption(row.category),
+                                    imageAlt: `Peta rute NOTARACE 2026 ${row.jarak}, Eastvara BSD City`,
+                                  })
+                                }
                               >
-                                <Clock size={12} strokeWidth={2.5} aria-hidden />
-                                Akan diumumkan
-                              </span>
+                                <span className="lp-route-map-btn__thumb-wrap" aria-hidden>
+                                  <img
+                                    src={row.routeMapImageSrc}
+                                    alt=""
+                                    className="lp-route-map-btn__thumb"
+                                    loading="lazy"
+                                    decoding="async"
+                                  />
+                                </span>
+                                <span className="lp-route-map-btn__text">
+                                  <span className="lp-route-map-btn__label">Lihat peta rute</span>
+                                  <span className="lp-route-map-btn__hint">{row.jarak}</span>
+                                </span>
+                                <ChevronRight className="lp-route-map-btn__chev" size={20} strokeWidth={2.5} aria-hidden />
+                              </button>
                             </div>
                             <div>
                               <div className="lp-cat__field-label lp-cat__field-label--age">
@@ -891,6 +935,45 @@ export const Home: React.FC = () => {
         <p className="text-muted">© 2026 Notarace. All rights reserved.</p>
         <p className="text-sm text-muted mt-2">Instagram: {EVENT_META.instagramHandle} • {EVENT_META.emailPlaceholder}</p>
       </footer>
+
+      {routeModal && (
+        <div
+          className="modal-overlay"
+          role="presentation"
+          onClick={() => setRouteModal(null)}
+        >
+          <div
+            className="modal-content modal-content--route"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="route-modal-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="modal-route-caption">
+              <span id="route-modal-title" className="modal-route-caption__text">
+                {routeModal.title}
+              </span>
+            </p>
+            <figure className="modal-route-figure">
+              <img
+                src={routeModal.src}
+                className="modal-route-img"
+                alt={routeModal.imageAlt}
+                loading="eager"
+                decoding="async"
+              />
+            </figure>
+            <button
+              type="button"
+              className="modal-close modal-close--on-route"
+              onClick={() => setRouteModal(null)}
+              aria-label="Tutup peta rute"
+            >
+              <X size={22} strokeWidth={2.25} aria-hidden />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

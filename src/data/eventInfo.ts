@@ -126,7 +126,7 @@ export interface CategoryDetailRow {
   };
   racePack: string[];
   route: string;
-  /** Gambar peta rute (statis di `public/routes/`). */
+  /** Peta rute (WebP ringan di `public/routes/`; SVG sumber dijalankan ulang lewat `npm run optimize:routes`). */
   routeMapImageSrc: string;
   ageRule: string;
 }
@@ -144,7 +144,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute 10K Eastvara BSD City. File GPX menyusul.',
-    routeMapImageSrc: '/routes/route-10k.svg',
+    routeMapImageSrc: '/routes/route-10k.webp',
     ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
   {
@@ -159,7 +159,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute 5K Eastvara BSD City. File GPX menyusul.',
-    routeMapImageSrc: '/routes/route-5k.svg',
+    routeMapImageSrc: '/routes/route-5k.webp',
     ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
   {
@@ -174,7 +174,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute Fun Walk 2,5K Eastvara BSD City.',
-    routeMapImageSrc: '/routes/route-2-5k.svg',
+    routeMapImageSrc: '/routes/route-2-5k.webp',
     ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
 ];

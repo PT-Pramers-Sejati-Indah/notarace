@@ -1284,7 +1284,7 @@ tr:hover td { background: rgba(0,0,0,0.02); }
 
 /* Route map: bare image with a caption above. No frame, no shadow, no overlay. */
 .modal-content--route {
-  gap: clamp(0.5rem, 1.4vw, 0.85rem);
+  gap: clamp(0.2rem, 0.5vw, 0.35rem);
   padding: 0;
   background: none;
   border: none;
@@ -1321,6 +1321,8 @@ tr:hover td { background: rgba(0,0,0,0.02); }
 .modal-route-caption {
   margin: 0;
   padding: 0;
+  position: relative;
+  top: 30px;
   text-align: center;
   pointer-events: none;
 }
@@ -1336,19 +1338,29 @@ tr:hover td { background: rgba(0,0,0,0.02); }
   line-height: 1.2;
 }
 
-/* Close stays inside the dialog stack but doesn't create a frame on the image */
-.modal-close--on-route {
-  position: absolute;
-  top: -3.5rem;
-  right: 0;
-  z-index: 4;
+@media (max-width: 768px) {
+  .modal-overlay:has(.modal-content--route) {
+    padding: 0.375rem;
+  }
+
+  .modal-content--route {
+    width: calc(100vw - 0.75rem);
+    max-width: calc(100vw - 0.75rem);
+  }
+
+  .modal-route-img {
+    max-height: min(80vh, 100dvh - 4rem);
+    width: 200%;
+    margin-left: -50%; /* (150% - 100%) / 2 — centers the oversized image */
+  }
 }
 
-@media (max-width: 768px) {
-  .modal-close--on-route {
-    top: -3.25rem;
-    right: 0;
-  }
+/* Close pinned to the viewport so it's never clipped by the browser tab bar */
+.modal-close--on-route {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top, 0.75rem));
+  right: max(0.75rem, env(safe-area-inset-right, 0.75rem));
+  z-index: 200;
 }
 
 .modal-image-wrapper {

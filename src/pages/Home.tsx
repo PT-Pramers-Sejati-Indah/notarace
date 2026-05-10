@@ -99,11 +99,24 @@ export const Home: React.FC = () => {
       </div>
 
       <header id="informasi-event" className="lp-hero animate-fade-in" aria-labelledby="hero-heading">
-        <div
-          className="lp-hero__bg-img"
-          style={{ backgroundImage: `url('/hero-notarace-start.svg')` }}
-          aria-hidden
-        />
+        <picture className="lp-hero__bg-img" aria-hidden="true">
+          <source
+            type="image/webp"
+            srcSet="/hero/notarace-start-640.webp 640w, /hero/notarace-start-1024.webp 1024w"
+            sizes="100vw"
+          />
+          <img
+            src="/hero/notarace-start-1024.jpg"
+            srcSet="/hero/notarace-start-640.jpg 640w, /hero/notarace-start-1024.jpg 1024w"
+            sizes="100vw"
+            alt=""
+            width={1024}
+            height={681}
+            fetchPriority="high"
+            decoding="async"
+            loading="eager"
+          />
+        </picture>
         <div className="lp-hero__overlay" aria-hidden />
 
         <div className="lp-hero__inner">

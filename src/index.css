@@ -534,6 +534,8 @@ a:focus-visible {
   background: #fff;
   border-radius: var(--lp-radius-md);
   padding: clamp(1.25rem, 3vw, 1.65rem);
+  min-width: 0;
+  overflow: hidden;
   border: 1px solid rgba(17, 24, 39, 0.08);
   box-shadow: 0 2px 14px rgba(17, 24, 39, 0.05);
 }
@@ -603,6 +605,8 @@ a:focus-visible {
 
 .lp-logistik-schedule {
   margin-top: 1rem;
+  /* allow the schedule to shrink instead of pushing the card width */
+  min-width: 0;
 }
 
 .lp-logistik-schedule__label {
@@ -646,6 +650,10 @@ a:focus-visible {
   padding: 0.55rem 0.5rem 0.55rem 0;
   border-bottom: 1px solid rgba(17, 24, 39, 0.06);
   vertical-align: top;
+  /* wrap long labels (e.g. "Flag-off Fun Walk 2,5K") on small phones */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .lp-logistik-schedule__table tbody td {
@@ -655,7 +663,22 @@ a:focus-visible {
   padding: 0.55rem 0;
   border-bottom: 1px solid rgba(17, 24, 39, 0.06);
   white-space: nowrap;
+  vertical-align: top;
   color: var(--color-primary);
+}
+
+/* On phones, drop the table font + gutters so the time column doesn't break out */
+@media (max-width: 480px) {
+  .lp-logistik-schedule__table {
+    font-size: 0.95rem;
+  }
+  .lp-logistik-schedule__table tbody th {
+    padding-right: 0.4rem;
+    font-size: 0.95rem;
+  }
+  .lp-logistik-schedule__table tbody td {
+    font-size: 0.95rem;
+  }
 }
 
 .lp-logistik-schedule__table tbody tr:last-child th,

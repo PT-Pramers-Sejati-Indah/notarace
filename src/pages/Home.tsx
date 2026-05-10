@@ -28,6 +28,24 @@ function routeModalCaption(category: string): string {
   return 'Rute 2,5K';
 }
 
+const contactLabelStyle: React.CSSProperties = {
+  fontSize: 'clamp(0.78rem, 2.6vw, 1rem)',
+  fontWeight: 800,
+  letterSpacing: '0.25em',
+  color: 'rgba(255,255,255,0.85)',
+  marginBottom: '0.5rem',
+  textShadow: '0 1px 6px rgba(0,0,0,0.55)',
+};
+
+const contactValueStyle: React.CSSProperties = {
+  fontSize: 'clamp(1rem, 3.5vw, 1.25rem)',
+  fontWeight: 700,
+  color: 'rgba(255,255,255,0.98)',
+  margin: 0,
+  overflowWrap: 'anywhere',
+  textShadow: '0 2px 10px rgba(0,0,0,0.55)',
+};
+
 export const Home: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
   const [routeModal, setRouteModal] = useState<RouteModalState | null>(null);
@@ -868,72 +886,112 @@ export const Home: React.FC = () => {
         </div>
 
         {/* Contact Section */}
-        <div id="kontak" style={{ padding: '2rem 1.5rem 6rem' }}>
-          <div className="container" style={{
-            maxWidth: '1100px',
-            margin: '0 auto',
-            height: '600px',
-            borderRadius: '48px',
-            overflow: 'hidden',
-            position: 'relative',
-            boxShadow: '0 30px 60px rgba(0,0,0,0.2)'
-          }}>
-            {/* Background Image */}
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-              backgroundImage: `url(${randomImages[3] || 'https://photos.gotag.me/uploads/medium_SH_5_3604_2ff9d979da.jpg'})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              zIndex: 0
-            }}></div>
-
-            {/* Dark Gradient Overlay */}
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-              background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
-              zIndex: 1
-            }}></div>
-
-            <div style={{
+        <div id="kontak" style={{ padding: 'clamp(1.5rem, 4vw, 2rem) 1rem clamp(3rem, 8vw, 6rem)' }}>
+          <div
+            className="container"
+            style={{
+              maxWidth: '1100px',
+              margin: '0 auto',
+              minHeight: 'clamp(520px, 78vh, 620px)',
+              borderRadius: 'clamp(24px, 5vw, 48px)',
+              overflow: 'hidden',
               position: 'relative',
-              zIndex: 2,
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-end',
-              padding: '4rem',
-              textAlign: 'center',
-              color: 'white'
-            }}>
-              <p style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '3rem', maxWidth: '800px', margin: '0 auto 4rem', lineHeight: 1.4 }}>
+              boxShadow: '0 30px 60px rgba(0,0,0,0.2)',
+            }}
+          >
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                backgroundImage: `url(${randomImages[3] || 'https://photos.gotag.me/uploads/medium_SH_5_3604_2ff9d979da.jpg'})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                zIndex: 0,
+              }}
+              aria-hidden
+            ></div>
+
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background:
+                  'linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.78) 45%, rgba(0,0,0,0.9) 100%)',
+                zIndex: 1,
+              }}
+              aria-hidden
+            ></div>
+
+            <div
+              style={{
+                position: 'relative',
+                zIndex: 2,
+                minHeight: 'inherit',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                padding: 'clamp(1.5rem, 6vw, 4rem)',
+                textAlign: 'center',
+                color: 'white',
+                gap: 'clamp(1.5rem, 5vw, 2rem)',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: 'clamp(1rem, 3.5vw, 1.5rem)',
+                  fontWeight: 600,
+                  maxWidth: '800px',
+                  margin: '0 auto clamp(1.5rem, 6vw, 4rem)',
+                  lineHeight: 1.4,
+                  textShadow: '0 2px 12px rgba(0,0,0,0.55)',
+                }}
+              >
                 Mau tanya soal race kit, rute lari, atau hal-hal seru lainnya? Tim kami siap bantu!
               </p>
 
-              <div style={{ marginBottom: '2rem' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>INSTAGRAM</h3>
-                <a href={EVENT_META.instagramUrl} target="_blank" rel="noreferrer" style={{ fontSize: '2.25rem', fontWeight: 900, color: 'white', textDecoration: 'none' }}>{EVENT_META.instagramHandle}</a>
-              </div>
-
-              <div style={{ marginBottom: '2rem' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>TIKTOK</h3>
-                <p style={{ fontSize: '1.25rem', fontWeight: 700, color: 'rgba(255,255,255,0.95)', margin: 0 }}>{EVENT_META.tiktokPlaceholder}</p>
-              </div>
-
-              <div style={{ marginBottom: '2rem' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>WHATSAPP</h3>
-                <p style={{ fontSize: '1.25rem', fontWeight: 700, color: 'rgba(255,255,255,0.95)', margin: 0 }}>{EVENT_META.whatsappPlaceholder}</p>
+              <div>
+                <h3 style={contactLabelStyle}>INSTAGRAM</h3>
+                <a
+                  href={EVENT_META.instagramUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    fontSize: 'clamp(1.5rem, 6.5vw, 2.25rem)',
+                    fontWeight: 900,
+                    color: 'white',
+                    textDecoration: 'none',
+                    overflowWrap: 'anywhere',
+                    display: 'inline-block',
+                    maxWidth: '100%',
+                    textShadow: '0 2px 12px rgba(0,0,0,0.6)',
+                  }}
+                >
+                  {EVENT_META.instagramHandle}
+                </a>
               </div>
 
               <div>
-                <h3 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '4px', color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem' }}>EMAIL</h3>
+                <h3 style={contactLabelStyle}>TIKTOK</h3>
+                <p style={contactValueStyle}>{EVENT_META.tiktokPlaceholder}</p>
+              </div>
+
+              <div>
+                <h3 style={contactLabelStyle}>WHATSAPP</h3>
+                <p style={contactValueStyle}>{EVENT_META.whatsappPlaceholder}</p>
+              </div>
+
+              <div>
+                <h3 style={contactLabelStyle}>EMAIL</h3>
                 <a
                   href={`mailto:${EVENT_META.emailPlaceholder}`}
                   style={{
-                    fontSize: '1.25rem',
-                    fontWeight: 700,
+                    ...contactValueStyle,
                     color: 'rgba(255,255,255,0.95)',
                     textDecoration: 'underline',
                     textUnderlineOffset: '4px',
+                    display: 'inline-block',
+                    maxWidth: '100%',
+                    overflowWrap: 'anywhere',
                   }}
                 >
                   {EVENT_META.emailPlaceholder}

@@ -9,6 +9,7 @@ import {
   NOTARIS_REGISTRATION_INFO,
   CATEGORY_DETAILS_ROWS,
   FAQ_PLACEHOLDERS,
+  ROUTE_OFFICIAL_DECK_URL,
   SPONSOR_TIER_PLACEHOLDERS,
   TIMELINE_EVENTS,
 } from '../data/eventInfo';
@@ -151,6 +152,7 @@ export const Home: React.FC = () => {
                 />
               </h1>
               <p className="lp-hero__lead">{EVENT_META.taglinePlaceholder}</p>
+              <p className="lp-hero__tagline-sub">{EVENT_META.taglineSecondary}</p>
               <p className="lp-hero__meta">{EVENT_META.story} • {EVENT_META.edition}</p>
               <div className="lp-hero__actions">
                 <button
@@ -330,7 +332,7 @@ export const Home: React.FC = () => {
                   {randomImages[2] && (
                     <img
                       src={randomImages[2]}
-                      alt="Eastvara BSD City: suasana race village"
+                      alt="EASTVARA BSD: suasana race village"
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       loading="lazy"
                     />
@@ -344,7 +346,7 @@ export const Home: React.FC = () => {
                   EASTVARA<br /><span style={{ color: '#10B981' }}>& GOOD VIBES!</span>
                 </h2>
                 <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
-                  Race village di Eastvara BSD City: 10K &amp; 5K untuk Umum (Public), Fun Walk 2,5K khusus{' '}
+                  Race village di EASTVARA BSD: 10K &amp; 5K untuk Umum (Public), Fun Walk 2,5K khusus{' '}
                   {NOTARIS_ALB_CATEGORY_LABEL}, plus INI Cheering, Concert, Talkshow, Workout, Fun Games &amp; Challenge, hingga Bazzar. Satu hari penuh keseruan untuk Notarunners dan keluarga.
                 </p>
               </div>
@@ -543,7 +545,7 @@ export const Home: React.FC = () => {
                                   setRouteModal({
                                     src: row.routeMapImageSrc,
                                     title: routeModalCaption(row.category),
-                                    imageAlt: `Peta rute NOTARACE 2026 ${row.jarak}, Eastvara BSD City`,
+                                    imageAlt: `Peta rute NOTARACE 2026 ${row.jarak}, EASTVARA BSD`,
                                   })
                                 }
                               >
@@ -857,7 +859,7 @@ export const Home: React.FC = () => {
                 allowFullScreen={true}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Peta lokasi NOTARACE 2026, Eastvara BSD"
+                title="Peta lokasi NOTARACE 2026, EASTVARA BSD"
               ></iframe>
             </div>
 
@@ -880,6 +882,28 @@ export const Home: React.FC = () => {
                 }}
               >
                 BUKA DI GOOGLE MAPS
+              </a>
+            </div>
+
+            <div style={{ marginTop: '1.25rem', textAlign: 'center' }}>
+              <a
+                href={ROUTE_OFFICIAL_DECK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn"
+                style={{
+                  display: 'inline-block',
+                  background: '#111827',
+                  color: '#fff',
+                  border: '2px solid #111827',
+                  padding: '0.75rem 1.75rem',
+                  borderRadius: '9999px',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  fontSize: '0.95rem',
+                }}
+              >
+                Materi peta rute (deck resmi)
               </a>
             </div>
           </div>

@@ -9,7 +9,6 @@ import {
   NOTARIS_REGISTRATION_INFO,
   CATEGORY_DETAILS_ROWS,
   FAQ_PLACEHOLDERS,
-  ROUTE_OFFICIAL_DECK_URL,
   SPONSOR_TIER_PLACEHOLDERS,
   TIMELINE_EVENTS,
 } from '../data/eventInfo';
@@ -152,7 +151,6 @@ export const Home: React.FC = () => {
                 />
               </h1>
               <p className="lp-hero__lead">{EVENT_META.taglinePlaceholder}</p>
-              <p className="lp-hero__tagline-sub">{EVENT_META.taglineSecondary}</p>
               <p className="lp-hero__meta">{EVENT_META.story} • {EVENT_META.edition}</p>
               <div className="lp-hero__actions">
                 <button
@@ -341,7 +339,7 @@ export const Home: React.FC = () => {
                 </div>
               </div>
               <div style={{ flex: '1 1 400px' }}>
-                <span style={{ color: '#10B981', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>BSD CITY</span>
+                <span style={{ color: '#10B981', fontWeight: 800, letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem', display: 'block' }}>EASTVARA BSD</span>
                 <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 1.1, marginBottom: '2rem', color: '#111827' }}>
                   EASTVARA<br /><span style={{ color: '#10B981' }}>& GOOD VIBES!</span>
                 </h2>
@@ -436,7 +434,6 @@ export const Home: React.FC = () => {
               <div className="lp-reg-card">
                 <div className="lp-cats">
                   {CATEGORY_DETAILS_ROWS.map((row) => {
-                    const cutoffPending = row.cutoff.trim().toLowerCase() === 'menyusul';
                     const isWalk = row.typeLabel === 'Fun Walk';
                     const TypeIcon = isWalk ? Footprints : Activity;
                     const priceHeadingId = `harga-${row.category.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase()}`;
@@ -460,11 +457,6 @@ export const Home: React.FC = () => {
                         </div>
 
                         <div className="lp-cat__body">
-                          <span className="lp-cat__cutoff" data-pending={cutoffPending}>
-                            <Clock size={12} strokeWidth={2.5} aria-hidden />
-                            Cut-off: {row.cutoff}
-                          </span>
-
                           <div className="lp-cat__pricing">
                             <p className="lp-cat__field-label lp-cat__field-label--price" id={priceHeadingId}>
                               <Tag size={14} strokeWidth={2.5} aria-hidden />
@@ -859,7 +851,7 @@ export const Home: React.FC = () => {
                 allowFullScreen={true}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Peta lokasi NOTARACE 2026, EASTVARA BSD"
+                title="Peta lokasi NOTARACE 2026, EASTVARA BSD (Eastvara Mall)"
               ></iframe>
             </div>
 
@@ -882,28 +874,6 @@ export const Home: React.FC = () => {
                 }}
               >
                 BUKA DI GOOGLE MAPS
-              </a>
-            </div>
-
-            <div style={{ marginTop: '1.25rem', textAlign: 'center' }}>
-              <a
-                href={ROUTE_OFFICIAL_DECK_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn"
-                style={{
-                  display: 'inline-block',
-                  background: '#111827',
-                  color: '#fff',
-                  border: '2px solid #111827',
-                  padding: '0.75rem 1.75rem',
-                  borderRadius: '9999px',
-                  fontWeight: 700,
-                  textDecoration: 'none',
-                  fontSize: '0.95rem',
-                }}
-              >
-                Materi peta rute (deck resmi)
               </a>
             </div>
           </div>
@@ -1010,15 +980,19 @@ export const Home: React.FC = () => {
                 </a>
               </div>
 
-              <div>
-                <h3 style={contactLabelStyle}>TIKTOK</h3>
-                <p style={contactValueStyle}>{EVENT_META.tiktokPlaceholder}</p>
-              </div>
+              {featureFlags.contactTiktokWhatsapp && (
+                <>
+                  <div>
+                    <h3 style={contactLabelStyle}>TIKTOK</h3>
+                    <p style={contactValueStyle}>{EVENT_META.tiktokPlaceholder}</p>
+                  </div>
 
-              <div>
-                <h3 style={contactLabelStyle}>WHATSAPP</h3>
-                <p style={contactValueStyle}>{EVENT_META.whatsappPlaceholder}</p>
-              </div>
+                  <div>
+                    <h3 style={contactLabelStyle}>WHATSAPP</h3>
+                    <p style={contactValueStyle}>{EVENT_META.whatsappPlaceholder}</p>
+                  </div>
+                </>
+              )}
 
               <div>
                 <h3 style={contactLabelStyle}>EMAIL</h3>

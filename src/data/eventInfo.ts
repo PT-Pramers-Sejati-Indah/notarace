@@ -1,37 +1,29 @@
 /**
- * NOTARACE 2026 - konten situs (selaras dengan checklist konten resmi / Notarace Web Checklist.xlsx).
+ * NOTARACE 2026 - konten situs (termasuk placeholder untuk informasi yang belum final).
  */
-
-/** Tautan Google Maps venue (sumber: checklist). */
-const GOOGLE_MAPS_EVENT_URL =
-  'https://www.google.com/maps/place/Eastvara+Mall,+Jl.+BSD+Boulevard+Utara,+Cijantra,+Kec.+Pagedangan,+Kabupaten+Tangerang,+Banten+15345/@-6.2956222,106.6173419,11554m/data=!3m1!1e3!4m6!3m5!1s0x2e69fcb9ede8d89d:0x2333525b3811c631!8m2!3d-6.2948187!4d106.6106415!16s%2Fg%2F11y3lkf1ty?authuser=0&entry=ttu&g_ep=EgoyMDI2MDQyNy4wIKXMDSoASAFQAw%3D%3D';
-
-/** Materi peta rute (PNG/GPX/deck) — sumber: checklist. */
-export const ROUTE_OFFICIAL_DECK_URL = 'https://canva.link/z9kt6pkv4x4z1am' as const;
 
 export const EVENT_META = {
   name: 'NOTARACE 2026',
-  taglinePlaceholder: 'Legal Precision, Racing Passion.',
-  /** Tagline kedua (checklist). */
-  taglineSecondary: 'Tepat di Atas Kertas, Cepat di Atas Lintasan.',
+  taglinePlaceholder:
+    'Legal Precision, Racing Passion',
   edition: 'Edisi ke-2',
   story:
-    'Legal Precision mengajarkan kita bahwa setiap langkah harus terukur, setiap nafas harus diatur, dan setiap aturan harus dipatuhi. Namun, Racing Passion adalah yang menggerakkan kaki kita saat otot mulai lelah. Di Notarace ini, kita membuktikan bahwa Notaris bukan hanya teliti di balik meja, tapi juga tangguh di atas lintasan. Mari kita berlari dengan presisi, dan finis dengan gairah!',
-  raceDateLabel: '26 Juli 2026',
-  /** Rentang waktu acara (checklist: 05.00 - 12.00). */
+    'Acara ini diadakan dalam rangka memperingati Hari Ulang Tahun Ikatan Notaris Indonesia (INI) ke-118.',
+  raceDateLabel: '26 Juli 2026 (26/07/2026)',
+  /** Rentang acara hari-H; hitung mundur memakai raceStartISO (awal jendela 05.00 WIB). */
   raceTimePlaceholder: '05.00 – 12.00 WIB',
-  /** Awal jendela hari-H untuk hitung mundur (sesuai waktu mulai checklist). */
   raceStartISO: '2026-07-26T05:00:00+07:00',
   venueShort: 'EASTVARA BSD',
   venueAddress:
     'Eastvara Mall, Jl. BSD Boulevard Utara, Cijantra, Pagedangan, Kabupaten Tangerang, Banten 15345',
-  googleMapsUrl: GOOGLE_MAPS_EVENT_URL,
+  /** Titik Eastvara Mall (BSD); sama dengan pusat embed peta. */
+  googleMapsUrl:
+    'https://www.google.com/maps/search/?api=1&query=-6.294075%2C106.609685',
   googleMapsEmbedUrl:
-    'https://maps.google.com/maps?q=-6.2948187,106.6106415&z=16&ie=UTF8&iwloc=&output=embed',
+    'https://maps.google.com/maps?q=-6.294075%2C106.609685&hl=id&z=17&ie=UTF8&iwloc=&output=embed',
   topBanner: '26 JULI 2026 • EASTVARA BSD',
   instagramUrl: 'https://instagram.com/notarace.id',
-  /** Checklist: notarace.id */
-  instagramHandle: 'notarace.id',
+  instagramHandle: '@notarace.id',
   tiktokPlaceholder: 'TikTok (akun resmi menyusul)',
   emailPlaceholder: 'informasi@notarace.id',
   whatsappPlaceholder: 'WhatsApp panitia (menyusul)',
@@ -53,7 +45,7 @@ export const EVENT_META = {
   ] as const,
   parkingPlaceholder: 'Informasi parkir menyusul.',
   /** Lokasi titik kumpul & start (kartu logistik). */
-  assemblyLocationLine: 'Titik kumpul & start di EASTVARA BSD.',
+  assemblyLocationLine: 'Titik kumpul & start di EASTVARA BSD (Eastvara Mall).',
   /** Baris jadwal hari-H: label singkat + waktu (tampil sebagai tabel). */
   assemblyScheduleRows: [
     { label: 'Opening ceremony', time: '05.30 WIB' },
@@ -61,14 +53,14 @@ export const EVENT_META = {
     { label: 'Flag-off 5K', time: '06.00 WIB' },
     { label: 'Flag-off Fun Walk 2,5K', time: '06.05 WIB' },
   ] as const,
-  routePlaceholder: `Materi peta rute (PNG/GPX/deck): ${ROUTE_OFFICIAL_DECK_URL}`,
+  routePlaceholder: 'Gambar peta rute & unduhan GPX menyusul.',
   ageRulesPlaceholder:
-    'Notaris: 2,5K/5K/10K; Umum: 5K/10K; Master: di atas 45 tahun.',
+    'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   registrationDeadlinePlaceholder:
-    'Pendaftaran 3 Mei – 12 Juli 2026. Batas waktu pendaftaran: 12 Juli 2026.',
+    'Pendaftaran dibuka 3 Mei – 12 Juli 2026; batas akhir (hari terakhir) 12 Juli 2026.',
   refundPolicyPlaceholder:
     'Kebijakan refund & pembatalan menyusul, akan dipublikasikan bersama channel pendaftaran resmi.',
-  footerTagline: 'Legal Precision, Racing Passion. • Tepat di Atas Kertas, Cepat di Atas Lintasan.',
+  footerTagline: 'Legal Precision, Racing Passion',
 } as const;
 
 /** Portal resmi PP Ikatan Notaris Indonesia, verifikasi peserta Notaris & ALB NOTARACE. */
@@ -127,17 +119,9 @@ export const PRICING_NOTARIS_IDR = {
 /** Dasar perhitungan alur checkout demo (periode early bird). */
 export const MOCK_CHECKOUT_BASE_PRICE_IDR = PRICING_NOTARIS_IDR.earlyBird;
 
-/** Isi race pack (sumber: checklist). */
-const RACE_PACK_ITEMS = ['Medali', 'Jersey', 'tas'] as const;
-
-/** Ketentuan kategori jarak & master (sumber: checklist). */
-const KETENTUAN_KATEGORI_LOMBA =
-  'Notaris: 2,5K/5K/10K; Umum: 5K/10K; Master: di atas 45 tahun.' as const;
-
 export interface CategoryDetailRow {
   category: string;
   jarak: string;
-  cutoff: string;
   typeLabel: string;
   gradient: [string, string];
   /** Harga per tiket untuk tier Notaris & ALB vs Umum (Public) pada jarak ini. `public: null` jika Umum tidak dibuka untuk jarak tersebut. */
@@ -156,54 +140,72 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
   {
     category: '10K Run',
     jarak: '10 km',
-    cutoff: 'Menyusul',
     typeLabel: 'Run',
     gradient: ['#10B981', '#059669'],
     pricing: {
       notaris: TICKET_PRICE_TIERS.notarisAll,
       public: TICKET_PRICE_TIERS.public10k,
     },
-    racePack: [...RACE_PACK_ITEMS],
-    route: `Rute 10K, EASTVARA BSD. Materi peta/gambar: ${ROUTE_OFFICIAL_DECK_URL}`,
+    racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
+    route: 'Rute 10K EASTVARA BSD. File GPX menyusul.',
     routeMapImageSrc: '/routes/route-10k.webp',
-    ageRule: KETENTUAN_KATEGORI_LOMBA,
+    ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
   {
     category: '5K Run',
     jarak: '5 km',
-    cutoff: 'Menyusul',
     typeLabel: 'Run',
     gradient: ['#8B5CF6', '#3B82F6'],
     pricing: {
       notaris: TICKET_PRICE_TIERS.notarisAll,
       public: TICKET_PRICE_TIERS.public5k,
     },
-    racePack: [...RACE_PACK_ITEMS],
-    route: `Rute 5K, EASTVARA BSD. Materi peta/gambar: ${ROUTE_OFFICIAL_DECK_URL}`,
+    racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
+    route: 'Rute 5K EASTVARA BSD. File GPX menyusul.',
     routeMapImageSrc: '/routes/route-5k.webp',
-    ageRule: KETENTUAN_KATEGORI_LOMBA,
+    ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
   {
     category: 'Fun Walk',
     jarak: '2,5 km',
-    cutoff: 'Menyusul',
     typeLabel: 'Fun Walk',
     gradient: ['#A855F7', '#EC4899'],
     pricing: {
       notaris: TICKET_PRICE_TIERS.notarisAll,
       public: null,
     },
-    racePack: [...RACE_PACK_ITEMS],
-    route: `Rute Fun Walk 2,5K, EASTVARA BSD. Materi peta/gambar: ${ROUTE_OFFICIAL_DECK_URL}`,
+    racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
+    route: 'Rute Fun Walk 2,5K EASTVARA BSD.',
     routeMapImageSrc: '/routes/route-2-5k.webp',
-    ageRule: KETENTUAN_KATEGORI_LOMBA,
+    ageRule: 'Kategori umum: di bawah 45 tahun. Kategori Master: di atas 45 tahun.',
   },
 ];
 
 export const FAQ_PLACEHOLDERS: { q: string; a: string }[] = [
   {
-    q: 'FAQ',
-    a: 'on progress.',
+    q: 'Kapan jadwal pendaftaran Notarace 2026?',
+    a:
+      'Pendaftaran dibuka 3 Mei – 12 Juli 2026; batas akhir (hari terakhir) 12 Juli 2026.',
+  },
+  {
+    q: 'Apa saja aktivitas yang bisa dinikmati peserta?',
+    a:
+      `Selain 10K dan 5K untuk Umum (Public), Notarace menghadirkan Fun Walk 2,5K khusus ${NOTARIS_ALB_CATEGORY_LABEL}, plus INI Cheering, Concert, Talkshow, Workout, Fun Games & Challenge, serta Bazzar di area EASTVARA BSD.`,
+  },
+  {
+    q: 'Apa saja yang didapat finisher di garis finis?',
+    a:
+      'Setiap finisher mendapatkan refreshment (pisang, isotonic, air mineral) dan finisher medal setelah masuk garis finish.',
+  },
+  {
+    q: `Apa keuntungan ikut sebagai peserta ${NOTARIS_ALB_CATEGORY_LABEL}?`,
+    a:
+      `Peserta ${NOTARIS_ALB_CATEGORY_LABEL} yang menyelesaikan NOTARACE dan terdaftar pada kategori yang sesuai berhak mendapat 6 poin notaris, sesuai ketentuan dan mekanisme di portal INI.`,
+  },
+  {
+    q: 'Bagaimana kebijakan refund dan pembatalan?',
+    a:
+      'Kebijakan refund & pembatalan menyusul, akan dipublikasikan bersama channel pendaftaran resmi.',
   },
 ];
 
@@ -223,7 +225,8 @@ export const TIMELINE_EVENTS = [
   {
     title: 'Pendaftaran Ditutup',
     date: '12 Juli 2026',
-    description: 'Batas waktu pendaftaran NOTARACE 2026 (12 Juli 2026). Pastikan slot dan pembayaran kamu sudah beres sebelum tanggal ini.',
+    description:
+      'Batas akhir pendaftaran Notarace 2026 (12 Juli 2026). Pastikan kamu sudah amankan slot pada atau sebelum tanggal ini.',
     status: 'upcoming' as const,
   },
   {

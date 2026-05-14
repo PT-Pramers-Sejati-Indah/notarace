@@ -61,33 +61,37 @@ export const EVENT_META = {
   footerTagline: 'Legal Precision, Racing Passion',
 } as const;
 
-/** Portal resmi PP Ikatan Notaris Indonesia, verifikasi peserta Notaris NOTARACE. */
+/** Portal resmi PP Ikatan Notaris Indonesia, verifikasi peserta Notaris & ALB NOTARACE. */
 export const INI_PORTAL_URL = 'https://www.ikatannotarisindonesia.id/beranda' as const;
+
+/** Label kategori tiket / peserta INI: satu tier harga untuk Notaris dan ALB. */
+export const NOTARIS_ALB_CATEGORY_LABEL = 'Notaris dan ALB' as const;
 
 export const NOTARIS_REGISTRATION_INFO = {
   panelTitle: 'Tentang I.N.I',
-  panelSubtitle: 'Pendaftaran peserta Notaris',
+  panelSubtitle: `Pendaftaran peserta ${NOTARIS_ALB_CATEGORY_LABEL}`,
   intro:
     'Ikatan Notaris Indonesia (INI) adalah organisasi profesi bagi notaris di seluruh Indonesia. INI berperan menjaga standar profesi, etika, dan kualitas layanan hukum notaris.',
   registrationNote:
-    'Pendaftaran sebagai peserta Notaris berbeda dengan peserta umum. Calon peserta Notaris wajib memiliki akun aktif di portal resmi INI agar dapat divalidasi. Tanpa akun yang valid, peserta akan tercatat sebagai peserta umum.',
+    `Pendaftaran sebagai peserta ${NOTARIS_ALB_CATEGORY_LABEL} berbeda dengan peserta umum. Calon peserta wajib memiliki akun aktif di portal resmi INI agar dapat divalidasi. Tanpa akun yang valid, peserta akan tercatat sebagai peserta umum.`,
   /** Ringkas untuk callout di kartu tiket */
   registrationReminder:
-    'Wajib akun portal INI aktif untuk validasi peserta Notaris.',
+    `Wajib akun portal INI aktif untuk validasi peserta ${NOTARIS_ALB_CATEGORY_LABEL}.`,
   benefit:
-    'Peserta notaris atau ALB yang menyelesaikan lari dan terdaftar pada kategori notary berhak mendapat 6 poin notaris (sesuai ketentuan dan mekanisme di portal INI).',
+    `Peserta ${NOTARIS_ALB_CATEGORY_LABEL} yang menyelesaikan lari dan terdaftar pada kategori yang sesuai berhak mendapat 6 poin notaris (sesuai ketentuan dan mekanisme di portal INI).`,
   ctaLabel: 'Buka portal Ikatan Notaris Indonesia',
 } as const;
 
 /**
- * Harga tiket (Notaris vs Umum/Public).
- * Notaris: satu tarif untuk Fun Walk 2,5K, 5K, dan 10K.
- * Umum: 10K berbeda dari 5K; Fun Walk 2,5K mengikuti tarif 5K.
+ * Harga tiket (Notaris & ALB vs Umum/Public).
+ * Notaris dan ALB: satu tarif untuk Fun Walk 2,5K, 5K, dan 10K.
+ * Umum: hanya 10K dan 5K (Fun Walk 2,5K tidak dijual untuk Umum).
  */
 export const TICKET_PRICE_TIERS = {
   notarisAll: { earlyBird: 475_000, normal: 650_000 },
   public10k: { earlyBird: 300_000, normal: 350_000 },
-  public5kFun25: { earlyBird: 200_000, normal: 250_000 },
+  /** Hanya untuk jarak 5K (Umum); tidak berlaku untuk Fun Walk 2,5K. */
+  public5k: { earlyBird: 200_000, normal: 250_000 },
 } as const;
 
 export type TicketPricePair = {
@@ -97,14 +101,14 @@ export type TicketPricePair = {
 
 /** Ringkasan baris (FAQ / materi); angka mengacu ke {@link TICKET_PRICE_TIERS}. */
 export const TICKET_PRICING_ROWS = [
-  { segment: 'Notaris', jarakLabel: '10K, 5K & Fun Walk 2,5K', ...TICKET_PRICE_TIERS.notarisAll },
+  { segment: NOTARIS_ALB_CATEGORY_LABEL, jarakLabel: '10K, 5K & Fun Walk 2,5K', ...TICKET_PRICE_TIERS.notarisAll },
   { segment: 'Umum (Public)', jarakLabel: '10 km', ...TICKET_PRICE_TIERS.public10k },
-  { segment: 'Umum (Public)', jarakLabel: '5 km & Fun Walk 2,5 km', ...TICKET_PRICE_TIERS.public5kFun25 },
+  { segment: 'Umum (Public)', jarakLabel: '5 km', ...TICKET_PRICE_TIERS.public5k },
 ] as const;
 
 export type TicketPricingRow = (typeof TICKET_PRICING_ROWS)[number];
 
-/** Referensi demo checkout (Notaris, periode early bird). */
+/** Referensi demo checkout (Notaris & ALB, periode early bird). */
 export const PRICING_NOTARIS_IDR = {
   earlyBird: TICKET_PRICE_TIERS.notarisAll.earlyBird,
   normal: TICKET_PRICE_TIERS.notarisAll.normal,
@@ -119,10 +123,10 @@ export interface CategoryDetailRow {
   cutoff: string;
   typeLabel: string;
   gradient: [string, string];
-  /** Harga per tiket untuk tier Notaris vs Umum (Public) pada jarak ini. */
+  /** Harga per tiket untuk tier Notaris & ALB vs Umum (Public) pada jarak ini. `public: null` jika Umum tidak dibuka untuk jarak tersebut. */
   pricing: {
     notaris: TicketPricePair;
-    public: TicketPricePair;
+    public: TicketPricePair | null;
   };
   racePack: string[];
   route: string;
@@ -155,7 +159,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     gradient: ['#8B5CF6', '#3B82F6'],
     pricing: {
       notaris: TICKET_PRICE_TIERS.notarisAll,
-      public: TICKET_PRICE_TIERS.public5kFun25,
+      public: TICKET_PRICE_TIERS.public5k,
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute 5K Eastvara BSD City. File GPX menyusul.',
@@ -170,7 +174,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     gradient: ['#A855F7', '#EC4899'],
     pricing: {
       notaris: TICKET_PRICE_TIERS.notarisAll,
-      public: TICKET_PRICE_TIERS.public5kFun25,
+      public: null,
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute Fun Walk 2,5K Eastvara BSD City.',
@@ -188,7 +192,7 @@ export const FAQ_PLACEHOLDERS: { q: string; a: string }[] = [
   {
     q: 'Apa saja aktivitas yang bisa dinikmati peserta?',
     a:
-      'Selain Race 2,5K, 5K, dan 10K, Notarace menghadirkan INI Cheering, Concert, Talkshow, Workout, Fun Games & Challenge, serta Bazzar di area Eastvara BSD City.',
+      `Selain 10K dan 5K untuk Umum (Public), Notarace menghadirkan Fun Walk 2,5K khusus ${NOTARIS_ALB_CATEGORY_LABEL}, plus INI Cheering, Concert, Talkshow, Workout, Fun Games & Challenge, serta Bazzar di area Eastvara BSD City.`,
   },
   {
     q: 'Apa saja yang didapat finisher di garis finis?',
@@ -196,9 +200,9 @@ export const FAQ_PLACEHOLDERS: { q: string; a: string }[] = [
       'Setiap finisher mendapatkan refreshment (pisang, isotonic, air mineral) dan finisher medal setelah masuk garis finish.',
   },
   {
-    q: 'Apa keuntungan ikut sebagai peserta Notaris?',
+    q: `Apa keuntungan ikut sebagai peserta ${NOTARIS_ALB_CATEGORY_LABEL}?`,
     a:
-      'Peserta notaris atau ALB yang menyelesaikan lari dan terdaftar pada kategori notary akan mendapat 6 poin notaris, sesuai ketentuan dan mekanisme di portal INI.',
+      `Peserta ${NOTARIS_ALB_CATEGORY_LABEL} yang menyelesaikan NOTARACE dan terdaftar pada kategori yang sesuai berhak mendapat 6 poin notaris, sesuai ketentuan dan mekanisme di portal INI.`,
   },
   {
     q: 'Bagaimana kebijakan refund dan pembatalan?',
@@ -217,7 +221,7 @@ export const TIMELINE_EVENTS = [
   {
     title: 'Pendaftaran Peserta',
     date: '3 Mei – 12 Juli 2026',
-    description: 'Pendaftaran dibuka untuk semua kategori: 10K, 5K, dan Fun Walk 2,5K.',
+    description: `Pendaftaran 10K dan 5K untuk Umum (Public); Fun Walk 2,5K hanya untuk ${NOTARIS_ALB_CATEGORY_LABEL}.`,
     status: 'upcoming' as const,
   },
   {

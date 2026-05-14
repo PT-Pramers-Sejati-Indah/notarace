@@ -1892,6 +1892,13 @@ tr:hover td { background: rgba(0,0,0,0.02); }
   white-space: nowrap;
 }
 
+.lp-cat__price-na {
+  text-align: center;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  white-space: normal;
+}
+
 @media (max-width: 380px) {
   .lp-cat__price-table {
     font-size: 0.76rem;

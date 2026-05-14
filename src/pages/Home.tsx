@@ -5,6 +5,7 @@ import { Activity, AlertCircle, Camera, Calendar, Car, MapPin, ChevronRight, Clo
 import {
   EVENT_META,
   INI_PORTAL_URL,
+  NOTARIS_ALB_CATEGORY_LABEL,
   NOTARIS_REGISTRATION_INFO,
   CATEGORY_DETAILS_ROWS,
   FAQ_PLACEHOLDERS,
@@ -343,7 +344,8 @@ export const Home: React.FC = () => {
                   EASTVARA<br /><span style={{ color: '#10B981' }}>& GOOD VIBES!</span>
                 </h2>
                 <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
-                  Race village di Eastvara BSD City: Race 2,5K/5K/10K, INI Cheering, Concert, Talkshow, Workout, Fun Games &amp; Challenge, hingga Bazzar. Satu hari penuh keseruan untuk Notarunners dan keluarga.
+                  Race village di Eastvara BSD City: 10K &amp; 5K untuk Umum (Public), Fun Walk 2,5K khusus{' '}
+                  {NOTARIS_ALB_CATEGORY_LABEL}, plus INI Cheering, Concert, Talkshow, Workout, Fun Games &amp; Challenge, hingga Bazzar. Satu hari penuh keseruan untuk Notarunners dan keluarga.
                 </p>
               </div>
             </div>
@@ -367,7 +369,7 @@ export const Home: React.FC = () => {
               </h2>
               <p className="lp-section-desc">
                 Informasi singkat tentang INI, tautan portal resmi, dan ketentuan
-                poin untuk peserta Notaris di NOTARACE.
+                poin untuk peserta {NOTARIS_ALB_CATEGORY_LABEL} di NOTARACE.
               </p>
             </header>
 
@@ -392,14 +394,14 @@ export const Home: React.FC = () => {
                 <div
                   className="lp-ini-reward"
                   role="note"
-                  aria-label="Reward poin untuk Notaris"
+                  aria-label={`Reward poin untuk ${NOTARIS_ALB_CATEGORY_LABEL}`}
                 >
                   <span className="lp-ini-reward__badge">
                     <Award size={16} strokeWidth={2.5} aria-hidden />
                     6 poin
                   </span>
                   <span className="lp-ini-reward__text">
-                    untuk Notaris yang menyelesaikan NOTARACE, sesuai ketentuan
+                    untuk {NOTARIS_ALB_CATEGORY_LABEL} yang menyelesaikan NOTARACE, sesuai ketentuan
                     &amp; mekanisme di portal INI.
                   </span>
                 </div>
@@ -468,7 +470,9 @@ export const Home: React.FC = () => {
                             </p>
                             <table className="lp-cat__price-table" aria-labelledby={priceHeadingId}>
                               <caption className="lp-sr-only">
-                                Harga early bird dan normal untuk Notaris serta Umum (Public), {row.jarak}
+                                {row.pricing.public
+                                  ? `Harga early bird dan normal untuk ${NOTARIS_ALB_CATEGORY_LABEL} serta Umum (Public), ${row.jarak}.`
+                                  : `Harga early bird dan normal khusus ${NOTARIS_ALB_CATEGORY_LABEL} untuk ${row.jarak}. Umum (Public) tidak tersedia untuk jarak ini.`}
                               </caption>
                               <thead>
                                 <tr>
@@ -486,7 +490,7 @@ export const Home: React.FC = () => {
                               <tbody>
                                 <tr>
                                   <th scope="row" className="lp-cat__price-rowhd">
-                                    Notaris
+                                    {NOTARIS_ALB_CATEGORY_LABEL}
                                   </th>
                                   <td className="lp-cat__price-amt">{formatIdr(row.pricing.notaris.earlyBird)}</td>
                                   <td className="lp-cat__price-amt">{formatIdr(row.pricing.notaris.normal)}</td>
@@ -495,8 +499,20 @@ export const Home: React.FC = () => {
                                   <th scope="row" className="lp-cat__price-rowhd">
                                     Umum (Public)
                                   </th>
-                                  <td className="lp-cat__price-amt">{formatIdr(row.pricing.public.earlyBird)}</td>
-                                  <td className="lp-cat__price-amt">{formatIdr(row.pricing.public.normal)}</td>
+                                  {row.pricing.public ? (
+                                    <>
+                                      <td className="lp-cat__price-amt">{formatIdr(row.pricing.public.earlyBird)}</td>
+                                      <td className="lp-cat__price-amt">{formatIdr(row.pricing.public.normal)}</td>
+                                    </>
+                                  ) : (
+                                    <td
+                                      colSpan={2}
+                                      className="lp-cat__price-amt lp-cat__price-na"
+                                      aria-label="Tidak tersedia untuk Umum (Public) pada jarak ini"
+                                    >
+                                      Tidak tersedia
+                                    </td>
+                                  )}
                                 </tr>
                               </tbody>
                             </table>
@@ -574,7 +590,7 @@ export const Home: React.FC = () => {
                       className="lp-btn lp-btn--primary lp-reg-card__cta lp-reg-card__cta--split"
                     >
                       <FileSignature size={18} strokeWidth={2.25} aria-hidden />
-                      Daftar Notaris
+                      Daftar {NOTARIS_ALB_CATEGORY_LABEL}
                       <ChevronRight size={20} strokeWidth={2.5} aria-hidden />
                     </a>
                     <a
@@ -604,7 +620,7 @@ export const Home: React.FC = () => {
                   </div>
                   <div className="lp-notice__body">
                     <h3 id="ini-notice-heading" className="lp-notice__title">
-                      Khusus peserta Notaris, wajib akun INI aktif
+                      Khusus peserta {NOTARIS_ALB_CATEGORY_LABEL}, wajib akun INI aktif
                     </h3>
                     <p className="lp-notice__text">
                       {NOTARIS_REGISTRATION_INFO.registrationReminder}{' '}

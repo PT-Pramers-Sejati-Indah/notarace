@@ -31,11 +31,11 @@ export const EVENT_META = {
    * URL pendaftaran umum (legacy / fallback).
    * @deprecated Prefer ticketRegistrationNotarisUrl & ticketRegistrationPublicUrl.
    */
-  ticketRegistrationUrl: 'https://example.com/notarace-2026-daftar-public',
-  /** Pendaftaran kategori Notaris (notary) - ganti dengan link produksi. */
-  ticketRegistrationNotarisUrl: 'https://example.com/notarace-2026-daftar-notaris',
-  /** Pendaftaran kategori umum (Public) - ganti dengan link produksi. */
-  ticketRegistrationPublicUrl: 'https://example.com/notarace-2026-daftar-public',
+  ticketRegistrationUrl: 'https://dtiketin.com/events/notarace-2026',
+  /** Pendaftaran kategori Notaris & ALB (dtiketin). */
+  ticketRegistrationNotarisUrl: 'https://dtiketin.com/events/notarace-run-2026',
+  /** Pendaftaran kategori Umum (Public) (dtiketin). */
+  ticketRegistrationPublicUrl: 'https://dtiketin.com/events/notarace-2026',
   racePackPickupSummary: '24–25 Juli 2026',
   /** Poin per baris untuk kartu logistik (mudah dibaca). */
   racePackPickupBullets: [

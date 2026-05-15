@@ -87,13 +87,15 @@ export const NOTARIS_REGISTRATION_INFO = {
 /**
  * Harga tiket (Notaris & ALB vs Umum/Public).
  * Notaris dan ALB: satu tarif untuk Fun Walk 2,5K, 5K, dan 10K.
- * Umum: hanya 10K dan 5K (Fun Walk 2,5K tidak dijual untuk Umum).
+ * Umum: 10K, 5K, dan Fun Walk 2,5K (5K & Fun Walk berbagi tarif pendek yang sama).
  */
 export const TICKET_PRICE_TIERS = {
   notarisAll: { earlyBird: 475_000, normal: 650_000 },
   public10k: { earlyBird: 300_000, normal: 350_000 },
-  /** Hanya untuk jarak 5K (Umum); tidak berlaku untuk Fun Walk 2,5K. */
+  /** Umum (Public): 5K. */
   public5k: { earlyBird: 200_000, normal: 250_000 },
+  /** Umum (Public): Fun Walk 2,5K. */
+  public25k: { earlyBird: 200_000, normal: 250_000 },
 } as const;
 
 export type TicketPricePair = {
@@ -106,6 +108,7 @@ export const TICKET_PRICING_ROWS = [
   { segment: NOTARIS_ALB_CATEGORY_LABEL, jarakLabel: '10K, 5K & Fun Walk 2,5K', ...TICKET_PRICE_TIERS.notarisAll },
   { segment: 'Umum (Public)', jarakLabel: '10 km', ...TICKET_PRICE_TIERS.public10k },
   { segment: 'Umum (Public)', jarakLabel: '5 km', ...TICKET_PRICE_TIERS.public5k },
+  { segment: 'Umum (Public)', jarakLabel: 'Fun Walk 2,5 km', ...TICKET_PRICE_TIERS.public25k },
 ] as const;
 
 export type TicketPricingRow = (typeof TICKET_PRICING_ROWS)[number];
@@ -172,7 +175,7 @@ export const CATEGORY_DETAILS_ROWS: CategoryDetailRow[] = [
     gradient: ['#A855F7', '#EC4899'],
     pricing: {
       notaris: TICKET_PRICE_TIERS.notarisAll,
-      public: null,
+      public: TICKET_PRICE_TIERS.public25k,
     },
     racePack: ['Jersey', 'BIB', 'Finisher Medal', 'Refreshment'],
     route: 'Rute Fun Walk 2,5K EASTVARA BSD.',
@@ -190,7 +193,7 @@ export const FAQ_PLACEHOLDERS: { q: string; a: string }[] = [
   {
     q: 'Apa saja aktivitas yang bisa dinikmati peserta?',
     a:
-      `Selain 10K dan 5K untuk Umum (Public), Notarace menghadirkan Fun Walk 2,5K khusus ${NOTARIS_ALB_CATEGORY_LABEL}, plus INI Cheering, Concert, Talkshow, Workout, Fun Games & Challenge, serta Bazzar di area EASTVARA BSD.`,
+      `Notarace menghadirkan 10K, 5K, dan Fun Walk 2,5K untuk Umum (Public), serta tier ${NOTARIS_ALB_CATEGORY_LABEL} pada ketiga jarak, plus INI Cheering, Concert, Talkshow, Workout, Fun Games & Challenge, serta Bazzar di area EASTVARA BSD.`,
   },
   {
     q: 'Apa saja yang didapat finisher di garis finis?',
@@ -219,7 +222,7 @@ export const TIMELINE_EVENTS = [
   {
     title: 'Pendaftaran Peserta',
     date: '3 Mei – 12 Juli 2026',
-    description: `Pendaftaran 10K dan 5K untuk Umum (Public); Fun Walk 2,5K hanya untuk ${NOTARIS_ALB_CATEGORY_LABEL}.`,
+    description: `Pendaftaran 10K, 5K, dan Fun Walk 2,5K untuk Umum (Public); tier ${NOTARIS_ALB_CATEGORY_LABEL} tersedia untuk ketiga jarak.`,
     status: 'upcoming' as const,
   },
   {

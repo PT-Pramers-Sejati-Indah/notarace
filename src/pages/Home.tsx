@@ -344,8 +344,8 @@ export const Home: React.FC = () => {
                   EASTVARA<br /><span style={{ color: '#10B981' }}>& GOOD VIBES!</span>
                 </h2>
                 <p style={{ fontSize: '1.25rem', color: '#4B5563', lineHeight: 1.6 }}>
-                  Race village di EASTVARA BSD: 10K &amp; 5K untuk Umum (Public), Fun Walk 2,5K khusus{' '}
-                  {NOTARIS_ALB_CATEGORY_LABEL}, plus INI Cheering, Concert, Talkshow, Workout, Fun Games &amp; Challenge, hingga Bazzar. Satu hari penuh keseruan untuk Notarunners dan keluarga.
+                  Race village di EASTVARA BSD: 10K, 5K, dan Fun Walk 2,5K untuk Umum (Public), dengan tier{' '}
+                  {NOTARIS_ALB_CATEGORY_LABEL} pada ketiga jarak, plus INI Cheering, Concert, Talkshow, Workout, Fun Games &amp; Challenge, hingga Bazzar. Satu hari penuh keseruan untuk Notarunners dan keluarga.
                 </p>
               </div>
             </div>

@@ -1,11 +1,9 @@
 /**
  * Optimize route maps for fast loading:
- * 1. SVGO — strip exporter noise, tighten numbers (small gain on dense maps).
- * 2. Raster WebP @1440w — primary delivery format (large gain, sharp at modal/card sizes).
+ * Raster WebP @1440w from PNG sources (primary delivery format).
  *
  * Usage: node scripts/optimize-route-maps.mjs
  */
-import { execFileSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,29 +12,22 @@ import sharp from 'sharp';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const routesDir = path.join(root, 'public', 'routes');
-const svgoBin = path.join(root, 'node_modules', 'svgo', 'bin', 'svgo.js');
-const svgoConfig = path.join(root, 'svgo.routes.config.mjs');
 
 const MAPS = [
-  { svg: 'route-10k.svg', webp: 'route-10k.webp' },
-  { svg: 'route-5k.svg', webp: 'route-5k.webp' },
-  { svg: 'route-2-5k.svg', webp: 'route-2-5k.webp' },
+  { png: 'route-10k.png', webp: 'route-10k.webp' },
+  { png: 'route-5k.png', webp: 'route-5k.webp' },
+  { png: 'route-2-5k.png', webp: 'route-2-5k.webp' },
 ];
 
-/** Logical width from SVG viewBox (maps are ~1440×810). */
+/** Logical width for modal/card delivery. */
 const TARGET_WIDTH = 1440;
 
 async function main() {
-  for (const { svg, webp } of MAPS) {
-    const svgPath = path.join(routesDir, svg);
+  for (const { png, webp } of MAPS) {
+    const pngPath = path.join(routesDir, png);
     const webpPath = path.join(routesDir, webp);
 
-    execFileSync(process.execPath, [svgoBin, svgPath, '--config', svgoConfig], {
-      cwd: root,
-      stdio: 'inherit',
-    });
-
-    await sharp(svgPath)
+    const info = await sharp(pngPath)
       .resize({
         width: TARGET_WIDTH,
         withoutEnlargement: true,
@@ -48,10 +39,9 @@ async function main() {
       })
       .toFile(webpPath);
 
-    const svgStat = await fs.stat(svgPath);
-    const webpStat = await fs.stat(webpPath);
+    const pngStat = await fs.stat(pngPath);
     console.log(
-      `${svg}: ${(svgStat.size / 1024).toFixed(1)} KiB SVG → ${(webpStat.size / 1024).toFixed(1)} KiB WebP`,
+      `${png}: ${(pngStat.size / 1024).toFixed(1)} KiB PNG → ${(info.size / 1024).toFixed(1)} KiB WebP (${info.width}×${info.height})`,
     );
   }
   console.log('Done. Point routeMapImageSrc at *.webp in eventInfo.ts.');

@@ -61,7 +61,7 @@ export const EVENT_META = {
     { label: 'Opening ceremony', time: '05.30 WIB' },
     { label: 'Flag-off 10K', time: '05.55 WIB' },
     { label: 'Flag-off 5K', time: '06.00 WIB' },
-    { label: 'Flag-off Fun Walk 2,5K', time: '06.05 WIB' },
+    { label: 'Flag-off 2,5K', time: '06.05 WIB' },
   ] as const,
   routePlaceholder: 'Gambar peta rute & unduhan GPX menyusul.',
   ageRulesPlaceholder:

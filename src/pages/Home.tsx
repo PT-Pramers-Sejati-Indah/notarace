@@ -486,8 +486,18 @@ export const Home: React.FC = () => {
                                   <th scope="row" className="lp-cat__price-rowhd">
                                     {NOTARIS_ALB_CATEGORY_LABEL}
                                   </th>
-                                  <td className="lp-cat__price-amt">{formatIdr(row.pricing.notaris.earlyBird)}</td>
-                                  <td className="lp-cat__price-amt">{formatIdr(row.pricing.notaris.normal)}</td>
+                                  <td
+                                    className="lp-cat__price-amt"
+                                    data-price-label="Early bird"
+                                  >
+                                    {formatIdr(row.pricing.notaris.earlyBird)}
+                                  </td>
+                                  <td
+                                    className="lp-cat__price-amt"
+                                    data-price-label="Normal"
+                                  >
+                                    {formatIdr(row.pricing.notaris.normal)}
+                                  </td>
                                 </tr>
                                 <tr>
                                   <th scope="row" className="lp-cat__price-rowhd">
@@ -495,8 +505,18 @@ export const Home: React.FC = () => {
                                   </th>
                                   {row.pricing.public ? (
                                     <>
-                                      <td className="lp-cat__price-amt">{formatIdr(row.pricing.public.earlyBird)}</td>
-                                      <td className="lp-cat__price-amt">{formatIdr(row.pricing.public.normal)}</td>
+                                      <td
+                                        className="lp-cat__price-amt"
+                                        data-price-label="Early bird"
+                                      >
+                                        {formatIdr(row.pricing.public.earlyBird)}
+                                      </td>
+                                      <td
+                                        className="lp-cat__price-amt"
+                                        data-price-label="Normal"
+                                      >
+                                        {formatIdr(row.pricing.public.normal)}
+                                      </td>
                                     </>
                                   ) : (
                                     <td

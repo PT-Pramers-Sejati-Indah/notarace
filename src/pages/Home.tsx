@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, AlertCircle, Camera, Calendar, Car, MapPin, ChevronRight, Clock, ExternalLink, FileSignature, Flag, Award, Footprints, Users, Image as ImageIcon, Tag, X } from 'lucide-react';
+import { Activity, AlertCircle, Camera, Calendar, MapPin, ChevronRight, Clock, ExternalLink, FileDown, FileSignature, Flag, Award, Footprints, Users, Image as ImageIcon, Tag, X } from 'lucide-react';
 
 import {
   EVENT_META,
@@ -704,7 +704,7 @@ export const Home: React.FC = () => {
             <section id="logistik" className="lp-logistik" aria-labelledby="logistik-heading">
               <span className="lp-section-eyebrow">Logistik</span>
               <h2 id="logistik-heading" className="lp-section-title lp-logistik__title">
-                Race pack, titik kumpul &amp; parkir
+                Race pack, Surat Kuasa &amp; titik kumpul
               </h2>
               <div className="lp-logistik__grid">
                 <article className="lp-logistik-card">
@@ -722,6 +722,37 @@ export const Home: React.FC = () => {
                       <li key={line}>{line}</li>
                     ))}
                   </ul>
+                </article>
+                <article className="lp-logistik-card">
+                  <div className="lp-logistik-card__head">
+                    <span className="lp-logistik-card__icon-wrap" aria-hidden>
+                      <FileSignature size={20} strokeWidth={2.25} />
+                    </span>
+                    <h3 className="lp-logistik-card__title">Surat Kuasa</h3>
+                  </div>
+                  <p className="lp-logistik-card__kicker">
+                    <strong>{EVENT_META.racePackProxyTitle}</strong>
+                  </p>
+                  <p className="lp-logistik-card__text">{EVENT_META.racePackProxyLead}</p>
+                  <p className="lp-logistik-card__req-label" id="surat-kuasa-syarat">
+                    Penerima kuasa wajib membawa:
+                  </p>
+                  <ul
+                    className="lp-logistik-card__list"
+                    aria-labelledby="surat-kuasa-syarat"
+                  >
+                    {EVENT_META.racePackProxyRequirements.map((line) => (
+                      <li key={line}>{line}</li>
+                    ))}
+                  </ul>
+                  <a
+                    className="lp-btn lp-btn--outline-dark lp-logistik-card__cta"
+                    href={EVENT_META.racePackProxyDownloadHref}
+                    download="Surat-Kuasa-NOTARACE-2026.docx"
+                  >
+                    <FileDown size={18} strokeWidth={2.25} aria-hidden />
+                    {EVENT_META.racePackProxyDownloadLabel}
+                  </a>
                 </article>
                 <article className="lp-logistik-card">
                   <div className="lp-logistik-card__head">
@@ -758,15 +789,6 @@ export const Home: React.FC = () => {
                       </tbody>
                     </table>
                   </div>
-                </article>
-                <article className="lp-logistik-card">
-                  <div className="lp-logistik-card__head">
-                    <span className="lp-logistik-card__icon-wrap" aria-hidden>
-                      <Car size={20} strokeWidth={2.25} />
-                    </span>
-                    <h3 className="lp-logistik-card__title">Parkir</h3>
-                  </div>
-                  <p className="lp-logistik-card__text">{EVENT_META.parkingPlaceholder}</p>
                 </article>
               </div>
             </section>

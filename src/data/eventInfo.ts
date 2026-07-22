@@ -43,7 +43,17 @@ export const EVENT_META = {
     'Peserta wajib membawa email konfirmasi pendaftaran dan identitas diri (KTP/SIM).',
     'Tersedia juga talkshow, notary consultation, Fitness Day Fest (Zumba & Pound Fit), pop-up booth, serta fun games & challenge.',
   ] as const,
-  parkingPlaceholder: 'Informasi parkir menyusul.',
+  /** Surat Kuasa: pengambilan race pack oleh orang lain. */
+  racePackProxyTitle: 'Tidak bisa ambil sendiri?',
+  racePackProxyLead:
+    'Isi Surat Kuasa agar orang lain boleh mengambil race pack atas nama Anda.',
+  racePackProxyRequirements: [
+    'Surat Kuasa yang sudah diisi dan ditandatangani',
+    'Fotokopi KTP pemberi kuasa',
+    'Bukti pembayaran pemberi kuasa',
+  ] as const,
+  racePackProxyDownloadHref: '/docs/surat-kuasa-notarace-2026.docx',
+  racePackProxyDownloadLabel: 'Unduh template Surat Kuasa (.docx)',
   /** Lokasi titik kumpul & start (kartu logistik). */
   assemblyLocationLine: 'Titik kumpul & start di EASTVARA BSD (Eastvara Mall).',
   /** Baris jadwal hari-H: label singkat + waktu (tampil sebagai tabel). */
@@ -134,7 +144,7 @@ export interface CategoryDetailRow {
   };
   racePack: string[];
   route: string;
-  /** Peta rute (WebP ringan di `public/routes/`; SVG sumber dijalankan ulang lewat `npm run optimize:routes`). */
+  /** Peta rute (WebP ringan di `public/routes/`; PNG sumber dijalankan ulang lewat `npm run optimize:routes`). */
   routeMapImageSrc: string;
   ageRule: string;
 }

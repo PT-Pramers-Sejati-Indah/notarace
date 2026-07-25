@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, ExternalLink, Loader2 } from 'lucide-react';
 
 // Configure dataset URL (local public path for now, easily replaceable by remote storage URL)
-const DATA_URL = './r2512.json';
+const DATA_URL = 'https://raw.githubusercontent.com/PT-Pramers-Sejati-Indah/notarace/refs/heads/main/scrapper/race_result.json';
 
 interface Participant {
   '#': string;

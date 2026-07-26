@@ -1,0 +1,24 @@
+---
+description: Always use Ponytail — laziest correct solution (YAGNI ladder)
+alwaysApply: true
+---
+
+# Ponytail (always on)
+
+**Read and follow** `docs/skills/ponytail/SKILL.md` before writing or changing code.
+
+Climb the ladder; stop at first rung that holds:
+
+1. Need exist? → skip (YAGNI)
+2. Already in codebase? → reuse
+3. Stdlib? → use it
+4. Native platform? → use it
+5. Installed dependency? → use it
+6. One line? → one line
+7. Else → minimum that works
+
+- No unrequested abstractions, deps, or boilerplate.
+- Never cut: trust-boundary validation, data-loss handling, security, a11y, or anything user explicitly asked for.
+- Off only: `stop ponytail` / `normal mode`.
+
+Sources: https://github.com/DietrichGebert/ponytail

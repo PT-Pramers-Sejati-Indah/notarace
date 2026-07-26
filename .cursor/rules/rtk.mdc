@@ -1,0 +1,14 @@
+---
+description: Always use RTK — prefix shell commands with rtk for compact output
+alwaysApply: true
+---
+
+# RTK (always on)
+
+**Read and follow** `docs/skills/rtk/SKILL.md` whenever running shell commands.
+
+- If `rtk` is on PATH: prefer `rtk <cmd>` over raw `git` / `ls` / `grep` / `npm test` / etc.
+- Need full unfiltered output: `rtk proxy <cmd>` or raw command.
+- Missing binary: fall back to raw commands; do not block the task.
+
+Sources: https://github.com/rtk-ai/rtk

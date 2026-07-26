@@ -1,15 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { Search, ExternalLink, Loader2, Clock, RefreshCw } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  Search,
+  ExternalLink,
+  Loader2,
+  Clock,
+  RefreshCw,
+  FileBadge,
+  RotateCcw,
+  ChevronDown,
+} from 'lucide-react';
 
-// Configure dataset URL (local public path for now, easily replaceable by remote storage URL)
-const DATA_URL = './r2512.json';
+const DATA_URL = './notarace-2026.json';
+const CERT_BASE = 'https://result.pickmyrace.id/myresults.aspx';
 
 interface Participant {
-  '#': string;
+  Pos: string;
+  'Race No': string;
+  'First Name': string;
+  Time: string;
   Category: string;
+  'Cat Pos': string;
+  Gender: string;
+  'Gen Pos': string;
+  Start: string;
+  CP1: string;
+  CP2: string;
+  CP3: string;
+  Finish: string;
+  // legacy
+  '#': string;
   BIB: string;
   Name: string;
-  Gender: string;
   'Gun Time': string;
   'Net Time': string;
   'Start Time': string;
@@ -18,6 +39,7 @@ interface Participant {
   'Gender Rank': string;
   'Overall Rank': string;
   Certificate: string;
+  _event?: string;
 }
 
 interface CategoryData {
@@ -25,35 +47,145 @@ interface CategoryData {
   data: Participant[];
 }
 
+type SortKey =
+  | 'rank'
+  | 'bib'
+  | 'name'
+  | 'time'
+  | 'category'
+  | 'gender'
+  | 'start'
+  | 'cp1'
+  | 'cp2'
+  | 'cp3'
+  | 'finish';
+
+type StatusFilter = 'ALL' | 'Finished' | 'Other';
+
+type SortableCol = {
+  key: SortKey | null;
+  label: string;
+  className?: string;
+};
+
+const COLUMNS: SortableCol[] = [
+  { key: 'rank', label: 'Pos' },
+  { key: null, label: 'Race No' },
+  { key: null, label: 'First Name', className: 'rr-col-name' },
+  { key: 'time', label: 'Time' },
+  { key: 'category', label: 'Category' },
+  { key: null, label: 'Cat Pos' },
+  { key: 'gender', label: 'Gender' },
+  { key: null, label: 'Gen Pos' },
+  { key: 'start', label: 'Start' },
+  { key: 'cp1', label: 'CP1' },
+  { key: 'cp2', label: 'CP2' },
+  { key: 'cp3', label: 'CP3' },
+  { key: 'finish', label: 'Finish' },
+];
+
+function extractUid(raw: string): string | null {
+  if (!raw) return null;
+  const m = raw.match(/uid=([^&#]+)/i);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+function eCertificateUrl(p: Participant): string | null {
+  const uid = extractUid(p.Certificate);
+  if (!uid) return null;
+  // Certificate lives on athlete detail page
+  return `${CERT_BASE}?uid=${encodeURIComponent(uid)}`;
+}
+
+function detailUrl(p: Participant): string | null {
+  return eCertificateUrl(p);
+}
+
+function isFinished(p: Participant): boolean {
+  const t = p.Finish || p.Time || p['Net Time'] || p['Gun Time'] || '';
+  return p.Status === 'Finished' || /^\d{1,2}:\d{2}:\d{2}$/.test(t);
+}
+
+function parseRank(p: Participant): number {
+  const raw = p.Pos || p['Overall Rank'] || p['#'] || '';
+  const n = parseInt(raw.replace(/\D/g, ''), 10);
+  return Number.isFinite(n) && n > 0 ? n : 1e9;
+}
+
+function parseTimeToSeconds(t: string): number {
+  if (!/^\d{1,2}:\d{2}:\d{2}$/.test(t || '')) return 1e12;
+  const [h, m, s] = t.split(':').map(Number);
+  return h * 3600 + m * 60 + s;
+}
+
+function genderCode(g: string): string {
+  const v = (g || '').trim().toUpperCase();
+  if (v === 'M' || v.startsWith('MALE')) return 'M';
+  if (v === 'F' || v.startsWith('FEMALE')) return 'F';
+  return v;
+}
+
+function cell(p: Participant, label: string): string {
+  switch (label) {
+    case 'Pos':
+      return p.Pos || p['#'] || '—';
+    case 'Race No':
+      return p['Race No'] || p.BIB || '—';
+    case 'First Name':
+      return p['First Name'] || p.Name || '—';
+    case 'Time':
+      return p.Time || p['Gun Time'] || '—';
+    case 'Category':
+      return p.Category || '—';
+    case 'Cat Pos':
+      return p['Cat Pos'] || '—';
+    case 'Gender':
+      return p.Gender || '—';
+    case 'Gen Pos':
+      return p['Gen Pos'] || p['Gender Rank'] || '—';
+    case 'Start':
+      return p.Start || p['Start Time'] || '—';
+    case 'CP1':
+      return p.CP1 || '—';
+    case 'CP2':
+      return p.CP2 || p['Check Point'] || '—';
+    case 'CP3':
+      return p.CP3 || '—';
+    case 'Finish':
+      return p.Finish || p['Net Time'] || '—';
+    default:
+      return '—';
+  }
+}
+
 export const RaceResultsPage: React.FC = () => {
   const [data, setData] = useState<CategoryData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Filter and Search states
-  const [selectedTab, setSelectedTab] = useState<string>('');
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [genderFilter, setGenderFilter] = useState<string>('ALL');
-  const enableResult = false;
-
-  // Pagination
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [selectedTab, setSelectedTab] = useState('ALL');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [genderFilter, setGenderFilter] = useState('ALL');
+  const [categoryFilter, setCategoryFilter] = useState('ALL');
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('Finished');
+  const [sortBy, setSortBy] = useState<SortKey>('rank');
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+  const enableResult = true;
 
   useEffect(() => {
     const loadResults = async () => {
       try {
         setLoading(true);
         const response = await fetch(DATA_URL);
-        if (!response.ok) {
-          throw new Error(`Failed to load data: ${response.statusText}`);
-        }
+        if (!response.ok) throw new Error(`Gagal memuat data: ${response.statusText}`);
         const json: CategoryData[] = await response.json();
         setData(json);
         setSelectedTab('ALL');
-      } catch (err: any) {
-        console.error(err);
-        setError(err.message || 'Gagal memuat hasil lomba.');
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Gagal memuat hasil lomba.';
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -61,75 +193,128 @@ export const RaceResultsPage: React.FC = () => {
     loadResults();
   }, []);
 
-  // Find the currently selected category object or combine all for 'ALL'
-  const participants = selectedTab === 'ALL'
-    ? data.flatMap(c => c.data)
-    : (data.find(c => c.tab === selectedTab)?.data || []);
+  const eventTabs = useMemo(() => data.map(c => c.tab), [data]);
 
-  // Filter participants
-  const filteredParticipants = participants.filter(p => {
-    const matchesSearch =
-      p.Name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.BIB.includes(searchQuery);
+  const participants = useMemo(() => {
+    if (selectedTab === 'ALL') return data.flatMap(c => c.data.map(p => ({ ...p, _event: c.tab })));
+    const group = data.find(c => c.tab === selectedTab);
+    return (group?.data || []).map(p => ({ ...p, _event: selectedTab }));
+  }, [data, selectedTab]);
 
-    const matchesGender =
-      genderFilter === 'ALL' ||
-      p.Gender.toUpperCase() === genderFilter.toUpperCase();
+  const categoryOptions = useMemo(() => {
+    const set = new Set<string>();
+    participants.forEach(p => {
+      if (p.Category) set.add(p.Category);
+    });
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [participants]);
 
-    return matchesSearch && matchesGender;
-  });
+  const filteredParticipants = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    let list = participants.filter(p => {
+      const name = (p['First Name'] || p.Name || '').toLowerCase();
+      const bib = (p['Race No'] || p.BIB || '').toLowerCase();
+      const matchesSearch = !q || name.includes(q) || bib.includes(q);
+      const matchesGender =
+        genderFilter === 'ALL' || genderCode(p.Gender) === genderFilter.toUpperCase();
+      const matchesCategory = categoryFilter === 'ALL' || p.Category === categoryFilter;
+      const finished = isFinished(p);
+      const matchesStatus =
+        statusFilter === 'ALL' ||
+        (statusFilter === 'Finished' && finished) ||
+        (statusFilter === 'Other' && !finished);
+      return matchesSearch && matchesGender && matchesCategory && matchesStatus;
+    });
 
-  // Calculate pagination
-  const totalPages = Math.ceil(filteredParticipants.length / itemsPerPage);
+    const dir = sortDir === 'asc' ? 1 : -1;
+    list = [...list].sort((a, b) => {
+      let cmp = 0;
+      switch (sortBy) {
+        case 'bib':
+          cmp = (a['Race No'] || a.BIB).localeCompare(b['Race No'] || b.BIB, undefined, { numeric: true });
+          break;
+        case 'name':
+          cmp = (a['First Name'] || a.Name).localeCompare(b['First Name'] || b.Name);
+          break;
+        case 'time':
+          cmp = parseTimeToSeconds(a.Time || a['Gun Time']) - parseTimeToSeconds(b.Time || b['Gun Time']);
+          break;
+        case 'category':
+          cmp = a.Category.localeCompare(b.Category) || parseRank(a) - parseRank(b);
+          break;
+        case 'gender':
+          cmp = a.Gender.localeCompare(b.Gender) || parseRank(a) - parseRank(b);
+          break;
+        case 'start':
+          cmp = parseTimeToSeconds(a.Start) - parseTimeToSeconds(b.Start);
+          break;
+        case 'cp1':
+          cmp = parseTimeToSeconds(a.CP1) - parseTimeToSeconds(b.CP1);
+          break;
+        case 'cp2':
+          cmp = parseTimeToSeconds(a.CP2) - parseTimeToSeconds(b.CP2);
+          break;
+        case 'cp3':
+          cmp = parseTimeToSeconds(a.CP3) - parseTimeToSeconds(b.CP3);
+          break;
+        case 'finish':
+          cmp = parseTimeToSeconds(a.Finish || a['Net Time']) - parseTimeToSeconds(b.Finish || b['Net Time']);
+          break;
+        case 'rank':
+        default:
+          cmp = parseRank(a) - parseRank(b);
+      }
+      return cmp * dir;
+    });
+
+    return list;
+  }, [participants, searchQuery, genderFilter, categoryFilter, statusFilter, sortBy, sortDir]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredParticipants.length / itemsPerPage));
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedParticipants = filteredParticipants.slice(startIndex, startIndex + itemsPerPage);
 
-  // Reset pagination when filter/search/tab changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedTab, searchQuery, genderFilter]);
+  }, [selectedTab, searchQuery, genderFilter, categoryFilter, statusFilter, sortBy, sortDir]);
 
-  const renderMedal = (rankStr: string) => {
-    const rank = parseInt(rankStr, 10);
-    if (rank === 1) return '🥇';
-    if (rank === 2) return '🥈';
-    if (rank === 3) return '🥉';
-    return rankStr;
+  useEffect(() => {
+    setCategoryFilter('ALL');
+  }, [selectedTab]);
+
+  const resetFilters = () => {
+    setSearchQuery('');
+    setGenderFilter('ALL');
+    setCategoryFilter('ALL');
+    setStatusFilter('Finished');
+    setSortBy('rank');
+    setSortDir('asc');
+    setSelectedTab('ALL');
+  };
+
+  const onHeaderSort = (key: SortKey | null) => {
+    if (!key) return;
+    if (sortBy === key) {
+      setSortDir(d => (d === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortBy(key);
+      setSortDir('asc');
+    }
   };
 
   if (!enableResult) {
     return (
-      <div className="page-wrapper flex items-center justify-center" style={{ minHeight: '65vh', padding: '2rem 1rem' }}>
-        <div className="card text-center max-w-lg mx-auto p-8 md:p-12 animate-fade-in" style={{
-          background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(243, 244, 246, 0.9) 100%)',
-          borderRadius: '24px',
-          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.08)',
-          border: '1px solid rgba(232, 73, 43, 0.15)'
-        }}>
-          <div className="w-20 h-20 mx-auto mb-6 flex items-center justify-center rounded-2xl" style={{
-            background: '',
-            color: 'var(--color-accent, #E8492B)'
-          }}>
-            <Clock size={42} className="animate-pulse" />
-          </div>
-
-          <h2 className="text-2xl md:text-3xl font-extrabold mb-3 text-primary" style={{ fontFamily: 'var(--font-heading)' }}>
-            Hasil Lomba Masih Diproses
-          </h2>
-
-          <p className="text-muted text-base md:text-lg mb-8 max-w-md mx-auto leading-relaxed">
-            Data hasil pertandingan sedang dalam tahap verifikasi dan rekapitulasi akhir oleh panitia. Mohon cek kembali secara berkala.
+      <div className="page-wrapper rr-page rr-page--empty">
+        <div className="rr-empty">
+          <Clock size={40} className="rr-empty__icon" aria-hidden />
+          <h2 className="rr-empty__title">Hasil Lomba Masih Diproses</h2>
+          <p className="rr-empty__text">
+            Data hasil pertandingan sedang diverifikasi panitia. Cek kembali sebentar lagi.
           </p>
-
-          <div className="flex flex-wrap justify-center gap-4">
-            <button
-              className="lp-btn lp-btn--primary"
-              onClick={() => window.location.reload()}
-            >
-              <RefreshCw size={18} />
-              Cek Lagi
-            </button>
-          </div>
+          <button type="button" className="lp-btn lp-btn--primary" onClick={() => window.location.reload()}>
+            <RefreshCw size={18} aria-hidden />
+            Cek Lagi
+          </button>
         </div>
       </div>
     );
@@ -137,10 +322,10 @@ export const RaceResultsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="page-wrapper flex items-center justify-center" style={{ minHeight: '60vh' }}>
-        <div className="text-center">
-          <Loader2 className="animate-spin text-accent mb-4 mx-auto" size={48} />
-          <p className="text-xl text-muted font-medium">Memuat hasil lomba...</p>
+      <div className="page-wrapper rr-page rr-page--empty">
+        <div className="rr-empty" role="status" aria-live="polite">
+          <Loader2 className="rr-spin" size={40} aria-hidden />
+          <p className="rr-empty__text">Memuat hasil lomba...</p>
         </div>
       </div>
     );
@@ -148,182 +333,268 @@ export const RaceResultsPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="page-wrapper flex items-center justify-center" style={{ minHeight: '60vh' }}>
-        <div className="card text-center max-w-md mx-auto p-8 border border-red-500 bg-red-950 bg-opacity-20">
-          <p className="text-red-400 font-bold mb-4">Error</p>
-          <p className="text-muted mb-6">{error}</p>
-          <button className="btn btn-primary" onClick={() => window.location.reload()}>Coba Lagi</button>
+      <div className="page-wrapper rr-page rr-page--empty">
+        <div className="rr-empty">
+          <h2 className="rr-empty__title">Gagal memuat</h2>
+          <p className="rr-empty__text">{error}</p>
+          <button type="button" className="lp-btn lp-btn--primary" onClick={() => window.location.reload()}>
+            Coba Lagi
+          </button>
         </div>
       </div>
     );
   }
+
   return (
-    <div className="page-wrapper" style={{ padding: '2rem 0' }}>
-      <div className="container">
-        <header className="text-center mb-8 animate-fade-in">
-          <h1 className="text-4xl font-extrabold mb-2 text-accent">Race Results</h1>
-          <p className="text-muted max-w-xl mx-auto">
-            Hasil resmi event NOTARACE 2026. Gunakan pencarian di bawah untuk mencari nama atau nomor BIB Anda.
+    <div className="page-wrapper rr-page">
+      <div className="container rr-container">
+        <header className="rr-header">
+          <h1 className="rr-header__title">Hasil Lomba</h1>
+          <p className="rr-header__lede">
+            Cari nama atau BIB, filter kategori/gender, dan unduh e-sertifikat.
           </p>
         </header>
 
-        {/* Categories Tab Selector */}
-        <div className="flex flex-wrap gap-2 justify-center mb-6">
+        <div className="rr-tabs" role="tablist" aria-label="Event">
           <button
+            type="button"
+            role="tab"
+            aria-selected={selectedTab === 'ALL'}
+            className={`rr-tab ${selectedTab === 'ALL' ? 'rr-tab--active' : ''}`}
             onClick={() => setSelectedTab('ALL')}
-            className={`btn btn-sm ${selectedTab === 'ALL' ? 'btn-primary' : 'btn-outline'}`}
-            style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}
           >
-            ALL
+            Semua
           </button>
-          {data.map(cat => (
+          {eventTabs.map(tab => (
             <button
-              key={cat.tab}
-              onClick={() => setSelectedTab(cat.tab)}
-              className={`btn btn-sm ${selectedTab === cat.tab ? 'btn-primary' : 'btn-outline'}`}
-              style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}
+              key={tab}
+              type="button"
+              role="tab"
+              aria-selected={selectedTab === tab}
+              className={`rr-tab ${selectedTab === tab ? 'rr-tab--active' : ''}`}
+              onClick={() => setSelectedTab(tab)}
             >
-              {cat.tab}
+              {tab}
             </button>
           ))}
         </div>
 
-        {/* Filters and Search Bar */}
-        <div className="card mb-8">
-          <div className="flex justify-between items-center flex-wrap gap-4">
-            <div className="flex gap-2 items-center flex-wrap w-full md:w-auto">
-              <div className="relative flex-1 md:flex-initial">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted" size={18} />
-                <input
-                  type="text"
-                  placeholder="Cari Nama atau BIB..."
-                  className="form-input"
-                  style={{ paddingLeft: '2.5rem', width: '100%', minWidth: '260px', margin: 0 }}
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </div>
+        <div className="rr-toolbar" role="search">
+          <label className="rr-field rr-field--grow">
+            <span className="rr-field__label">Filter</span>
+            <span className="rr-search">
+              <Search size={18} aria-hidden className="rr-search__icon" />
+              <input
+                type="search"
+                className="rr-input"
+                placeholder="Nama atau Race No"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                autoComplete="off"
+              />
+            </span>
+          </label>
 
-            <div className="flex gap-2 items-center">
-              <span className="text-sm text-muted">Gender:</span>
-              <select
-                className="form-select"
-                style={{ width: '120px', margin: 0 }}
-                value={genderFilter}
-                onChange={e => setGenderFilter(e.target.value)}
-              >
-                <option value="ALL">Semua</option>
-                <option value="M">Laki-laki</option>
-                <option value="F">Perempuan</option>
-              </select>
-            </div>
-          </div>
+          <label className="rr-field">
+            <span className="rr-field__label">Gender</span>
+            <select
+              className="rr-select"
+              value={genderFilter}
+              onChange={e => setGenderFilter(e.target.value)}
+            >
+              <option value="ALL">All genders</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+          </label>
+
+          <label className="rr-field">
+            <span className="rr-field__label">Category</span>
+            <select
+              className="rr-select"
+              value={categoryFilter}
+              onChange={e => setCategoryFilter(e.target.value)}
+            >
+              <option value="ALL">All categories</option>
+              {categoryOptions.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </label>
+
+          <label className="rr-field">
+            <span className="rr-field__label">Status</span>
+            <select
+              className="rr-select"
+              value={statusFilter}
+              onChange={e => setStatusFilter(e.target.value as StatusFilter)}
+            >
+              <option value="Finished">Finished</option>
+              <option value="ALL">All status</option>
+              <option value="Other">DNS / Other</option>
+            </select>
+          </label>
+
+          <button type="button" className="rr-reset" onClick={resetFilters}>
+            <RotateCcw size={16} aria-hidden />
+            Reset
+          </button>
         </div>
 
-        {/* Results Table */}
-        <div className="card">
-          <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
-            <h3 className="text-xl font-bold text-accent">{selectedTab} Results</h3>
-            <span className="text-sm text-muted">
-              Menampilkan {filteredParticipants.length} dari {participants.length} pelari
-            </span>
-          </div>
+        <div className="rr-meta">
+          <h2 className="rr-meta__title">
+            {selectedTab === 'ALL' ? 'Semua Event' : selectedTab}
+            {categoryFilter !== 'ALL' ? ` · ${categoryFilter}` : ''}
+          </h2>
+          <p className="rr-meta__count">
+            Menampilkan <strong>{filteredParticipants.length}</strong> dari {participants.length} peserta
+          </p>
+        </div>
 
-          <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Rank</th>
-                  <th>BIB</th>
-                  <th>Nama</th>
-                  <th>Gender</th>
-                  <th>Gun Time</th>
-                  <th>Net Time</th>
-                  <th>Check Point</th>
-                  <th>Sertifikat</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedParticipants.length > 0 ? (
-                  paginatedParticipants.map((p, idx) => (
-                    <tr key={`${p.BIB}-${idx}`} className="hover:bg-white hover:bg-opacity-5">
-                      <td className="font-bold">{renderMedal(p['#'] || p['Overall Rank'])}</td>
-                      <td className="font-mono text-accent">{p.BIB}</td>
-                      <td className="font-bold">{p.Name}</td>
-                      <td>
-                        <span className={`px-2 py-0.5 rounded text-xs font-semibold ${p.Gender === 'M' ? 'bg-blue-500 bg-opacity-20 text-blue-300' : 'bg-pink-500 bg-opacity-20 text-pink-300'
-                          }`}>
-                          {p.Gender === 'M' ? 'Male' : 'Female'}
-                        </span>
-                      </td>
-                      <td className="font-mono text-muted">{p['Gun Time']}</td>
-                      <td className="font-mono font-bold">{p['Net Time']}</td>
-                      <td className="font-mono text-muted">{p['Check Point'] || '-'}</td>
-                      <td>
-                        {p.Certificate ? (
+        <p className="rr-table-hint">Geser ke samping untuk lihat semua kolom</p>
+        <div className="rr-table-wrap" tabIndex={0} role="region" aria-label="Tabel hasil lomba, bisa digeser horizontal">
+          <table className="rr-table">
+            <thead>
+              <tr>
+                {COLUMNS.map(col => {
+                  const sortable = col.key != null;
+                  const active = col.key != null && sortBy === col.key;
+                  return (
+                    <th
+                      key={col.label}
+                      scope="col"
+                      className={`${col.className || ''} ${sortable ? 'rr-th--sortable' : ''}`}
+                    >
+                      {sortable ? (
+                        <button
+                          type="button"
+                          className={`rr-th-btn ${active ? 'rr-th-btn--active' : ''}`}
+                          onClick={() => onHeaderSort(col.key)}
+                          aria-label={`Sort by ${col.label}`}
+                        >
+                          <span>{col.label}</span>
+                          <ChevronDown
+                            size={12}
+                            aria-hidden
+                            className={`rr-th-caret ${active && sortDir === 'desc' ? 'rr-th-caret--up' : ''}`}
+                          />
+                        </button>
+                      ) : (
+                        <span className="rr-th-static">{col.label}</span>
+                      )}
+                    </th>
+                  );
+                })}
+                <th scope="col" className="rr-th-action">
+                  <span className="rr-th-static">E-Cert</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedParticipants.length > 0 ? (
+                paginatedParticipants.map((p, idx) => {
+                  const cert = eCertificateUrl(p);
+                  const detail = detailUrl(p);
+                  const name = cell(p, 'First Name');
+                  return (
+                    <tr key={`${p['Race No'] || p.BIB}-${idx}`}>
+                      <td className="rr-td-center rr-strong">{cell(p, 'Pos')}</td>
+                      <td className="rr-td-center rr-bib">{cell(p, 'Race No')}</td>
+                      <td className="rr-col-name">
+                        {detail ? (
                           <a
-                            href={p.Certificate}
+                            className="rr-name-link"
+                            href={detail}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="btn btn-outline btn-sm flex items-center gap-1 py-1 px-3 text-xs"
-                            style={{ display: 'inline-flex', minHeight: 'auto', height: '28px' }}
                           >
-                            <ExternalLink size={12} />
-                            E-Cert
+                            {name}
                           </a>
                         ) : (
-                          <span className="text-xs text-muted">-</span>
+                          <span className="rr-name">{name}</span>
+                        )}
+                      </td>
+                      <td className="rr-td-center rr-mono">{cell(p, 'Time')}</td>
+                      <td>
+                        <span className="rr-chip">{cell(p, 'Category')}</span>
+                      </td>
+                      <td className="rr-td-center rr-mono">{cell(p, 'Cat Pos')}</td>
+                      <td className="rr-td-center">
+                        <span className={`rr-gender rr-gender--${genderCode(p.Gender) === 'F' ? 'f' : 'm'}`}>
+                          {cell(p, 'Gender')}
+                        </span>
+                      </td>
+                      <td className="rr-td-center rr-mono">{cell(p, 'Gen Pos')}</td>
+                      <td className="rr-td-center rr-mono rr-muted">{cell(p, 'Start')}</td>
+                      <td className="rr-td-center rr-mono rr-muted">{cell(p, 'CP1')}</td>
+                      <td className="rr-td-center rr-mono rr-muted">{cell(p, 'CP2')}</td>
+                      <td className="rr-td-center rr-mono rr-muted">{cell(p, 'CP3')}</td>
+                      <td className="rr-td-center rr-mono rr-strong">{cell(p, 'Finish')}</td>
+                      <td className="rr-td-center">
+                        {cert && isFinished(p) ? (
+                          <a
+                            href={cert}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rr-cert"
+                            aria-label={`E-sertifikat ${name}`}
+                          >
+                            <FileBadge size={14} aria-hidden />
+                            E-Cert
+                            <ExternalLink size={11} aria-hidden />
+                          </a>
+                        ) : (
+                          <span className="rr-muted">—</span>
                         )}
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={8} className="text-center py-8 text-muted">
-                      Tidak ada hasil yang cocok dengan kriteria pencarian.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination Controls */}
-          {totalPages > 1 && (
-            <div className="pagination mt-6">
-              <button
-                className="page-item"
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage(1)}
-              >
-                First
-              </button>
-              <button
-                className="page-item"
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              >
-                Prev
-              </button>
-              <span className="page-item active">{currentPage} / {totalPages}</span>
-              <button
-                className="page-item"
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              >
-                Next
-              </button>
-              <button
-                className="page-item"
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage(totalPages)}
-              >
-                Last
-              </button>
-            </div>
-          )}
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={COLUMNS.length + 1} className="rr-empty-row">
+                    Tidak ada hasil yang cocok. Ubah filter atau reset.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
+
+        {totalPages > 1 && (
+          <nav className="rr-pager" aria-label="Halaman hasil">
+            <button type="button" className="rr-pager__btn" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>
+              First
+            </button>
+            <button
+              type="button"
+              className="rr-pager__btn"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
+            >
+              Prev
+            </button>
+            <span className="rr-pager__status" aria-current="page">
+              {currentPage} / {totalPages}
+            </span>
+            <button
+              type="button"
+              className="rr-pager__btn"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
+            >
+              Next
+            </button>
+            <button
+              type="button"
+              className="rr-pager__btn"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(totalPages)}
+            >
+              Last
+            </button>
+          </nav>
+        )}
       </div>
     </div>
   );

@@ -1523,6 +1523,172 @@ tr:hover td { background: rgba(0,0,0,0.02); }
   }
 }
 
+/* Category / Gender top boards */
+.rr-viewmodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.rr-viewmode {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  min-height: 40px;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1.5px solid rgba(17, 24, 39, 0.12);
+  background: #fff;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+}
+.rr-viewmode:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.rr-viewmode:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+.rr-viewmode--active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+.rr-viewmode--active:hover {
+  background: var(--color-primary-light);
+  color: #fff;
+}
+.rr-topn {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+.rr-select--topn {
+  min-width: 9rem;
+}
+.rr-boards__event {
+  margin-bottom: 2rem;
+}
+.rr-boards__event-title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-accent);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.rr-boards__gender-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.rr-board-col__title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--color-accent);
+}
+.rr-board {
+  background: #fff;
+  border: 1px solid rgba(17, 24, 39, 0.08);
+  border-radius: var(--lp-radius-md);
+  box-shadow: var(--lp-shadow-soft);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+.rr-board__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--color-bg-alt);
+  border-bottom: 1px solid rgba(17, 24, 39, 0.06);
+}
+.rr-board__cat {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0;
+}
+.rr-board__meta {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+.rr-board__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.rr-board__table th {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-primary-light);
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(17, 24, 39, 0.06);
+}
+.rr-board__table td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid rgba(17, 24, 39, 0.05);
+  vertical-align: middle;
+}
+.rr-board__table tbody tr:last-child td {
+  border-bottom: none;
+}
+.rr-board__table tbody tr:hover td {
+  background: rgba(232, 73, 43, 0.04);
+}
+.rr-pos-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.35rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.8125rem;
+  background: rgba(17, 24, 39, 0.06);
+  color: var(--color-primary);
+}
+.rr-pos-badge--1 {
+  background: rgba(232, 73, 43, 0.15);
+  color: var(--color-accent);
+}
+.rr-pos-badge--2 {
+  background: rgba(17, 24, 39, 0.1);
+  color: var(--color-primary);
+}
+.rr-pos-badge--3 {
+  background: rgba(180, 83, 9, 0.12);
+  color: #b45309;
+}
+.rr-bib-inline {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+@media (max-width: 800px) {
+  .rr-boards__gender-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Utilities */
 .flex { display: flex; } .flex-col { display: flex; flex-direction: column; }
 .items-center { align-items: center; } .justify-between { justify-content: space-between; } .justify-center { justify-content: center; }

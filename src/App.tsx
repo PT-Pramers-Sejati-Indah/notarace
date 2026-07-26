@@ -5,7 +5,6 @@ import { AuthPage } from './pages/AuthPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { OrderSummaryPage } from './pages/OrderSummaryPage';
 import { PaymentPage } from './pages/PaymentPage';
-import { ResultsPage } from './pages/ResultsPage';
 import { ImageViewerPage } from './pages/ImageViewerPage';
 import { RaceResultsPage } from './pages/RaceResultsPage';
 import { User } from 'lucide-react';
@@ -65,7 +64,6 @@ const Navbar = () => {
         <button type="button" className="navbar-scroll-link" onClick={scrollToSection('pendaftaran')}>Daftar</button>
         <button type="button" className="navbar-scroll-link" onClick={scrollToSection('timeline')}>Timeline</button>
         <button type="button" className="navbar-scroll-link" onClick={scrollToSection('faq')}>FAQ</button>
-        {featureFlags.results && <Link to="/results" className="font-medium hover:text-accent" onClick={closeMenu}>Hasil Lomba</Link>}
         {featureFlags.raceResults && <Link to="/race-result" className="font-medium hover:text-accent" onClick={closeMenu}>Race Result</Link>}
 
         {featureFlags.auth && (
@@ -99,7 +97,6 @@ function App() {
         {featureFlags.profile && <Route path="/profile" element={<ProfilePage />} />}
         {featureFlags.purchase && <Route path="/buy/:category" element={<OrderSummaryPage />} />}
         {featureFlags.purchase && <Route path="/payment" element={<PaymentPage />} />}
-        {featureFlags.results && <Route path="/results" element={<ResultsPage />} />}
         {featureFlags.raceResults && <Route path="/race-result" element={<RaceResultsPage />} />}
         {featureFlags.photos && <Route path="/photos" element={<ImageViewerPage />} />}
       </Routes>

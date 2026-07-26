@@ -9,6 +9,13 @@ import {
   RotateCcw,
   ChevronDown,
 } from 'lucide-react';
+import {
+  buildCategoryBoards,
+  buildGenderBoards,
+  type BoardRunner,
+  type CategoryBoard,
+  type GenderBoard,
+} from '../utils/raceResultBoards';
 
 const DATA_URL = './notarace-2026.json';
 const CERT_BASE = 'https://result.pickmyrace.id/myresults.aspx';
@@ -61,6 +68,8 @@ type SortKey =
   | 'finish';
 
 type StatusFilter = 'ALL' | 'Finished' | 'Other';
+type ViewMode = 'all' | 'category' | 'gender';
+type TopN = 5 | 10;
 
 type SortableCol = {
   key: SortKey | null;
@@ -170,6 +179,8 @@ export const RaceResultsPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('Finished');
   const [sortBy, setSortBy] = useState<SortKey>('rank');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+  const [viewMode, setViewMode] = useState<ViewMode>('all');
+  const [topN, setTopN] = useState<TopN>(5);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
   const enableResult = true;
@@ -290,7 +301,89 @@ export const RaceResultsPage: React.FC = () => {
     setSortBy('rank');
     setSortDir('asc');
     setSelectedTab('ALL');
+    setViewMode('all');
+    setTopN(5);
   };
+
+  const eventsForBoards = useMemo(() => {
+    if (selectedTab !== 'ALL') return [selectedTab];
+    return eventTabs;
+  }, [selectedTab, eventTabs]);
+
+  const categoryBoardsByEvent = useMemo(() => {
+    if (viewMode !== 'category') return [] as { event: string; boards: CategoryBoard[] }[];
+    return eventsForBoards.map(ev => {
+      const rows = (data.find(d => d.tab === ev)?.data || []).map(p => ({ ...p, _event: ev }));
+      return { event: ev, boards: buildCategoryBoards(rows, topN, ev) };
+    });
+  }, [viewMode, eventsForBoards, data, topN]);
+
+  const genderBoardsByEvent = useMemo(() => {
+    if (viewMode !== 'gender') return [] as { event: string; boards: GenderBoard[] }[];
+    return eventsForBoards.map(ev => {
+      const rows = (data.find(d => d.tab === ev)?.data || []).map(p => ({ ...p, _event: ev }));
+      return { event: ev, boards: buildGenderBoards(rows, topN, ev) };
+    });
+  }, [viewMode, eventsForBoards, data, topN]);
+
+  const renderBoardTable = (runners: BoardRunner[]) => (
+    <div className="rr-board__table-wrap">
+      <table className="rr-board__table">
+        <thead>
+          <tr>
+            <th scope="col">Pos</th>
+            <th scope="col">Name</th>
+            <th scope="col">Time</th>
+            <th scope="col">E-Cert</th>
+          </tr>
+        </thead>
+        <tbody>
+          {runners.map(r => {
+            const uid = extractUid(r.certificate);
+            const cert = uid ? `${CERT_BASE}?uid=${encodeURIComponent(uid)}` : null;
+            return (
+              <tr key={`${r.bib}-${r.pos}`}>
+                <td className="rr-td-center">
+                  <span className={`rr-pos-badge ${r.pos <= 3 ? `rr-pos-badge--${r.pos}` : ''}`}>
+                    {r.pos}
+                  </span>
+                </td>
+                <td>
+                  {cert ? (
+                    <a className="rr-name-link" href={cert} target="_blank" rel="noopener noreferrer">
+                      {r.name} <span className="rr-bib-inline">({r.bib})</span>
+                    </a>
+                  ) : (
+                    <span className="rr-name">
+                      {r.name} <span className="rr-bib-inline">({r.bib})</span>
+                    </span>
+                  )}
+                </td>
+                <td className="rr-td-center rr-mono rr-strong">{r.time || '—'}</td>
+                <td className="rr-td-center">
+                  {cert ? (
+                    <a
+                      href={cert}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rr-cert"
+                      aria-label={`E-sertifikat ${r.name}`}
+                    >
+                      <FileBadge size={14} aria-hidden />
+                      E-Cert
+                      <ExternalLink size={11} aria-hidden />
+                    </a>
+                  ) : (
+                    <span className="rr-muted">—</span>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 
   const onHeaderSort = (key: SortKey | null) => {
     if (!key) return;
@@ -379,6 +472,54 @@ export const RaceResultsPage: React.FC = () => {
           ))}
         </div>
 
+        <div className="rr-viewmodes" role="tablist" aria-label="Tampilan hasil">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={viewMode === 'all'}
+            className={`rr-viewmode ${viewMode === 'all' ? 'rr-viewmode--active' : ''}`}
+            onClick={() => setViewMode('all')}
+          >
+            All Results
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={viewMode === 'category'}
+            className={`rr-viewmode ${viewMode === 'category' ? 'rr-viewmode--active' : ''}`}
+            onClick={() => setViewMode('category')}
+          >
+            Category Results
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={viewMode === 'gender'}
+            className={`rr-viewmode ${viewMode === 'gender' ? 'rr-viewmode--active' : ''}`}
+            onClick={() => setViewMode('gender')}
+          >
+            Gender Results
+          </button>
+        </div>
+
+        {viewMode !== 'all' && (
+          <div className="rr-topn">
+            <label className="rr-field">
+              <span className="rr-field__label">Tampilkan</span>
+              <select
+                className="rr-select rr-select--topn"
+                value={topN}
+                onChange={e => setTopN(Number(e.target.value) as TopN)}
+                aria-label="Top N"
+              >
+                <option value={5}>Top 5</option>
+                <option value={10}>Top 10</option>
+              </select>
+            </label>
+          </div>
+        )}
+
+        {viewMode === 'all' && (
         <div className="rr-toolbar" role="search">
           <label className="rr-field rr-field--grow">
             <span className="rr-field__label">Filter</span>
@@ -440,7 +581,70 @@ export const RaceResultsPage: React.FC = () => {
             Reset
           </button>
         </div>
+        )}
 
+        {viewMode === 'category' && (
+          <div className="rr-boards">
+            {categoryBoardsByEvent.map(({ event, boards }) => {
+              const byGender = ['Male', 'Female'].map(g => ({
+                gender: g,
+                cats: boards.filter(b => b.gender === g),
+              })).filter(x => x.cats.length > 0);
+              return (
+                <section key={event} className="rr-boards__event">
+                  {(selectedTab === 'ALL' || categoryBoardsByEvent.length > 1) && (
+                    <h2 className="rr-boards__event-title">{event}</h2>
+                  )}
+                  <div className="rr-boards__gender-grid">
+                    {byGender.map(({ gender, cats }) => (
+                      <div key={gender} className="rr-board-col">
+                        <h3 className="rr-board-col__title">{gender}</h3>
+                        {cats.map(board => (
+                          <div key={`${gender}-${board.category}`} className="rr-board">
+                            <div className="rr-board__head">
+                              <h4 className="rr-board__cat">{board.category}</h4>
+                              <span className="rr-board__meta">Top {topN}</span>
+                            </div>
+                            {renderBoardTable(board.runners)}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        )}
+
+        {viewMode === 'gender' && (
+          <div className="rr-boards">
+            {genderBoardsByEvent.map(({ event, boards }) => (
+              <section key={event} className="rr-boards__event">
+                {(selectedTab === 'ALL' || genderBoardsByEvent.length > 1) && (
+                  <h2 className="rr-boards__event-title">{event}</h2>
+                )}
+                <div className="rr-boards__gender-grid">
+                  {boards.map(board => (
+                    <div key={board.gender} className="rr-board-col">
+                      <h3 className="rr-board-col__title">{board.gender}</h3>
+                      <div className="rr-board">
+                        <div className="rr-board__head">
+                          <h4 className="rr-board__cat">Overall</h4>
+                          <span className="rr-board__meta">Top {topN}</span>
+                        </div>
+                        {renderBoardTable(board.runners)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        )}
+
+        {viewMode === 'all' && (
+        <>
         <div className="rr-meta">
           <h2 className="rr-meta__title">
             {selectedTab === 'ALL' ? 'Semua Event' : selectedTab}
@@ -594,6 +798,8 @@ export const RaceResultsPage: React.FC = () => {
               Last
             </button>
           </nav>
+        )}
+        </>
         )}
       </div>
     </div>

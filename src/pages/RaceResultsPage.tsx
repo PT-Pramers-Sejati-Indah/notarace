@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ExternalLink, Loader2 } from 'lucide-react';
+import { Search, ExternalLink, Loader2, Clock, RefreshCw } from 'lucide-react';
 
 // Configure dataset URL (local public path for now, easily replaceable by remote storage URL)
-const DATA_URL = 'https://raw.githubusercontent.com/PT-Pramers-Sejati-Indah/notarace/refs/heads/main/scrapper/race_result.json';
+const DATA_URL = './r2512.json';
 
 interface Participant {
   '#': string;
@@ -34,7 +34,8 @@ export const RaceResultsPage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [genderFilter, setGenderFilter] = useState<string>('ALL');
-  
+  const enableResult = false;
+
   // Pagination
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 20;
@@ -67,12 +68,12 @@ export const RaceResultsPage: React.FC = () => {
 
   // Filter participants
   const filteredParticipants = participants.filter(p => {
-    const matchesSearch = 
+    const matchesSearch =
       p.Name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.BIB.includes(searchQuery);
-    
-    const matchesGender = 
-      genderFilter === 'ALL' || 
+
+    const matchesGender =
+      genderFilter === 'ALL' ||
       p.Gender.toUpperCase() === genderFilter.toUpperCase();
 
     return matchesSearch && matchesGender;
@@ -96,6 +97,44 @@ export const RaceResultsPage: React.FC = () => {
     return rankStr;
   };
 
+  if (!enableResult) {
+    return (
+      <div className="page-wrapper flex items-center justify-center" style={{ minHeight: '65vh', padding: '2rem 1rem' }}>
+        <div className="card text-center max-w-lg mx-auto p-8 md:p-12 animate-fade-in" style={{
+          background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(243, 244, 246, 0.9) 100%)',
+          borderRadius: '24px',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.08)',
+          border: '1px solid rgba(232, 73, 43, 0.15)'
+        }}>
+          <div className="w-20 h-20 mx-auto mb-6 flex items-center justify-center rounded-2xl" style={{
+            background: '',
+            color: 'var(--color-accent, #E8492B)'
+          }}>
+            <Clock size={42} className="animate-pulse" />
+          </div>
+
+          <h2 className="text-2xl md:text-3xl font-extrabold mb-3 text-primary" style={{ fontFamily: 'var(--font-heading)' }}>
+            Hasil Lomba Masih Diproses
+          </h2>
+
+          <p className="text-muted text-base md:text-lg mb-8 max-w-md mx-auto leading-relaxed">
+            Data hasil pertandingan sedang dalam tahap verifikasi dan rekapitulasi akhir oleh panitia. Mohon cek kembali secara berkala.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            <button
+              className="lp-btn lp-btn--primary"
+              onClick={() => window.location.reload()}
+            >
+              <RefreshCw size={18} />
+              Cek Lagi
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="page-wrapper flex items-center justify-center" style={{ minHeight: '60vh' }}>
@@ -118,7 +157,6 @@ export const RaceResultsPage: React.FC = () => {
       </div>
     );
   }
-
   return (
     <div className="page-wrapper" style={{ padding: '2rem 0' }}>
       <div className="container">
@@ -214,9 +252,8 @@ export const RaceResultsPage: React.FC = () => {
                       <td className="font-mono text-accent">{p.BIB}</td>
                       <td className="font-bold">{p.Name}</td>
                       <td>
-                        <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
-                          p.Gender === 'M' ? 'bg-blue-500 bg-opacity-20 text-blue-300' : 'bg-pink-500 bg-opacity-20 text-pink-300'
-                        }`}>
+                        <span className={`px-2 py-0.5 rounded text-xs font-semibold ${p.Gender === 'M' ? 'bg-blue-500 bg-opacity-20 text-blue-300' : 'bg-pink-500 bg-opacity-20 text-pink-300'
+                          }`}>
                           {p.Gender === 'M' ? 'Male' : 'Female'}
                         </span>
                       </td>
@@ -255,31 +292,31 @@ export const RaceResultsPage: React.FC = () => {
           {/* Pagination Controls */}
           {totalPages > 1 && (
             <div className="pagination mt-6">
-              <button 
-                className="page-item" 
-                disabled={currentPage === 1} 
+              <button
+                className="page-item"
+                disabled={currentPage === 1}
                 onClick={() => setCurrentPage(1)}
               >
                 First
               </button>
-              <button 
-                className="page-item" 
-                disabled={currentPage === 1} 
+              <button
+                className="page-item"
+                disabled={currentPage === 1}
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               >
                 Prev
               </button>
               <span className="page-item active">{currentPage} / {totalPages}</span>
-              <button 
-                className="page-item" 
-                disabled={currentPage === totalPages} 
+              <button
+                className="page-item"
+                disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               >
                 Next
               </button>
-              <button 
-                className="page-item" 
-                disabled={currentPage === totalPages} 
+              <button
+                className="page-item"
+                disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage(totalPages)}
               >
                 Last

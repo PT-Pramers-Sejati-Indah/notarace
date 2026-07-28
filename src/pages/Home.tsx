@@ -188,7 +188,6 @@ export const Home: React.FC = () => {
                 </Link>
                 <Link to="/photos" className="lp-btn lp-btn--ghost">
                   <Camera size={22} strokeWidth={2} aria-hidden />
-                  {/* Keseruan tahun 2025! */}
                   Cari Foto Anda
                 </Link>
               </div>

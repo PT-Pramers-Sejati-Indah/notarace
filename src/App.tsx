@@ -5,7 +5,7 @@ import { AuthPage } from './pages/AuthPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { OrderSummaryPage } from './pages/OrderSummaryPage';
 import { PaymentPage } from './pages/PaymentPage';
-import { ImageViewerPage } from './pages/ImageViewerPage';
+import { PhotosUploadingPage } from './pages/PhotosUploadingPage';
 import { RaceResultsPage } from './pages/RaceResultsPage';
 import { User } from 'lucide-react';
 import { featureFlags } from './utils/featureFlags';
@@ -98,7 +98,7 @@ function App() {
         {featureFlags.purchase && <Route path="/buy/:category" element={<OrderSummaryPage />} />}
         {featureFlags.purchase && <Route path="/payment" element={<PaymentPage />} />}
         {featureFlags.raceResults && <Route path="/race-result" element={<RaceResultsPage />} />}
-        {featureFlags.photos && <Route path="/photos" element={<ImageViewerPage />} />}
+        {featureFlags.photos && <Route path="/photos" element={<PhotosUploadingPage />} />}
       </Routes>
     </Router>
   );
